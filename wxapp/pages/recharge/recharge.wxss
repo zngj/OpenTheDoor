@@ -1,0 +1,33 @@
+/* recharge.wxss */
+.weui-cells__tips{
+  margin:24rpx 0;
+}
+.weui-flex:first-child{
+  padding-top:30rpx;
+}
+.weui-flex:last-child{
+  padding-bottom:30rpx;
+}
+.weui-flex__item{
+  padding:20rpx 0rpx;
+}
+
+.moneyView{
+  text-align: center;
+  margin-top:0;
+}
+.money{
+  border:2rpx solid #ff9600;
+  border-radius:4px;
+  height:44rpx;
+  margin:0rpx 20rpx;
+  padding:22rpx 22rpx;
+  text-align: center;
+}
+.money_active{
+  background-color:#ff9600;
+  color:#ffffff;
+}
+.page__ft{
+  margin-top:116rpx;
+}

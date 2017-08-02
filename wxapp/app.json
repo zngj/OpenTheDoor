@@ -1,0 +1,13 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/recharge/recharge",
+    "pages/open/showCode"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#000000",
+    "navigationBarTitleText": "门",
+    "navigationBarTextStyle": "#ffffff"
+  }
+}

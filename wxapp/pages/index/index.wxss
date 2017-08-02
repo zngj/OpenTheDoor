@@ -1,0 +1,60 @@
+/**index.wxss**/
+
+
+
+.leftLine{
+  content:" ";
+  height:1px;
+  width:150rpx;
+  text-align: center;
+  border-top:1px solid #eeeeee;
+  margin:12rpx 0rpx 0 100rpx;
+  top:0;
+  left:0;
+  right:0;
+}
+.rightLine{
+  content:" ";
+  height:1px;
+  width:150rpx;
+  text-align: center;
+  border-top:1px solid #eeeeee;
+  margin:12rpx 100rpx 0 0rpx;
+  top:0;
+  left:0;
+  right:0;
+}
+.weui-cells__tips{
+  margin-top:0;
+}
+.weui-flex__item{
+  text-align: center;
+}
+.weui-flex__item image{
+  width:35px;height:35px;
+}
+.weui-flex__item view{
+  color:#333333;
+}
+.stepsWrapper{
+  margin-top:20rpx;
+}
+.stepsTitle{
+  padding-top:40rpx;
+}
+.steps{
+  padding-bottom: 40rpx;
+}
+.steps text {
+  font-size:13px;
+  color:#333333;
+}
+.imgSteps{
+  height:176rpx;
+  padding:0px 40rpx 0 40rpx;
+  width:604rpx;
+  margin-top:50rpx;
+}
+.downloadDesc{
+  margin-top:80rpx;
+}

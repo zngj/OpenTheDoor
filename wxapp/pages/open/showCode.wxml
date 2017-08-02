@@ -1,0 +1,14 @@
+
+
+<view style="text-align:center">
+  <swiper autoplay="true" interval="300" duration="0" style="height:375rpx">
+    <block wx:for="{{qrImgs}}">
+      <swiper-item>
+        <image src="{{item}}" class="slide-image" style ="width:375rpx;height:375rpx;"/>
+      </swiper-item>
+    </block>
+  </swiper>
+</view>
+<view style="text-align:center">
+  <button bindtap="nextPpl" type="primary" >下一个人{{type}}</button>
+</view>

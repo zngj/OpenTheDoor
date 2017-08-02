@@ -1,0 +1,24 @@
+<!--index.wxml-->
+<view class="container">
+  
+  <view style="height:140;background-color:#35405c;text-align:center">
+    <view style="padding-top:31px;"><text style="font-size:30px;color:#fafafa">{{userBalance}}</text></view>
+    <view style="padding-bottom:30px;font-size:15px;color:#fafafa"><text>我的余额(元)</text></view>
+  </view>
+
+  <view class="weui-cells weui-flex weui-cells_after-title" style="padding:40rpx 0rpx">
+    <view class="weui-flex__item" >
+      <navigator url='{{isLogin==1?"../recharge/recharge":"../login/login"}}'><image src="/images/recharge.png"></image><view>充值</view></navigator>
+    </view>
+    <view class="weui-flex__item" >
+      <navigator url="../open/showCode?type=in"><image src="/images/guide.png"></image><view>进</view></navigator>
+    </view>
+    <view class='weui-flex__item'>
+      <navigator url="../open/showCode?type=out"><image src="/images/my.png"></image><view>出</view></navigator>
+    </view>
+  </view>
+</view>
+
+<view class="page__ft">
+  <view class="weui-cells__tips">{{app.globalData.name}}</view>
+</view>

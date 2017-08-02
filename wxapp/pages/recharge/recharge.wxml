@@ -1,0 +1,46 @@
+<!--recharge.wxml-->
+<view class="weui-cells__tips">提示：此小程序为快递员专用，非快递员请勿充值</view>
+
+<view class='{{confirmRecharge===1?"hide":"weui-cells weui-cells_after-title"}}'>
+  <view style="height:140;text-align:center;">
+    <view style="padding-top:30px;"><text style="font-size:30px;color:#333333">{{userBalance}}</text></view>
+    <view style="padding-bottom:30px;font-size:15px;color:#333333"><text>我的余额</text></view>
+  </view>
+</view>
+<view>
+
+  <view style="margin:15rpx 30rpx;">
+    <text>充值金额</text>
+  </view>
+
+ <view class="weui-cells moneyView" >
+  <view class="weui-flex" wx:for="{{rechargeSolution}}">
+    <view class="weui-flex__item" >
+      <view class="money {{recharge==item.sol1?'money_active':''}}" bindtap="rechargeSelected" data-money="{{item.sol1}}">
+        {{item.sol1}}元
+      </view>
+    </view>
+    <view class="weui-flex__item" >
+      <view class="money {{recharge==item.sol2?'money_active':''}}" bindtap="rechargeSelected" data-money="{{item.sol2}}">
+        {{item.sol2}}元
+      </view>
+    </view>
+    <view class="weui-flex__item" >
+      <view class="money {{recharge==item.sol3?'money_active':''}}" bindtap="rechargeSelected" data-money="{{item.sol3}}">
+        {{item.sol3}}元
+      </view>
+    </view>
+      
+  </view>
+</view>
+  
+
+</view>
+  <view  class="weui-btn-area">
+  <button bindtap="payRecharge" disabled='{{recharge<=0}}' type="primary" >去充值</button>
+  </view>
+
+
+<view class="page__ft">
+  <view class="weui-cells__tips">注意:账户余额暂不支持提现,请按需充值</view>
+</view>

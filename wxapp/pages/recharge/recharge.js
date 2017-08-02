@@ -71,7 +71,7 @@ Page({
     wx.login({
       success: function(res) {
         wx.request({
-          url: wx.getStorageSync("apiServer") + '/kdx_wxapp/wxapp/rechargeMakeOrder',
+          url: 'http://localhost/wxapp/rechargeMakeOrder',
           data: {
             id: loginUser.id,
             rechargeMoney: rechargeMoney,

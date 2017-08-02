@@ -10,5 +10,8 @@
   </swiper>
 </view>
 <view style="text-align:center">
-  <button bindtap="nextPpl" type="primary" >下一个人{{type}}</button>
+  <text>{{rawData}}</text>
+</view>
+<view style="text-align:center">
+  <button bindtap="nextPeople" type="primary" >下一个人{{type}}</button>
 </view>

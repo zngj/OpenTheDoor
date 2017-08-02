@@ -1,5 +1,4 @@
 <!--recharge.wxml-->
-<view class="weui-cells__tips">提示：此小程序为快递员专用，非快递员请勿充值</view>
 
 <view class='{{confirmRecharge===1?"hide":"weui-cells weui-cells_after-title"}}'>
   <view style="height:140;text-align:center;">

@@ -19,11 +19,15 @@ Page({
 
   makeCode: function (rawData) {
     this.setData({
+      "rawData": rawData,
       "qrImgs": [
         wxqrcode.createQrCodeImg(this.encrypt(this.getRandom(2) + rawData + ":" + new Date().getTime() + this.getRandom(2)), { 'size': 200 })
         ,wxqrcode.createQrCodeImg(this.encrypt(this.getRandom(2) + rawData + ":" + new Date().getTime() + this.getRandom(2)), { 'size': 200 })
         ,wxqrcode.createQrCodeImg(this.encrypt(this.getRandom(2) + rawData + ":" + new Date().getTime() + this.getRandom(2)), { 'size': 200 })
     ]});
+  },
+  nextPeople: function () {
+    this.makeCode(this.getRandom(12));
   },
   getRandom(len){
     return (Math.random() + '').replace("0.", "").substr(0, len);

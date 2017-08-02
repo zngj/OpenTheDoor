@@ -16,7 +16,7 @@
 
 ### 消息封包格式
 
-```json
+```code
 MSG = SIZE(1) + MSGID(1) + JSON_PAYLOAD(size-2)
 ```
 

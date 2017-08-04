@@ -17,7 +17,7 @@
 请求：
 ```json
 {
-  "code": "00351nLn1rO8uk0DzUMn1Jf9Ln151nLx"
+    "code": "00351nLn1rO8uk0DzUMn1Jf9Ln151nLx"
 }
 ```
 
@@ -42,8 +42,8 @@
 ### 1-2 用户Token验证
 
 说明：
-1. uri: `/user/verifytoken`
-2. Method: `POST`
+1. uri: /user/verifytoken
+2. Method: POST
 
 参数：
 
@@ -54,7 +54,7 @@
 请求：
 ```json
 {
-  "token": "91af8c6de82d4e17842508e3a42df412"
+    "token": "91af8c6de82d4e17842508e3a42df412"
 }
 ```
 
@@ -109,7 +109,7 @@ MSG = SIZE(1) + MSGID(1) + JSON_PAYLOAD(size-2)
 请求样例：
 ```json
 {
-  "no": "010101",
+    "no": "010101",
 }
 ```
 
@@ -130,7 +130,7 @@ MSG = SIZE(1) + MSGID(1) + JSON_PAYLOAD(size-2)
 请求样例：
 ```json
 {
-  "qr": "TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCBieSB0aGlz",
+    "qr": "TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCBieSB0aGlz",
 }
 ```
 
@@ -151,7 +151,7 @@ MSG = SIZE(1) + MSGID(1) + JSON_PAYLOAD(size-2)
 请求样例：
 ```json
 {
-  "qr": "IHNpbmd1bGFyIHBhc3Npb24gZnJvbSBvdGhlciBhbmltYWxzLCB3aGljaCBpcyBhIGx1c3Qgb2Yg",
+    "qr": "IHNpbmd1bGFyIHBhc3Npb24gZnJvbSBvdGhlciBhbmltYWxzLCB3aGljaCBpcyBhIGx1c3Qgb2Yg",
 }
 ```
 

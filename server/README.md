@@ -5,8 +5,8 @@
 ### 1-1 小程序用户登录
 
 说明：
-1. uri: `/user/wxapp/login`
-2. Method: `POST`
+1. uri: /user/wxapp/login
+2. Method: POST
 
 参数：
 

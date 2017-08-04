@@ -1,15 +1,83 @@
 # SmartGate Server
 
+## 用户协议 - HTTPS
+
+### 1-1 小程序用户登录
+
+说明：
+1. uri: `/user/wxapp/login`
+2. Method: `POST`
+
+参数：
+
+|参数名     |类型|是否必须|默认值  |说明    |
+|----------|----|-------|-------|--------|
+|code|string|是|-|登录凭证|
+
+请求：
+```json
+{
+  "code": "00351nLn1rO8uk0DzUMn1Jf9Ln151nLx"
+}
+```
+
+返回：
+```json:
+{
+    "code": 0,
+    "msg": "success",
+    "data": {
+        "token": "91af8c6de82d4e17842508e3a42df412"
+    }
+}
+```
+```json:
+{
+    "code": -4,
+    "msg": "illegal argument"
+}
+```
+
+
+### 1-2 用户Token验证
+
+说明：
+1. uri: `/user/verifytoken`
+2. Method: `POST`
+
+参数：
+
+|参数名     |类型|是否必须|默认值  |说明    |
+|----------|----|-------|-------|--------|
+|token|string|是|-|登录凭证|
+
+请求：
+```json
+{
+  "token": "91af8c6de82d4e17842508e3a42df412"
+}
+```
+
+返回：
+```json:
+{
+    "code": 0,
+    "msg": "success",
+}
+```
+```json:
+{
+    "code": -1000,
+    "msg": "token was expired"
+}
+```
+
+
 ## Weapp协议 - HTTPS
 
-### 1-1 小程序登录
+### 2-1 获取用户出入闸状态
 
-
-### 1-2 获取用户出入闸状态
-
-
-### 1-3
-
+### 2-3
 
 
 ## Gate协议 - TCP
@@ -28,7 +96,7 @@ MSG = SIZE(1) + MSGID(1) + JSON_PAYLOAD(size-2)
 |MSG_USER_IN|101|MSG_USER_IN_SUCCESS|201|
 |MSG_USER_OUT|102|MSG_USER_OUT_SUCCESS|202|
 
-### 2-1 设置闸机编号
+### 3-1 设置闸机编号
 当闸机成功连接到服务端后进行闸机编号设置，当闸机断线重连后也需要设置
 
 #### 请求: MSG_SET_GATE_NO
@@ -49,7 +117,7 @@ MSG = SIZE(1) + MSGID(1) + JSON_PAYLOAD(size-2)
 收到消息即为成功
 
 
-### 2-2 上报用户入闸数据
+### 3-2 上报用户入闸数据
 当闸机开启后上报用户入闸数据
 
 #### 请求: MSG_USER_IN
@@ -70,7 +138,7 @@ MSG = SIZE(1) + MSGID(1) + JSON_PAYLOAD(size-2)
 收到消息即为成功
 
 
-### 2-3 上报用户出闸数据
+### 3-3 上报用户出闸数据
 当闸机开启后上报用户出闸数据
 
 #### 请求: MSG_USER_OUT

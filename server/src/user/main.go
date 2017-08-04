@@ -19,10 +19,15 @@ func main() {
 	})
 
 	// Get user value
-	r.POST("/user/wxapp/login", controller.WxappLogin)
+	r.GET("/", func(c *gin.Context) {
+		c.String(200, "Welcome to youstars' user center api service")
+	})
 
 	// Get user value
-	r.POST("/user/verifytoken", controller.VerifyToken)
+	r.POST("/wxapp/login", controller.WxappLogin)
+
+	// Get user value
+	r.POST("/verifytoken", controller.VerifyToken)
 
 
 	// Listen and Server in 0.0.0.0:8080

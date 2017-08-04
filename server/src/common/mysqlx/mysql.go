@@ -25,10 +25,10 @@ func init()  {
 	file.LoadJsonConfig("mysql.json", &config)
 
 	url = fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&loc=Asia%%2FChongqing",
-		config.Addr,
-		config.DB,
 		config.Username,
-		config.Password)
+		config.Password,
+		config.Addr,
+		config.DB)
 
 	//url = fmt.Sprintf("tcp:%s*%s/%s/%s",
 	//	mySQLConfig.Host,
@@ -39,8 +39,8 @@ func init()  {
 	log4g.Info("db url: %s", url)
 
 	var err error
-	//_db, err = sql.Open("mysql", url)
-	_db, err = sql.Open("mymysql", url)
+	_db, err = sql.Open("mysql", url)
+	//_db, err = sql.Open("mymysql", url)
 	if err != nil {
 		panic(err)
 	}
@@ -65,6 +65,14 @@ func (t *MyTx) Begin()  {
 }
 
 func Exec(t *MyTx, query string, args ...interface{}) error {
+	if t == nil {
+		tx, err := _db.Begin()
+		if err != nil {
+			return err
+		}
+		t = new (MyTx)
+		t.Tx = tx
+	}
 	t.Begin()
 	var err error
 	defer func() { t.Commit(err) }()
@@ -74,6 +82,20 @@ func Exec(t *MyTx, query string, args ...interface{}) error {
 	}
 	return err
 }
+
+func Exists(query string, args ...interface{}) (bool, error) {
+	rows, err := GetDBConn().Query(query, args...)
+	if err != nil {
+		log4g.Error(err)
+		return false, err
+	}
+	defer rows.Close()
+	if rows.Next() {
+		return true, nil
+	}
+	return false, nil
+}
+
 
 func (t *MyTx) Commit(err error)  {
 	defer func() { t.rollback(err) }()

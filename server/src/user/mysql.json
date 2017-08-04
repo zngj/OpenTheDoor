@@ -1,0 +1,6 @@
+{
+  "addr": "10.20.109.125:3306",
+  "db": "usercenter",
+  "username": "root",
+  "password": "root"
+}

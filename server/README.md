@@ -27,13 +27,14 @@
     "code": 0,
     "msg": "success",
     "data": {
-        "token": "91af8c6de82d4e17842508e3a42df412"
+        "access_token": "e062b066da834699aa10905e5d45a576",
+        "expires_in": 7200
     }
 }
 ```
 ```json:
 {
-    "code": -4,
+    "code": 4,
     "msg": "illegal argument"
 }
 ```
@@ -67,7 +68,7 @@
 ```
 ```json:
 {
-    "code": -1000,
+    "code": 1000,
     "msg": "token was expired"
 }
 ```

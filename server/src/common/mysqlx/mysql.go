@@ -96,7 +96,6 @@ func Exists(query string, args ...interface{}) (bool, error) {
 	return false, nil
 }
 
-
 func (t *MyTx) Commit(err error)  {
 	defer func() { t.rollback(err) }()
 	if err != nil {

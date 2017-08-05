@@ -4,10 +4,10 @@ package cmnmsg
 
 const (
 	CODE_COMMON_SUCCESS   = 0  // 成功
-	CODE_COMMON_ERROR     = -1 // 通用错误
-	CODE_COMMON_EMPTY_ARG = -2 // 参数为空
-	CODE_COMMON_WRONG_ARG = -3 // 错误的参数
-	CODE_COMMON_ILLEGAL_ARG = -4 // 非法的参数
+	CODE_COMMON_ERROR     = 1 // 通用错误
+	CODE_COMMON_EMPTY_ARG = 2 // 参数为空
+	CODE_COMMON_WRONG_ARG = 3 // 错误的参数
+	CODE_COMMON_ILLEGAL_ARG = 4 // 非法的参数
 )
 
 var msg_map = map[int]string {

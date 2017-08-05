@@ -47,18 +47,21 @@ func WxappLogin(c *gin.Context) {
 	}
 
 	//save session to redis
-	log4g.Debug("openId=" + session.Openid)
 	log4g.Debug("session_key=" + session.Session_key)
+	log4g.Debug("expires_in=%d", session.ExpiresIn)
+	log4g.Debug("openid=" + session.Openid)
 	log4g.Debug("unionid=" + session.Unionid)
 
-	var result vo.WxappLoginToken
-	result.Token = strings.Replace(uuid.New().String(), "-", "", -1)
 
-	if err = service.SaveLoginSession(result.Token, session); err != nil {
+	accessToken := strings.Replace(uuid.New().String(), "-", "", -1)
+	if err = service.SaveLoginSession(accessToken, session); err != nil {
 		render.WriteJSON(c.Writer, cmnmsg.NewErrorResponse(err))
 		return
 	}
 
+	var result vo.WxappLoginToken
+	result.AccessToken = accessToken
+	result.ExpiresIn = session.ExpiresIn
 	render.WriteJSON(c.Writer, cmnmsg.NewDataResponse(&result))
 
 }
@@ -92,9 +95,10 @@ func code2session(code string) (session *vo.WxappSession, err error) {
 		log4g.Error(session.Errmsg)
 		err = errors.New(session.Errmsg)
 		//for testing
-		//err = nil
-		//session.Openid = "openid_for_testing_1111111"
-		//session.Session_key = "session_key_for_testing_11111111"
+		err = nil
+		session.Session_key = "ot96OBqsvSa3WLFBz4U+gw=="
+		session.ExpiresIn = 7200
+		session.Openid = "oVecO0Ze4kNxMGymF05d1uiIcmqA"
 	}
 	return
 }

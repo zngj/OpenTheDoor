@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"user/controller"
+	"user/token"
 )
 
 var DB = make(map[string]string)
@@ -27,7 +28,7 @@ func main() {
 	r.POST("/wxapp/login", controller.WxappLogin)
 
 	// Get user value
-	r.POST("/verifytoken", controller.VerifyToken)
+	r.POST("/verifytoken", token.VerifyToken)
 
 
 	// Listen and Server in 0.0.0.0:8080

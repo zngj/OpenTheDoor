@@ -5,7 +5,7 @@ import "common/cmnmsg"
 // user code between -1000 and -1999
 
 const (
-	CODE_USER_TOKEN_EXPIRED = -1000 // 登录失效
+	CODE_USER_TOKEN_EXPIRED = 1000 // 登录失效
 )
 
 var msg_map = map[int]string {

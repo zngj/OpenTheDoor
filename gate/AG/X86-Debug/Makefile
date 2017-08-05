@@ -36,7 +36,7 @@ DISTNAME      = AG1.0.0
 DISTDIR = /home/feynman/SmartGate/gate/AG/X86-Debug/.tmp/AG1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-rpath,/home/feynman/Qt5.7.1/5.7/gcc_64/lib
-LIBS          = $(SUBLIBS) -L/home/feynman/Qt5.7.1/5.7/gcc_64/lib -lQt5Widgets -L/usr/lib64 -lQt5Gui -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) -lfftw3 -lasound -L/home/feynman/Qt5.7.1/5.7/gcc_64/lib -lQt5Widgets -L/usr/lib64 -lQt5Gui -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -51,11 +51,13 @@ OBJECTS_DIR   = ./
 SOURCES       = ../Src/main.cpp \
 		../Src/UI/FormMain.cpp \
 		../Src/Drivers/Scanner/IScannerListener.cpp \
-		../Src/Drivers/Scanner/ScannerManager.cpp moc_FormMain.cpp
+		../Src/Drivers/Scanner/ScannerManager.cpp \
+		../Src/Soundwave/SoundDecode.cpp moc_FormMain.cpp
 OBJECTS       = main.o \
 		FormMain.o \
 		IScannerListener.o \
 		ScannerManager.o \
+		SoundDecode.o \
 		moc_FormMain.o
 DIST          = ../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../../Qt5.7.1/5.7/gcc_64/mkspecs/common/unix.conf \
@@ -188,6 +190,7 @@ DIST          = ../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/qt_config.prf \
 		../../../../Qt5.7.1/5.7/gcc_64/mkspecs/linux-g++/qmake.conf \
 		../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/spec_post.prf \
+		../Src/.qmake.stash \
 		../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/exclusive_builds.prf \
 		../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/toolchain.prf \
 		../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/default_pre.prf \
@@ -209,10 +212,12 @@ DIST          = ../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../Src/AG.pro ../Src/UI/FormMain.h \
 		../Src/Drivers/Scanner/IScannerListener.h \
 		../Src/Drivers/Scanner/ScannerManager.h \
-		../Src/Drivers/Scanner/ScannerState.h ../Src/main.cpp \
+		../Src/Drivers/Scanner/ScannerState.h \
+		../Src/Soundwave/SoundDecode.h ../Src/main.cpp \
 		../Src/UI/FormMain.cpp \
 		../Src/Drivers/Scanner/IScannerListener.cpp \
-		../Src/Drivers/Scanner/ScannerManager.cpp
+		../Src/Drivers/Scanner/ScannerManager.cpp \
+		../Src/Soundwave/SoundDecode.cpp
 QMAKE_TARGET  = AG
 DESTDIR       = 
 TARGET        = AG
@@ -355,6 +360,7 @@ Makefile: ../Src/AG.pro ../../../../Qt5.7.1/5.7/gcc_64/mkspecs/linux-g++/qmake.c
 		../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/qt_config.prf \
 		../../../../Qt5.7.1/5.7/gcc_64/mkspecs/linux-g++/qmake.conf \
 		../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/exclusive_builds.prf \
 		../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/toolchain.prf \
 		../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/default_pre.prf \
@@ -509,6 +515,7 @@ Makefile: ../Src/AG.pro ../../../../Qt5.7.1/5.7/gcc_64/mkspecs/linux-g++/qmake.c
 ../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/qt_config.prf:
 ../../../../Qt5.7.1/5.7/gcc_64/mkspecs/linux-g++/qmake.conf:
 ../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/exclusive_builds.prf:
 ../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/toolchain.prf:
 ../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/default_pre.prf:
@@ -545,8 +552,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../Src/UI/FormMain.h ../Src/Drivers/Scanner/IScannerListener.h ../Src/Drivers/Scanner/ScannerManager.h ../Src/Drivers/Scanner/ScannerState.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../Src/main.cpp ../Src/UI/FormMain.cpp ../Src/Drivers/Scanner/IScannerListener.cpp ../Src/Drivers/Scanner/ScannerManager.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Src/UI/FormMain.h ../Src/Drivers/Scanner/IScannerListener.h ../Src/Drivers/Scanner/ScannerManager.h ../Src/Drivers/Scanner/ScannerState.h ../Src/Soundwave/SoundDecode.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Src/main.cpp ../Src/UI/FormMain.cpp ../Src/Drivers/Scanner/IScannerListener.cpp ../Src/Drivers/Scanner/ScannerManager.cpp ../Src/Soundwave/SoundDecode.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../Src/UI/FormMain.ui $(DISTDIR)/
 
 
@@ -904,7 +911,39 @@ FormMain.o: ../Src/UI/FormMain.cpp ../Src/UI/FormMain.h \
 		../../../../Qt5.7.1/5.7/gcc_64/include/QtCore/qfiledevice.h \
 		../../../../Qt5.7.1/5.7/gcc_64/include/QtGui/qvector2d.h \
 		../../../../Qt5.7.1/5.7/gcc_64/include/QtGui/qtouchdevice.h \
-		ui_FormMain.h
+		ui_FormMain.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtCore/QVariant \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/QAction \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/qaction.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtGui/qicon.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/qactiongroup.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/QApplication \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/qapplication.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtCore/qcoreapplication.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtCore/qeventloop.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtGui/qguiapplication.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtGui/qinputmethod.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/QButtonGroup \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/qbuttongroup.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/QHeaderView \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/qheaderview.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/qabstractitemview.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/qframe.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtCore/qabstractitemmodel.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtCore/qitemselectionmodel.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/qstyleoption.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtGui/qvalidator.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtCore/qregularexpression.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/qslider.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/qabstractslider.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/qstyle.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/qtabbar.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/qtabwidget.h \
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/qrubberband.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o FormMain.o ../Src/UI/FormMain.cpp
 
 IScannerListener.o: ../Src/Drivers/Scanner/IScannerListener.cpp ../Src/Drivers/Scanner/IScannerListener.h
@@ -914,6 +953,9 @@ ScannerManager.o: ../Src/Drivers/Scanner/ScannerManager.cpp ../Src/Drivers/Scann
 		../Src/Drivers/Scanner/ScannerState.h \
 		../Src/Drivers/Scanner/IScannerListener.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ScannerManager.o ../Src/Drivers/Scanner/ScannerManager.cpp
+
+SoundDecode.o: ../Src/Soundwave/SoundDecode.cpp ../Src/Soundwave/SoundDecode.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SoundDecode.o ../Src/Soundwave/SoundDecode.cpp
 
 moc_FormMain.o: moc_FormMain.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_FormMain.o moc_FormMain.cpp

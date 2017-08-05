@@ -1,39 +1,95 @@
-function formatTime(date) {
-  var year = date.getFullYear()
-  var month = date.getMonth() + 1
-  var day = date.getDate()
+var request = {
+  dataSet: null,
+  init: function (localTest, localTestDataSet) {
+    this.request = localTest ? this.requestLocal : this.requestRemote;
+    this.dataSet = localTestDataSet;
+  },
+  requestRemote: function (options) {
+    options.url = "https://sgu.youstars.com.cn" + options.url;
+    options.method = "POST";
+    options.header = { 'content-type': 'application/json' };
+    options.complete = function (c) { console.log(options); console.log(c); };
+    wx.request(options);
+  },
+  request: function (options) {
+    this.requestRemote(options);
+  },
+  requestLocal: function (options) {
+    options.complete = function (c) { console.log(options); console.log(c); };
+    var actionObj = this.actionMap[options.url];
+    var result = this.getAction(actionObj, this.dataSet)(options);
+    if (result.success && options.success) {
+      options.success({ data: result.success });
+    }
+    if (result.fail && options.fail) {
+      options.fail({ data: result.fail });
+    }
+    if (options.complete) {
+      options.complete({ data: result.success || result.fail`` });
+    }
+  },
+  getAction: function (actionObj, dataSet) {
+    if (!dataSet) {
+      return actionObj['default'];
+    } else if (actionObj[dataSet]) {
+      return actionObj[dataSet];
+    } else {
+      return this.getAction(actionObj, this.dataDependentChain[dataSet]);
+    }
+  },
 
-  var hour = date.getHours()
-  var minute = date.getMinutes()
-  var second = date.getSeconds()
+  actionMap: {
+    "/user/wxapp/login": {
+      default: function (options) {
+        return {
+          success: { 'code': 0, msg: 'success', data: { 'token': 'This is a test token' } }
+        }
+      },
+      reject: function (options) {
+        return {
+          success: { 'code': -100, msg: 'Cannot get token,invalid code' }
+        }
+      }
+    },
+    "/user/verifytoken": {
+      default: function (options) {
+        if (options.data.access_token) {
+          return { success: { 'code': 0, msg: 'success', data: { token: "This is a dummy user token" } } };
+        } else {
+          return { success: { 'code': -1, msg: 'token not exists' } };
+        }
+      },
+      tokenExpire: function (options) {
+        return { success: { 'code': -1000, msg: 'token was expired' } };
 
+      }
+    },
+    "/user/wallet/info": {
+      default: function (options) {
+        return { success: { code: 0, msg: 'success', data: { balance: 0, autoPay: false } } }
+      },
+      hasBalance: function (options) {
+        return { success: { code: 0, msg: 'success', data: { balance: 100, autoPay: false } } }
+      },
+      autoPay: function (options) {
+        return { success: { code: 0, msg: 'success', data: { balance: 0, autoPay: true } } }
+      }
+    }
+  },
+  dataDependentChain: {
+    //default: never used
+    new: 'default',
+    tokenExpire: 'default',
+  }
 
-  return [year, month, day].map(formatNumber).join('-') + ' ' + [hour, minute, second].map(formatNumber).join(':')
-}
+};
 
-function formatNumber(n) {
-  n = n.toString()
-  return n[1] ? n : '0' + n
-}
-
-function trimSure(str) {
-  return (str == null || str == undefined) ? '' : str.replace(/(^\s*)|(\s*$)/g, '');
-}
 
 function redirectTo(url) {
   wx.redirectTo({
     url: url
   })
 }
-
-function formatMoney(money) {
-  if (money == null || money == undefined) {
-    return '0.00';
-  }
-  var floatMoney = parseFloat(money);
-  return floatMoney.toFixed(2);
-}
-
 function isMobile(mobile) {
   if (!mobile) {
     return false;
@@ -44,52 +100,29 @@ function isMobile(mobile) {
   }
   return true;
 }
-
-function isValidCardNO(id) {
-  if (id == null) {
-    return false;
-  }
-  id = trimSure(id).toUpperCase();
-  if (id.length != 18) {
-    return false;
-  }
-  var xnum = 0;
-  // 1.将身份证号码前面的17位数分别乘以不同的系数。
-  // 从第一位到第十七位的系数分别为：7 9 10 5 8 4 2 1 6 3 7 9 10 5 8 4 2
-  var factor = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 ];
-  var sum = 0;
-  for (var i = 0; i < factor.length; i++) {
-    var ch = id.charAt(i);
-    if ((ch < '0' || ch > '9') && ch != 'X') {
-      return false;
-    }
-    if (ch == 'X') {
-      return false;
-    }
-    // 2.将这17位数字和系数相乘的结果相加。
-    sum += parseInt(ch) * factor[i];
-  } // end for (int i = 0; i < factor.length; i++)
-  if (id.charAt(id.length - 1) == 'X') {
-    xnum++;
-  }
-  if (xnum > 1) {
-    // 超过两个x
-    return false;
-  }
-  // 3.用加出来和除以11，看余数是多少？
-  var mod = sum % 11;
-  // 4.余数只可能有0 1 2 3 4 5 6 7 8 9 10这11个数字。
-  // 余数分别对应的最后一位身份证的号码为1 0 X 9 8 7 6 5 4 3 2。
-  var suffix = [ '1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2' ];
-  return suffix[mod] == id.charAt(id.length - 1);
+function initRequest() {
+  //request.init(arguments[0]);
+  request.init.apply(request, arguments);
 }
-
+function theRequest(options) {
+  request.request(options);
+}
+function showMsg(title) {
+  wx.showToast({
+    title: title,
+    fail: function () {
+      wx.showModal({
+        title: '提示',
+        content: title,
+      })
+    }
+  });
+}
 module.exports = {
-  formatTime: formatTime,
-  trimSure: trimSure,
   redirectTo: redirectTo,
-  formatMoney: formatMoney,
   isMobile: isMobile,
-  isValidCardNO: isValidCardNO
+  initRequest: initRequest,
+  request: theRequest,
+  showMsg: showMsg
 }
 

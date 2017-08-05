@@ -1,79 +1,70 @@
-//index.js
-//获取应用实例
+var util = require('../../js/util.js');
 
 var app = getApp()
 Page({
   data: {
     isLogin: 0,
-    userBalance: '--'
+    userBalance: '--',
+    dataSetDesc: ['远程', '新用户', '有余额', '有代扣']
   },
 
-  onLoad: function(options){
+  onLoad: function (options) {
     var that = this;
-    wx.login({
-      success: function (p) {
-        console.log("s:");
-        console.log( p);
-      },
-      fail: function (p) {
-        console.log("f:");
-        console.log(p);
-      },
-      complete: function (p) {
-        console.log("c:");
-        console.log(p);
-      }
-    })
-    wx.checkSession({
-      success: function (p) {
-        console.log("s:");
-        console.log(p);
-      },
-      fail: function (p) {
-        console.log("f:");
-        console.log(p);
-      },
-      complete: function (p) {
-        console.log("c:");
-        console.log(p);
-      }
+    this.getWallet(function (data) {
+      that.setData({
+        userBalance: data.balance
+      });
     });
-    /*
-    wx.request({
-      url: 'http://localhost/wxapp/login',
-      data: {
-        mobile: name,
-        password: psw
-      },
-      method: 'POST',
-      header: {
-        'content-type': 'application/json'
-      },
-      success: function (resp) {
-        if (resp.data.code == 0) { // 成功
-          that.setData({
-            isLogin: 1
-          });
-          wx.setStorageSync('loginUser', resp.data.data);
-        } else {
-        }
-      },
-      fail: function (resp) {
-        if (wx.reLaunch) {
-          wx.reLaunch({
-            url: '/pages/propogate/propogate',
-          })
-        } else {
-          wx.redirectTo({
-            url: '/pages/propogate/propogate',
-          });
-        }
-      }
-    });
-    */
   },
+  getWallet: function (successCB, failCB) {
+    wx.getStorage({
+      key: 'token',
+      success: function (res) {
+        util.request({
+          url: '/user/wallet/info',
+          data: { token: res.data },
+          success: function (p) {
+            if (p.data.code == 0) {
+              successCB(p.data.data);
+            };
+          },
+          fail: function (fp) {
+            if (failCB) {
+              failCB(fp);
+            };
+          }
+        });
+      },
+    });
+  },
+  gateIn: function () {
+    //../open/showCode?type=out
+    this.getWallet(function (data) {
+      if (data.autoPay) {
+        util.showMsg('有代扣，可进入');
+        wx.navigateTo({
+          url: '../open/showCode?type=in',
+        });
+      } else if (data.balance > 0) {
+        util.showMsg('有余额，可进入');
+        wx.navigateTo({
+          url: '../open/showCode?type=in',
+        });
+      } else {
+        util.showMsg('需要充值、或者签约代扣');
+        return;
+      }
+    });
+  },
+  gateOut: function () {
+    wx.navigateTo({
+      url: '../open/showCode?type=out',
+    });
 
-  onShow: function () {
-    var that = this;
+  },
+  onShareAppMessage: function (page) { },
+  bindPickerChange: function (e) {
+    var dataSet = ['', 'new', 'hasBalance', 'autoPay'];
+    util.initRequest(e.detail.value != 0, dataSet[e.detail.value]); 
   },
 })

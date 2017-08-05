@@ -11,12 +11,17 @@
       <navigator url='{{isLogin==1?"../recharge/recharge":"../login/login"}}'><image src="/images/recharge.png"></image><view>充值</view></navigator>
     </view>
     <view class="weui-flex__item" >
-      <navigator url="../open/showCode?type=in"><image src="/images/guide.png"></image><view>进</view></navigator>
+      <image src="/images/guide.png" bindtap="gateIn"></image><view>进</view>
     </view>
     <view class='weui-flex__item'>
-      <navigator url="../open/showCode?type=out"><image src="/images/my.png"></image><view>出</view></navigator>
+      <image src="/images/my.png" bindtap="gateOut"></image><view>出</view>
     </view>
   </view>
+
+
+  <picker bindchange="bindPickerChange" value="0" range="{{dataSetDesc}}">
+      <button type="default">选择测试数据集</button>
+  </picker>
 </view>
 
 <view class="page__ft">

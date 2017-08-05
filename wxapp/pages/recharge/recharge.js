@@ -24,7 +24,6 @@ Page({
       ]
 
     });
-    var loginUser = app.getLoginUser();
 
 
     wx.request({
@@ -66,7 +65,6 @@ Page({
     });
   },
   payRecharge:function(e){
-    var loginUser = app.getLoginUser();
     var rechargeMoney = this.data.rechargeMoney;
     wx.login({
       success: function(res) {

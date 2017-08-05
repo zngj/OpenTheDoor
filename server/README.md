@@ -55,7 +55,7 @@
 请求：
 ```json
 {
-    "token": "91af8c6de82d4e17842508e3a42df412"
+    "access_token": "91af8c6de82d4e17842508e3a42df412"
 }
 ```
 

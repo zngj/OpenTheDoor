@@ -23,13 +23,13 @@ func CheckToken(c *gin.Context) bool {
 		render.WriteJSON(c.Writer, cmnmsg.NewErrorResponse(err))
 		return false
 	}
-	if verify.Token == "" {
+	if verify.AccessToken == "" {
 		resp := cmnmsg.NewEmptyArgResponse("code")
 		log4g.Error(resp.Msg)
 		render.WriteJSON(c.Writer, resp)
 		return false
 	}
-	valid, err := IsValidToken(verify.Token)
+	valid, err := IsValidToken(verify.AccessToken)
 	if err != nil {
 		log4g.Error(err)
 		render.WriteJSON(c.Writer, cmnmsg.NewErrorResponse(err))

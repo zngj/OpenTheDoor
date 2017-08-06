@@ -5,7 +5,7 @@
 ### 1-1 小程序用户登录
 
 说明：
-1. uri: /user/wxapp/login
+1. uri: /wxapp/login
 2. Method: POST
 
 参数：
@@ -43,14 +43,14 @@
 ### 1-2 用户Token验证
 
 说明：
-1. uri: /user/verifytoken
+1. uri: /verifytoken
 2. Method: POST
 
-参数：
+Header:
 
-|参数名     |类型|是否必须|默认值  |说明    |
-|----------|----|-------|-------|--------|
-|token|string|是|-|登录凭证|
+|Key     |Value|描述|
+|----------|----|-------|
+|Access-Token|登录返回的access_token|用户访问授权|
 
 请求：
 ```json
@@ -76,9 +76,97 @@
 
 ## Weapp协议 - HTTPS
 
-### 2-1 获取用户出入闸状态
+### 2-1 获取用户钱包信息
 
-### 2-3
+说明：
+1. uri: /wallet/info
+2. Method: GET
+
+Header:
+
+|Key     |Value|描述|
+|----------|----|-------|
+|Access-Token|登录返回的access_token|用户访问授权|
+
+返回：
+```json:
+{
+    "code": 0,
+    "msg": "success",
+    "data": {
+        "balance": 100,
+        "wxpay_quick": false
+    }
+}
+```
+```json:
+{
+    "code": 1000,
+    "msg": "token was expired"
+}
+```
+
+
+### 2-2 获取用户行程状态
+
+说明：
+1. uri: /router/status
+2. Method: GET
+
+Header:
+
+|Key     |Value|描述|
+|----------|----|-------|
+|Access-Token|登录返回的access_token|用户访问授权|
+
+返回：
+```json:
+{
+    "code": 0,
+    "msg": "success",
+    "data": {
+        "status": 0, // 0-无行程; 1-已入闸; 2-隔天未出闸(异常); 4-已出闸未入闸(异常)
+    }
+}
+```
+```json:
+{
+    "code": 1000,
+    "msg": "token was expired"
+}
+```
+
+
+### 2-3 获取用户行程凭证
+
+说明：
+1. uri: /router/evidence
+2. Method: GET
+
+Header:
+
+|Key     |Value|描述|
+|----------|----|-------|
+|Access-Token|登录返回的access_token|用户访问授权|
+
+返回：
+```json:
+{
+    "code": 0,
+    "msg": "success",
+    "data": {
+        "evidence_key": "MjWCCOKE9yDNMarR1l/j0nVok9wxExvKPtKleA/1OiO6Cvn0BM01Fdjb9MxSF9yTYBG48Bh85ZcQdaZ97TM3o8NJ1rOoKaqD+R1LdK/c6RGxHQ6rUPdXBU7yZP2rOBeN/xhjC7ge+iHwn6/3nwURr+33V1BUb7GzJqGerU6e59Q=",
+        "expires_at": 1502120737 //unxi时间戳
+    }
+}
+```
+```json:
+{
+    "code": 1000,
+    "msg": "token was expired"
+}
+```
+
 
 
 ## Gate协议 - TCP

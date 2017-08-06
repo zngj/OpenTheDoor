@@ -8,8 +8,9 @@ import (
 	"github.com/google/uuid"
 	"strings"
 	"time"
-	"user/util"
-	"user/vo"
+	"usercenter/util"
+	"usercenter/vo"
+	"usercenter/token"
 )
 
 func SaveLoginSession(token string, wxsession *vo.WxappSession) error {
@@ -54,7 +55,7 @@ func saveUserInfo(openId string) (userId string, err error) {
 	return
 }
 
-func saveSessionInfo(token, userId string, wxsession *vo.WxappSession) error {
+func saveSessionInfo(accessToken, userId string, wxsession *vo.WxappSession) error {
 
 	now := time.Now()
 
@@ -75,7 +76,7 @@ func saveSessionInfo(token, userId string, wxsession *vo.WxappSession) error {
 			return err
 		}
 		if *token != "" {
-			err = redisx.Client.Del(util.GetTokenKey(*token)).Err()
+			err = redisx.Client.Del(util.GetAccessTokenKey(*token)).Err()
 			if err != nil {
 				log4g.Error(err)
 				return err
@@ -84,30 +85,16 @@ func saveSessionInfo(token, userId string, wxsession *vo.WxappSession) error {
 		}
 	}
 
-	expiresTime := now.Add(time.Duration(wxsession.ExpiresIn) * time.Second)
+	expiresAt := now.Add(time.Duration(wxsession.ExpiresIn) * time.Second)
 
-	err = mysqlx.Exec(nil, "insert into uc_login_log (user_id,access_token,login_time,expires_in,expires_time,status) values (?,?,?,?,?,?)",
-		userId, token, now, wxsession.ExpiresIn, expiresTime, "1")
+	err = mysqlx.Exec(nil, "insert into uc_login_log (user_id,access_token,login_time,expires_in,expires_at,status) values (?,?,?,?,?,?)",
+		userId, accessToken, now, wxsession.ExpiresIn, expiresAt, "1")
 	if err != nil {
 		log4g.Error(err)
 		return err
 	}
 
-	fields := make(map[string]interface{})
-	fields["userid"] = userId
-	//fields["openid"] = wxsession.Openid
-	fields["session_key"] = wxsession.Session_key
-	fields["unionid"] = wxsession.Unionid
-	fields["login_time"] = now.UnixNano()
-	key := util.GetTokenKey(token)
-	err = redisx.Client.HMSet(key, fields).Err()
-	if err != nil {
-		log4g.Error(err)
-		return err
-	}
-	err = redisx.Client.ExpireAt(key, expiresTime).Err()
-	if err != nil {
-		log4g.Error(err)
-	}
+	token.Save(userId, accessToken, wxsession.Session_key, wxsession.Unionid, now, expiresAt)
+
 	return err
 }

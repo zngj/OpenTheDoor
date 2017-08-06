@@ -7,13 +7,12 @@ import (
 	"github.com/carsonsx/log4g"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/render"
-	"github.com/google/uuid"
 	"io/ioutil"
 	"net/http"
-	"strings"
-	"user/service"
-	"user/vo"
+	"usercenter/service"
+	"usercenter/vo"
 	"errors"
+	"common/util"
 )
 
 const (
@@ -27,7 +26,7 @@ func WxappLogin(c *gin.Context) {
 	var login vo.WxappLogin
 	err := c.Bind(&login)
 	if err != nil {
-		render.WriteJSON(c.Writer, cmnmsg.NewErrorResponse(err))
+		cmnmsg.WriteErrorResponse(c.Writer, err)
 		return
 	}
 	if login.Code == "" {
@@ -37,7 +36,7 @@ func WxappLogin(c *gin.Context) {
 
 	session, err := code2session(login.Code)
 	if err != nil {
-		render.WriteJSON(c.Writer, cmnmsg.NewErrorResponse(err))
+		cmnmsg.WriteErrorResponse(c.Writer, err)
 		return
 	}
 
@@ -53,16 +52,16 @@ func WxappLogin(c *gin.Context) {
 	log4g.Debug("unionid=" + session.Unionid)
 
 
-	accessToken := strings.Replace(uuid.New().String(), "-", "", -1)
+	accessToken := util.NewUuid()
 	if err = service.SaveLoginSession(accessToken, session); err != nil {
-		render.WriteJSON(c.Writer, cmnmsg.NewErrorResponse(err))
+		cmnmsg.WriteErrorResponse(c.Writer, err)
 		return
 	}
 
 	var result vo.WxappLoginToken
 	result.AccessToken = accessToken
 	result.ExpiresIn = session.ExpiresIn
-	render.WriteJSON(c.Writer, cmnmsg.NewDataResponse(&result))
+	cmnmsg.WriteDataResponse(c.Writer, &result)
 
 }
 

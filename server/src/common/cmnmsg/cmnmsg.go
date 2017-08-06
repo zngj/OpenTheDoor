@@ -13,7 +13,7 @@ const (
 var msg_map = map[int]string {
 	CODE_COMMON_SUCCESS :"success",
 	CODE_COMMON_ERROR :"error",
-	CODE_COMMON_EMPTY_ARG :"wrong argument",
+	CODE_COMMON_EMPTY_ARG :"required argument",
 	CODE_COMMON_WRONG_ARG :"wrong argument",
 	CODE_COMMON_ILLEGAL_ARG :"illegal argument",
 }

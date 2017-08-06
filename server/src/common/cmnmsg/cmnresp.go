@@ -1,25 +1,29 @@
 package cmnmsg
 
-import "common/httpx"
+import (
+	"common/httpx"
+	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/render"
+)
 
-func NewResponse(code int, input ...string) *httpx.Response {
-	return NewResponseWithMsg(code, GetMsg(code), input...)
+func NewResponse(code int, tag ...string) *httpx.Response {
+	return NewResponseWithMsg(code, GetMsg(code), tag...)
 }
 
-func NewResponseWithMsg(code int, msg string, input ...string) *httpx.Response {
+func NewResponseWithMsg(code int, msg string, tag ...string) *httpx.Response {
 	res := &httpx.Response{Code: code, Msg: msg}
-	if len(input) < 0 {
-		res.Input = input[0]
+	if len(tag) > 0 {
+		res.Tag = tag[0]
 	}
 	return res
 }
 
-func NewSuccessResponse() *httpx.Response {
-	return NewResponse(CODE_COMMON_SUCCESS)
+func WriteSuccessResponse(rw gin.ResponseWriter) {
+	render.WriteJSON(rw, NewResponse(CODE_COMMON_SUCCESS))
 }
 
-func NewErrorResponse(err error) *httpx.Response {
-	return NewResponseWithMsg(CODE_COMMON_ERROR, err.Error())
+func WriteErrorResponse(rw gin.ResponseWriter, err error) {
+	render.WriteJSON(rw, NewResponseWithMsg(CODE_COMMON_ERROR, err.Error()))
 }
 
 func NewEmptyArgResponse(input ...string) *httpx.Response {
@@ -34,8 +38,8 @@ func NewIllegalArgResponse(input ...string) *httpx.Response {
 	return NewResponse(CODE_COMMON_ILLEGAL_ARG, input...)
 }
 
-func NewDataResponse(data interface{}) *httpx.Response {
-	res := NewSuccessResponse()
+func WriteDataResponse(rw gin.ResponseWriter, data interface{}) {
+	res := NewResponse(CODE_COMMON_SUCCESS)
 	res.Data = data
-	return res
+	render.WriteJSON(rw, res)
 }

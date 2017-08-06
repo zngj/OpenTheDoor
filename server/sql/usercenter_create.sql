@@ -18,7 +18,7 @@ CREATE TABLE `uc_login_log` (
   `access_token` varchar(32) NOT NULL,
   `login_time` datetime NOT NULL,
   `expires_in` int(11) NOT NULL,
-  `expires_time` datetime NOT NULL,
+  `expires_at` datetime NOT NULL,
   `release_time` datetime DEFAULT NULL,
   `status` varchar(1) NOT NULL,
   PRIMARY KEY (`id`)

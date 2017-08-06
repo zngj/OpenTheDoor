@@ -1,5 +1,5 @@
 {
-  "addr": "10.20.109.125:6379",
+  "addr": "localhost:6379",
   "password": "",
   "db": 0
 }

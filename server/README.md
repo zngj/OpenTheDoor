@@ -52,13 +52,6 @@ Header:
 |----------|----|-------|
 |Access-Token|登录返回的access_token|用户访问授权|
 
-请求：
-```json
-{
-    "access_token": "91af8c6de82d4e17842508e3a42df412"
-}
-```
-
 返回：
 ```json:
 {

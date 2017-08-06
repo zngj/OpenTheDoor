@@ -17,9 +17,16 @@ Page({
     });
   },
   getWallet: function (successCB, failCB) {
+    var token = wx.getStorageSync('token');
+    console.log(token);
     wx.getStorage({
       key: 'token',
       success: function (res) {
+        if (wx.showLoading) {
+          wx.showLoading({
+            title: '处理中',
+          });
+        }
         util.request({
           url: '/user/wallet/info',
           data: { token: res.data },
@@ -32,16 +39,21 @@ Page({
             if (failCB) {
               failCB(fp);
             };
+          },
+          complete:function(){
+            if(wx.hideLoading){
+              wx.hideLoading();
+            }
           }
         });
       },
     });
   },
   gateIn: function () {
-    //../open/showCode?type=out
+    var that = this;
     this.getWallet(function (data) {
       if (data.autoPay) {
-        util.showMsg('有代扣，可进入');
+        util.showMsg('已签约代扣，可进入');
         wx.navigateTo({
           url: '../open/showCode?type=in',
         });
@@ -51,16 +63,46 @@ Page({
           url: '../open/showCode?type=in',
         });
       } else {
-        util.showMsg('需要充值、或者签约代扣');
-        return;
+        that.tipForRecharge('暂不进站');
       }
     });
   },
   gateOut: function () {
-    wx.navigateTo({
-      url: '../open/showCode?type=out',
+    var that = this ;
+    this.getWallet(function (data) {
+      if (data.autoPay) {
+        util.showMsg('有代扣，可进入');
+        wx.navigateTo({
+          url: '../open/showCode?type=out',
+        });
+      } else if (data.balance > 0) {
+        if(!route || route.fee<data.balance){
+        util.showMsg('有余额，可进入');
+        wx.navigateTo({
+          url: '../open/showCode?type=out',
+        });
+        } 
+      } else {
+        that.tipForRecharge('暂不出站');
+      }
     });
-
+  },
+  tipForRecharge: function (cancelTip){
+    wx.showModal({
+      title: '提醒',
+      content: '没有余额且未签约代扣！',
+      showCancel: true,
+      cancelText: cancelTip,
+      confirmText: "签约充值",
+      success: function (res) {
+        if (res.confirm) {
+          wx.navigateTo({
+            url: '../recharge/recharge',
+          });
+        }
+        console.log(res);
+      }
+    })
   },
   onShareAppMessage: function (page) { },
   bindPickerChange: function (e) {

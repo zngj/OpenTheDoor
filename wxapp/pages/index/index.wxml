@@ -20,7 +20,7 @@
 
 
   <picker bindchange="bindPickerChange" value="0" range="{{dataSetDesc}}">
-      <button type="default">选择测试数据集</button>
+      <button type="default">切换测试数据集</button>
   </picker>
 </view>
 

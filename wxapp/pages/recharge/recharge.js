@@ -1,4 +1,5 @@
 // recharge.js
+var util = require('../../js/util.js');
 var app = getApp()
 Page({
 
@@ -22,34 +23,6 @@ Page({
       rechargeSolution: [
         { "sol1": 10,"sol2":50,"sol3":100 },
       ]
-
-    });
-
-
-    wx.request({
-      url: 'http://localhost/wxapp/getRechargeSolution',
-      data: {
-        id: loginUser.id
-      },
-      method: 'POST',
-      header: {
-        'content-type': 'application/json'
-      },
-      success: function (resp) {
-        var data = resp.data.data;
-        if (resp.data.code == -1 || data ==null || !data || data.rechargeSolution == null || !data.rechargeSolution) {
-          wx.showToast({
-            title: resp.data.msg,
-          });
-          return;
-        }
-        that.setData({
-          rechargeSolution: data.rechargeSolution,
-          userBalance: data.usableMoney
-        });
-      },
-      fail: function (resp) {
-      }
     });
   },
   rechargeSelected:function(e){
@@ -65,19 +38,16 @@ Page({
     });
   },
   payRecharge:function(e){
+    
     var rechargeMoney = this.data.rechargeMoney;
     wx.login({
       success: function(res) {
-        wx.request({
-          url: 'http://localhost/wxapp/rechargeMakeOrder',
+        util.request({
+          url: '/user/wxapp/rechargeMakeOrder',
           data: {
-            id: loginUser.id,
+            idaccess_token: wx.getStorageInfoSync('token'),
             rechargeMoney: rechargeMoney,
             jsCode: res.code
-          },
-          method: 'POST',
-          header: {
-            'content-type': 'application/json'
           },
           success: function(res) {
             var data = res.data.data;

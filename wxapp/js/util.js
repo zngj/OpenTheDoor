@@ -8,25 +8,35 @@ var request = {
     options.url = "https://sgu.youstars.com.cn" + options.url;
     options.method = "POST";
     options.header = { 'content-type': 'application/json' };
-    options.complete = function (c) { console.log(options); console.log(c); };
+    var originComplete = options.complete;
+    options.complete = function (c) { 
+      if (originComplete){
+        originComplete(c);
+      }
+      console.log(options); 
+      console.log(c); 
+    };
     wx.request(options);
   },
   request: function (options) {
     this.requestRemote(options);
   },
   requestLocal: function (options) {
-    options.complete = function (c) { console.log(options); console.log(c); };
     var actionObj = this.actionMap[options.url];
     var result = this.getAction(actionObj, this.dataSet)(options);
+
+    var resultData = { data: result.success || result.fail`` };
     if (result.success && options.success) {
-      options.success({ data: result.success });
+      options.success(resultData);
     }
     if (result.fail && options.fail) {
-      options.fail({ data: result.fail });
+      options.fail(resultData);
     }
     if (options.complete) {
-      options.complete({ data: result.success || result.fail`` });
+      options.complete(resultData);
     }
+    console.log(options);
+    console.log(result);
   },
   getAction: function (actionObj, dataSet) {
     if (!dataSet) {

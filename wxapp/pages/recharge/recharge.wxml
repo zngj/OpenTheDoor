@@ -8,10 +8,10 @@
 </view>
 <view>
 
-  <view style="margin:15rpx 30rpx;">
-    <text>充值金额</text>
-  </view>
-
+<view style="margin:15rpx 30rpx;">
+  <text>充值金额</text>
+</view>
+ 
  <view class="weui-cells moneyView" >
   <view class="weui-flex" wx:for="{{rechargeSolution}}">
     <view class="weui-flex__item" >
@@ -29,7 +29,6 @@
         {{item.sol3}}元
       </view>
     </view>
-      
   </view>
 </view>
   
@@ -37,9 +36,4 @@
 </view>
   <view  class="weui-btn-area">
   <button bindtap="payRecharge" disabled='{{recharge<=0}}' type="primary" >去充值</button>
-  </view>
-
-
-<view class="page__ft">
-  <view class="weui-cells__tips">注意:账户余额暂不支持提现,请按需充值</view>
 </view>

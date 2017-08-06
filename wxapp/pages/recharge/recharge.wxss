@@ -17,7 +17,7 @@
   margin-top:0;
 }
 .money{
-  border:2rpx solid #ff9600;
+  border:2rpx solid #0bb20c;
   border-radius:4px;
   height:44rpx;
   margin:0rpx 20rpx;
@@ -25,7 +25,7 @@
   text-align: center;
 }
 .money_active{
-  background-color:#ff9600;
+  background-color:#0bb20c;
   color:#ffffff;
 }
 .page__ft{

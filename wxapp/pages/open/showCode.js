@@ -20,9 +20,10 @@ Page({
   },
 
   getEvidence: function (successCB, failCB) {
+    var page=this;
     var token = wx.getStorageSync('token');
     util.request({
-      url: '/sg/router/evidence',
+      url: '/sg/router/evidence/'+page.data.type,
       method: 'GET',
       header: { 'Access-Token': token },
       success: function (p) {

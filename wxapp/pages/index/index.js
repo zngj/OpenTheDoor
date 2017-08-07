@@ -90,12 +90,10 @@ Page({
           url: '../open/showCode?type=out',
         });
       } else if (data.balance > 0) {
-        if (!route || route.fee < data.balance) {
           util.showMsg('有余额，可进入');
           wx.navigateTo({
             url: '../open/showCode?type=out',
           });
-        }
       } else {
         that.tipForRecharge('暂不出站');
       }

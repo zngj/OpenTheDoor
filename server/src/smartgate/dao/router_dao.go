@@ -7,7 +7,7 @@ import (
 
 const (
 
-	SQL_EVIDENCE_INSERT = "insert sg_router_evidence (evidence_id,user_id,create_time,expires_at,status) values (?,?,?,?,?)"
+	SQL_EVIDENCE_INSERT = "insert sg_router_evidence (evidence_id,user_id,type,create_time,expires_at,status) values (?,?,?,?,?,?)"
 	SQL_GET_USERID_BY_EVIDENCEID = "select user_id from sg_router_evidence where evidence_id = ? "
 
 )
@@ -23,7 +23,7 @@ type routerDao struct {
 }
 
 func (d *routerDao) InsertEvidence(evidence *model.RouterEvidence) error {
-	return d.dao.Exec(SQL_EVIDENCE_INSERT, evidence.EvidenceId, evidence.UserId, evidence.CreateTime, evidence.ExpiresAt, evidence.Status)
+	return d.dao.Exec(SQL_EVIDENCE_INSERT, evidence.EvidenceId, evidence.UserId, evidence.Type, evidence.CreateTime, evidence.ExpiresAt, evidence.Status)
 }
 
 func (d *routerDao) IsValidEvidence(evidenceId string) (bool, error) {

@@ -16,6 +16,8 @@ func main() {
 	authorized.GET("wallet/info", controller.WalletInfo)
 	authorized.GET("router/status", controller.RouterStatus)
 	authorized.GET("router/evidence", controller.RouterEvidence)
+	authorized.GET("router/evidence/in", controller.RouterEvidenceIn)
+	authorized.GET("router/evidence/out", controller.RouterEvidenceOut)
 
 	// Listen and Server in 0.0.0.0:8082
 	r.Run(":8082")

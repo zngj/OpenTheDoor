@@ -130,10 +130,10 @@ Header:
 ```
 
 
-### 2-3 获取用户行程凭证
+### 2-3 获取用户入阐凭证
 
 说明：
-1. uri: /router/evidence
+1. uri: /router/evidence/in
 2. Method: GET
 
 Header:
@@ -160,6 +160,36 @@ Header:
 }
 ```
 
+
+### 2-4 获取用户出阐凭证
+
+说明：
+1. uri: /router/evidence/out
+2. Method: GET
+
+Header:
+
+|Key     |Value|描述|
+|----------|----|-------|
+|Access-Token|登录返回的access_token|用户访问授权|
+
+返回：
+```json:
+{
+    "code": 0,
+    "msg": "success",
+    "data": {
+        "evidence_key": "MjWCCOKE9yDNMarR1l/j0nVok9wxExvKPtKleA/1OiO6Cvn0BM01Fdjb9MxSF9yTYBG48Bh85ZcQdaZ97TM3o8NJ1rOoKaqD+R1LdK/c6RGxHQ6rUPdXBU7yZP2rOBeN/xhjC7ge+iHwn6/3nwURr+33V1BUb7GzJqGerU6e59Q=",
+        "expires_at": 1502120737 //unxi时间戳
+    }
+}
+```
+```json:
+{
+    "code": 1000,
+    "msg": "token was expired"
+}
+```
 
 
 ## Gate协议 - TCP

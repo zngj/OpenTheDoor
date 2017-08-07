@@ -51,6 +51,7 @@ DROP TABLE IF EXISTS `sg_router_evidence`;
 CREATE TABLE `sg_router_evidence` (
   `evidence_id` varchar(32) COLLATE utf8mb4_bin NOT NULL,
   `user_id` varchar(32) COLLATE utf8mb4_bin NOT NULL,
+  `type` smallint(1) NOT NULL DEFAULT 0 COMMENT '0-通用;1-入阐;2-出阐',
   `create_time` datetime NOT NULL,
   `expires_at` datetime NOT NULL,
   `status` smallint(1) NOT NULL COMMENT '1-已下发;2-已使用;3-已过期',

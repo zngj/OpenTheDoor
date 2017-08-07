@@ -105,6 +105,10 @@ func (dao *Dao) Exec(query string, args ...interface{}) error {
 	dao.BeginTx()
 	var err error
 	defer func() { dao.CommitTx(err) }()
+
+	log4g.Debug("exec sql: %s", query)
+	log4g.Debug("exec arg: %v", args)
+
 	_, err = dao.Tx.Exec(query, args...)
 	if err != nil {
 		log4g.Error(err)

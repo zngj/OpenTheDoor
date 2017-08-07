@@ -58,15 +58,15 @@ Page({
   },
  
   encrypt: function (word) {
-    var key = aes.CryptoJS.enc.Utf8.parse("3454345434543454");   //十六位十六进制数作为秘钥
-    var iv = aes.CryptoJS.enc.Utf8.parse('6666666666666666');  //十六位十六进制数作为秘钥偏移量
+    var key = aes.CryptoJS.enc.Utf8.parse("5454395434473454");   //十六位十六进制数作为秘钥
+    var iv = aes.CryptoJS.enc.Utf8.parse('6916665466156476');  //十六位十六进制数作为秘钥偏移量
     var srcs = aes.CryptoJS.enc.Utf8.parse(word);
     var encrypted = aes.CryptoJS.AES.encrypt(srcs, key, { iv: iv, mode: aes.CryptoJS.mode.CBC, padding: aes.CryptoJS.pad.Pkcs7 });
     return encrypted.ciphertext.toString().toUpperCase();
   },
   decrypt: function (word) {
-    var key = aes.CryptoJS.enc.Utf8.parse("3454345434543454");   //十六位十六进制数作为秘钥
-    var iv = aes.CryptoJS.enc.Utf8.parse('6666666666666666');  //十六位十六进制数作为秘钥偏移量
+    var key = aes.CryptoJS.enc.Utf8.parse("5454395434473454");   //十六位十六进制数作为秘钥
+    var iv = aes.CryptoJS.enc.Utf8.parse('6916665466156476');  //十六位十六进制数作为秘钥偏移量
     var encryptedHexStr = aes.CryptoJS.enc.Hex.parse(word);
     var srcs = aes.CryptoJS.enc.Base64.stringify(encryptedHexStr);
     var decrypt = aes.CryptoJS.AES.decrypt(srcs, key, { iv: iv, mode: aes.CryptoJS.mode.CBC, padding: aes.CryptoJS.pad.Pkcs7 });

@@ -13,8 +13,9 @@ Page({
       type: options.type
     });
     var page = this;
-    this.getEvidence(function(data){
+    this.getEvidence(function (data) {
       page.makeCode(data.evidence_key);
+      //page.makeCode("12345678901234567890123456789012");
       //data.expires_at;
     });
   },
@@ -39,15 +40,16 @@ Page({
     });
   },
   makeCode: function (rawData) {
+    console.log(rawData.length);
     this.setData({
-      "rawData": rawData,
       "qrImgs": [
-         wxqrcode.createQrCodeImg(this.encrypt(this.getRandom(2) + rawData + ":" + new Date().getTime() + this.getRandom(2)), { 'size': 200 })
-        ,wxqrcode.createQrCodeImg(this.encrypt(this.getRandom(2) + rawData + ":" + new Date().getTime() + this.getRandom(2)), { 'size': 200 })
-        ,wxqrcode.createQrCodeImg(this.encrypt(this.getRandom(2) + rawData + ":" + new Date().getTime() + this.getRandom(2)), { 'size': 200 })
+         wxqrcode.createQrCodeImg(this.encrypt(this.getRandom(2) + rawData + ":" + new Date().getTime() ), { 'size': 200 })
+        ,wxqrcode.createQrCodeImg(this.encrypt(this.getRandom(2) + rawData + ":" + new Date().getTime() ), { 'size': 200 })
+        ,wxqrcode.createQrCodeImg(this.encrypt(this.getRandom(2) + rawData + ":" + new Date().getTime() ), { 'size': 200 })
     ]});
   },
   nextPeople: function () {
+    var page = this;
     this.getEvidence(function (data) {
       page.makeCode(data.evidence_key);
       //data.expires_at;
@@ -60,17 +62,23 @@ Page({
   encrypt: function (word) {
     var key = aes.CryptoJS.enc.Utf8.parse("5454395434473454");   //十六位十六进制数作为秘钥
     var iv = aes.CryptoJS.enc.Utf8.parse('6916665466156476');  //十六位十六进制数作为秘钥偏移量
-    var srcs = aes.CryptoJS.enc.Utf8.parse(word);
+    var srcs = aes.CryptoJS.enc.Base64.parse(word);
+    //var srcs = aes.CryptoJS.enc.Utf8.parse(word);
     var encrypted = aes.CryptoJS.AES.encrypt(srcs, key, { iv: iv, mode: aes.CryptoJS.mode.CBC, padding: aes.CryptoJS.pad.Pkcs7 });
-    return encrypted.ciphertext.toString().toUpperCase();
+    var word = encrypted.ciphertext.toString(aes.CryptoJS.enc.Base64).toUpperCase();
+    console.log(word.length);
+    return word;
   },
   decrypt: function (word) {
     var key = aes.CryptoJS.enc.Utf8.parse("5454395434473454");   //十六位十六进制数作为秘钥
     var iv = aes.CryptoJS.enc.Utf8.parse('6916665466156476');  //十六位十六进制数作为秘钥偏移量
-    var encryptedHexStr = aes.CryptoJS.enc.Hex.parse(word);
+    //var encryptedHexStr = aes.CryptoJS.enc.Hex.parse(word);
+    var encryptedHexStr = aes.CryptoJS.enc.Base64.parse(word);
     var srcs = aes.CryptoJS.enc.Base64.stringify(encryptedHexStr);
+    console.log(srcs);
     var decrypt = aes.CryptoJS.AES.decrypt(srcs, key, { iv: iv, mode: aes.CryptoJS.mode.CBC, padding: aes.CryptoJS.pad.Pkcs7 });
-    var decryptedStr = decrypt.toString(aes.CryptoJS.enc.Utf8);
+    //var decryptedStr = decrypt.toString(aes.CryptoJS.enc.Utf8);
+    var decryptedStr = decrypt.toString(aes.CryptoJS.enc.Base64);
     return decryptedStr.toString();
   }
 })

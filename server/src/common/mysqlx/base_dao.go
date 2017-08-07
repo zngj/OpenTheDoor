@@ -112,8 +112,33 @@ func (dao *Dao) Exec(query string, args ...interface{}) error {
 	_, err = dao.Tx.Exec(query, args...)
 	if err != nil {
 		log4g.Error(err)
+		log4g.Error("\n" + string(debug.Stack()))
 	}
 	return err
+}
+
+func (dao *Dao) Query(query string, args ...interface{}) *result {
+
+	dao.Connect()
+	//defer dao.Disconnect()
+
+	r := new(result)
+
+	log4g.Debug("query sql: %s", query)
+	log4g.Debug("query arg: %v", args)
+
+	var rows *sql.Rows
+	rows, err := dao.Db.Query(query, args...)
+	if err != nil {
+		log4g.Error(err)
+		log4g.Error("\n" + string(debug.Stack()))
+		r.err = err
+		return r
+	}
+
+	r.rows = rows
+
+	return r
 }
 
 type result struct {
@@ -209,25 +234,3 @@ func (r *result) Map(dest ...interface{}) (records []map[string]interface{}, err
 //	return r
 //}
 
-func (dao *Dao) Query(query string, args ...interface{}) *result {
-
-	dao.Connect()
-	//defer dao.Disconnect()
-
-	r := new(result)
-
-	log4g.Debug("query sql: %s", query)
-	log4g.Debug("query arg: %v", args)
-
-	var rows *sql.Rows
-	rows, err := dao.Db.Query(query, args...)
-	if err != nil {
-		log4g.Error(err)
-		r.err = err
-		return r
-	}
-
-	r.rows = rows
-
-	return r
-}

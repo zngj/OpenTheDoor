@@ -32,5 +32,5 @@ func (d *walletDao) GetByUserId(userId string) (wallet *model.WalletInfo, err er
 }
 
 func (d *walletDao) Insert(wallet *model.WalletInfo) error {
-	return d.dao.Exec("insert sg_wallet_info (user_id,balance,insert_time) values (?,?)", wallet.UserId, wallet.Balance, time.Now())
+	return d.dao.Exec("insert sg_wallet_info (user_id,balance,insert_time) values (?,?,?)", wallet.UserId, wallet.Balance, time.Now())
 }

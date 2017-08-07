@@ -6,8 +6,8 @@ var request = {
   },
   requestRemote: function (options) {
     options.url = "https://sgu.youstars.com.cn" + options.url;
-    options.method = "POST";
-    options.header = { 'content-type': 'application/json' };
+    options.method = options.method||"POST";
+    options.header = options.header||{ 'content-type': 'application/json' };
     var originComplete = options.complete;
     options.complete = function (c) { 
       if (originComplete){
@@ -74,7 +74,7 @@ var request = {
 
       }
     },
-    "/user/wallet/info": {
+    "/wallet/info": {
       default: function (options) {
         return { success: { code: 0, msg: 'success', data: { balance: 0, autoPay: false } } }
       },

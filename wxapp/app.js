@@ -8,26 +8,22 @@ App({
     util.initRequest(false);
     wx.checkSession({
       success: function (sp) {
-        wx.getStorage({
-          key: 'token',
-          success: function (res) {
-            console.log(res);
-            util.request({
-              url: '/user/verifytoken',
-              data: { access_token:res.data},
-              success: function (p) {
-                if (p.data.code == 0) {
-                  // token valid
-                } else {
-                  // token invalid
-                  that.login('TokenInvalid');
-                }
-              },
-              fail: function (c) {
-              }
-            });
+        var token = wx.getStorageSync("token");
+        console.log(token);
+        util.request({
+          url: '/user/verifytoken',
+          header: { 'Access-Token': token },
+          method: "GET",
+          success: function (p) {
+            if (p.data.code == 0) {
+              // token valid
+            } else {
+              // token invalid
+              that.login('TokenInvalid');
+            }
           },
-          fail: function (c) { that.login('StorageFail'); }
+          fail: function (c) {
+          }
         });
       },
       fail: function (fp) {
@@ -44,10 +40,7 @@ App({
           success: function (loginResult) {
             loginResult = loginResult.data;
             if (loginResult.code == 0) {
-              wx.setStorage({
-                key: 'token',
-                data: loginResult.access_token,
-              })
+              wx.setStorageSync('token', loginResult.data.access_token);
             } else {
               util.showMsg(loginResult.msg);
             };

@@ -20,8 +20,8 @@ func login()  {
 }
 
 func loginResult(agent net4g.NetAgent) {
-	log4g.Debug(agent.Msg())
-	if agent.Msg().(*msg.S2CGateLogin).Code == 0 {
+	log4g.JsonDebug(agent.Msg())
+	if agent.Msg().(*msg.S2CGateLogin).ErrCode == 0 {
 		net4g.TestDone()
 	}
 }
@@ -70,7 +70,7 @@ func verifyEvidence() {
 }
 
 func verifyEvidenceResult(agent net4g.NetAgent) {
-	log4g.Debug("* verify evidence result: %d", agent.Msg().(*msg.S2CVerifyEvidence).Code)
+	log4g.Debug("* verify evidence result: %d", agent.Msg().(*msg.S2CVerifyEvidence).ErrCode)
 	net4g.TestDone()
 }
 
@@ -79,14 +79,14 @@ func TestUserEvidence(t *testing.T) {
 }
 
 func userEvidence() {
-	dispatcher.AddHandler(userEvidenceResult, msg.S2C_USER_EVIDENCE)
+	dispatcher.AddHandler(userEvidenceResult, msg.S2C_SUBMIT_EVIDENCE)
 	header := msg.NewSGHeader("010100101")
-	ue := new(msg.C2SUserEvidence)
+	ue := new(msg.C2SSubmitEvidence)
 	ue.EvidenceKey = "1111"
 	agent.Write(ue, header)
 }
 
 func userEvidenceResult(agent net4g.NetAgent) {
-	log4g.Debug("* upload user evidence result: %v", agent.Msg().(*msg.S2CUserEvidence).Success)
+	log4g.Debug("* upload user evidence result: %v", agent.Msg().(*msg.S2CSubmitEvidence).ErrCode)
 	net4g.TestDone()
 }

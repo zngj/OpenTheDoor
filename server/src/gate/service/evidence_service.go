@@ -12,3 +12,14 @@ func GetGateInfo(id string) (gate *model.GateInfo, err error) {
 		One(&gate.Id, &gate.Direction, &gate.StationName, &gate.CityName)
 	return
 }
+
+// 3201 凭证不存在
+// 3202 凭证已过期
+// 3203 凭证与机闸不匹配
+// 3204 用户不符合付费标准
+func VerifyEvidence(evidence string) (code int, err error) {
+
+
+
+	return
+}

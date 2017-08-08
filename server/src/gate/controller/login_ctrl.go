@@ -18,11 +18,13 @@ func gateLoginFn(agent net4g.NetAgent)  {
 
 	gateInfo, err := service.GetGateInfo(gateId)
 	if err == dbx.ErrNotFound {
-		gateLogin.Code = errcode.CODE_GATE_NO_GATE
+		gateLogin.ErrCode = errcode.CODE_GATE_INVALID_GATE
+		gateLogin.ErrMsg = errcode.GetMsg(errcode.CODE_GATE_INVALID_GATE)
 	} else if err != nil {
-		gateLogin.Code = errcode.CODE_COMMON_ERROR
+		gateLogin.ErrCode = errcode.CODE_COMMON_ERROR
+		gateLogin.ErrMsg = err.Error()
 	} else {
-		gateLogin.Code = 0
+		gateLogin.GateId = gateId
 		gateLogin.GateDirection = gateInfo.Direction
 		gateLogin.StationName = gateInfo.StationName
 		gateLogin.CityName = gateInfo.CityName

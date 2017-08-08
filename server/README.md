@@ -224,17 +224,19 @@ Header:
 发送：后台 -> 闸机<br/>
 数据：
 
-|参数名     |类型|是否必须|默认值  |说明    |
-|----------|----|-------|-------|--------|
-|code|int|是|-|0-登录成功;3100-GateId不存在|
-|gate_direction|string|否|-|0-入;1-出|
-|station_name|string|否|-|站点名称|
-|city_name|string|否|-|城市名称|
+|参数名     |类型|默认值  |说明    |
+|----------|----|-------|--------|
+|gate_id|string|-|闸机ID|
+|gate_direction|string|-|0-入;1-出|
+|station_name|string|-|站点名称|
+|city_name|string|-|城市名称|
+|errcode|int|-|1至999-通用错误<br/>3100-无效的闸机ID|
+|errmsg|string|-|错误内容|
 
 示例：
 ```json
 {
-    "code": 0,
+    "gate_id": "010100101",
     "gate_direction": 0,
     "station_name": "五一广场",
     "city_name": "长沙"
@@ -242,7 +244,8 @@ Header:
 ```
 ```json
 {
-    "code": 1
+    "errcode": 3100,
+    "errmsg": "invalid gate id"
 }
 ```
 
@@ -268,9 +271,11 @@ Header:
 发送：后台 -> 闸机<br/>
 数据：
 
-|参数名     |类型|是否必须|默认值  |说明    |
-|----------|----|-------|-------|--------|
-|key|string|是|-|私钥|
+|参数名     |类型|默认值  |说明    |
+|----------|----|-------|--------|
+|key|string|-|私钥|
+|errcode|int|-|1至999-通用错误|
+|errmsg|string|-|错误内容|
 
 示例：
 ```json
@@ -278,6 +283,13 @@ Header:
     "key": "\n-----BEGIN RSA PRIVATE KEY-----\nMIICXQIBAAKBgQDZsfv1qscqYdy4vY+P4e3cAtmvppXQcRvrF1cB4drkv0haU24Y\n7m5qYtT52Kr539RdbKKdLAM6s20lWy7+5C0DgacdwYWd/7PeCELyEipZJL07Vro7\nAte8Bfjya+wltGK9+XNUIHiumUKULW4KDx21+1NLAUeJ6PeW+DAkmJWF6QIDAQAB\nAoGBAJlNxenTQj6OfCl9FMR2jlMJjtMrtQT9InQEE7m3m7bLHeC+MCJOhmNVBjaM\nZpthDORdxIZ6oCuOf6Z2+Dl35lntGFh5J7S34UP2BWzF1IyyQfySCNexGNHKT1G1\nXKQtHmtc2gWWthEg+S6ciIyw2IGrrP2Rke81vYHExPrexf0hAkEA9Izb0MiYsMCB\n/jemLJB0Lb3Y/B8xjGjQFFBQT7bmwBVjvZWZVpnMnXi9sWGdgUpxsCuAIROXjZ40\nIRZ2C9EouwJBAOPjPvV8Sgw4vaseOqlJvSq/C/pIFx6RVznDGlc8bRg7SgTPpjHG\n4G+M3mVgpCX1a/EU1mB+fhiJ2LAZ/pTtY6sCQGaW9NwIWu3DRIVGCSMm0mYh/3X9\nDAcwLSJoctiODQ1Fq9rreDE5QfpJnaJdJfsIJNtX1F+L3YceeBXtW0Ynz2MCQBI8\n9KP274Is5FkWkUFNKnuKUK4WKOuEXEO+LpR+vIhs7k6WQ8nGDd4/mujoJBr5mkrw\nDPwqA3N5TMNDQVGv8gMCQQCaKGJgWYgvo3/milFfImbp+m7/Y3vCptarldXrYQWO\nAQjxwc71ZGBFDITYvdgJM1MTqc8xQek1FXn1vfpy2c6O\n-----END RSA PRIVATE KEY-----\n"
 }
 ```
+```json
+{
+    "errcode": 1,
+    "errmsg": "not found"
+}
+```
+
 
 ### 3-3 验证凭证
 闸机能过扫描二维码，获取用户的出入闸凭证并解密，发送到后台验证
@@ -288,9 +300,9 @@ Header:
 发送：闸机 -> 后台<br/>
 数据：
 
-|参数名     |类型|是否必须|默认值  |说明    |
-|----------|----|-------|-------|--------|
-|evidence_key|string|是|-|凭证|
+|参数名     |类型|默认值  |说明    |
+|----------|----|-------|--------|
+|evidence_key|string|-|凭证|
 
 示例：
 ```json
@@ -305,30 +317,43 @@ Header:
 发送：后台 -> 闸机<br/>
 数据：
 
-|参数名     |类型|是否必须|默认值  |说明    |
-|----------|----|-------|-------|--------|
-|code|int|是|-|0-通过;<br/>3201-凭证不存在;<br/>3202-凭证已过期;<br/>3203-凭证与机闸不匹配;<br/>3204-用户不符合付费标准|
+|参数名     |类型|默认值  |说明    |
+|----------|----|-------|--------|
+|errcode|int|-|1到999-通用错误<br/>3201-凭证不存在<br/>3202-凭证已过期<br/>3203-凭证与机闸不匹配<br/>3204-用户不符合付费标准|
+|errmsg|string|-|错误内容|
 
 示例：
 ```json
 {
-    "code": 0
+   //成功
+}
+```
+```json
+{
+    "errcode": 3201,
+    "errmsg": "invalid envidence"
+}
+```
+```json
+{
+    "errcode": 3202,
+    "errmsg": "expired envidence"
 }
 ```
 
-### 3-4 用户出入闸数据
-开闸后，闸机上报用户入阐数据
+### 3-4 提交出入凭证
+开闸后，闸机提交用户出入凭证
 
 #### MsgID: 202
-协议：上报出入闸数据<br/>
-别名：C2S_USER_EVIDENCE<br/>
+协议：提交凭证<br/>
+别名：C2S_SUBMIT_EVIDENCE<br/>
 发送：闸机 -> 后台<br/>
 数据：
 
-|参数名     |类型|是否必须|默认值  |说明    |
-|----------|----|-------|-------|--------|
-|evidence_key|string|是|-|出入闸凭证|
-|scan_time|int64|是|-|扫码时间|
+|参数名     |类型|默认值  |说明    |
+|----------|----|-------|--------|
+|evidence_key|string|-|出入闸凭证|
+|scan_time|int64|-|扫码时间|
 
 示例：
 ```json
@@ -339,19 +364,26 @@ Header:
 ```
 
 #### MsgID: 203
-协议：上报结果<br/>
+协议：提交凭证结果<br/>
 别名：S2C_USER_EVIDENCE<br/>
 发送：后台 -> 闸机<br/>
 数据：
 
-|参数名     |类型|是否必须|默认值  |说明    |
-|----------|----|-------|-------|--------|
-|success|bool|是|-|是否成功|
+|参数名     |类型|默认值  |说明    |
+|----------|----|-------|--------|
+|errcode|int|-|1到999-通用错误|
+|errmsg|string|-|错误内容|
 
 示例：
 ```json
 {
-    "success": true
+   //成功
+}
+```
+```json
+{
+    "errcode": 3,
+    "errmsg": "wrong argument"
 }
 ```
 

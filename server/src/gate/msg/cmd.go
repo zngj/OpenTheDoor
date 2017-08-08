@@ -12,8 +12,8 @@ const (
 	S2C_RSA_KEY         = 104
 	C2S_VERIFY_EVIDENCE = 200
 	S2C_VERIFY_EVIDENCE = 201
-	C2S_USER_EVIDENCE   = 202
-	S2C_USER_EVIDENCE   = 203
+	C2S_SUBMIT_EVIDENCE = 202
+	S2C_SUBMIT_EVIDENCE = 203
 )
 
 var Serializer = NewGateSerializer()
@@ -27,19 +27,23 @@ func InitSerializer(s net4g.Serializer) {
 	net4g.RegisterId(s, new(S2CRsaKey), S2C_RSA_KEY)
 	net4g.RegisterId(s, new(C2SVerifyEvidence), C2S_VERIFY_EVIDENCE)
 	net4g.RegisterId(s, new(S2CVerifyEvidence), S2C_VERIFY_EVIDENCE)
-	net4g.RegisterId(s, new(C2SUserEvidence), C2S_USER_EVIDENCE)
-	net4g.RegisterId(s, new(S2CUserEvidence), S2C_USER_EVIDENCE)
+	net4g.RegisterId(s, new(C2SSubmitEvidence), C2S_SUBMIT_EVIDENCE)
+	net4g.RegisterId(s, new(S2CSubmitEvidence), S2C_SUBMIT_EVIDENCE)
 }
 
 type S2CGateLogin struct {
-	Code          int   `json:"code"` // 0-登录成功;1-GateId不存在
-	GateDirection int8 `json:"gate_direction,omitempty"`
+	GateId        string `json:"gate_id,omitempty"`
+	GateDirection int8   `json:"gate_direction,omitempty"`
 	StationName   string `json:"station_name,omitempty"`
 	CityName      string `json:"city_name,omitempty"`
+	ErrCode       int    `json:"errcode,omitempty"` //3100
+	ErrMsg        string `json:"errmsg,omitempty"`
 }
 
 type S2CRsaKey struct {
-	Key string `json:"key"`
+	Key     string `json:"key"`
+	ErrCode int    `json:"errcode,omitempty"`
+	ErrMsg  string `json:"errmsg,omitempty"`
 }
 
 type C2SVerifyEvidence struct {
@@ -47,14 +51,16 @@ type C2SVerifyEvidence struct {
 }
 
 type S2CVerifyEvidence struct {
-	Code int `json:"code"` //0-通过;1-凭证不存在;2-凭证已过期;3-凭证与机闸不匹配;4-用户不符合付费标准
+	ErrCode int    `json:"errcode,omitempty"`
+	ErrMsg  string `json:"errmsg,omitempty"`
 }
 
-type C2SUserEvidence struct {
+type C2SSubmitEvidence struct {
 	EvidenceKey string `json:"evidence_key"`
-	ScanTime    int64    `json:"scan_time"`
+	ScanTime    int64  `json:"scan_time"`
 }
 
-type S2CUserEvidence struct {
-	Success bool `json:"success"`
+type S2CSubmitEvidence struct {
+	ErrCode int    `json:"errcode,omitempty"`
+	ErrMsg  string `json:"errmsg,omitempty"`
 }

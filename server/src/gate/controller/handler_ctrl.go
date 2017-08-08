@@ -5,7 +5,7 @@ import (
 	"github.com/carsonsx/net4g"
 )
 
-var Dispatcher = net4g.NewDispatcher("gate", 1)
+var Dispatcher = net4g.NewDispatcher("gate", 10)
 
 func OnInit() {
 
@@ -14,7 +14,7 @@ func OnInit() {
 	Dispatcher.AddHandler(gateLoginFn, msg.C2S_GATE_LOGIN)
 	Dispatcher.AddHandler(rsaKeyFn, msg.C2S_RSA_KEY)
 	Dispatcher.AddHandler(verifyEvidenceFn, msg.C2S_VERIFY_EVIDENCE)
-	Dispatcher.AddHandler(userEvidenceFn, msg.C2S_USER_EVIDENCE)
+	Dispatcher.AddHandler(submitEvidenceFn, msg.C2S_SUBMIT_EVIDENCE)
 
 }
 

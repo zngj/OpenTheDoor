@@ -58,10 +58,10 @@ type dispatcher struct {
 	wg                       sync.WaitGroup
 }
 
-func (p *dispatcher) AddHandler(h func(agent NetAgent), key ...interface{}) {
-	if len(key) > 0 {
-		p.msgHandlers[key[0]] = h
-		log4g.Info("dispatcher[%s] added a handler for %v", p.Name, key[0])
+func (p *dispatcher) AddHandler(h func(agent NetAgent), id_or_key_or_type ...interface{}) {
+	if len(id_or_key_or_type) > 0 {
+		p.msgHandlers[id_or_key_or_type[0]] = h
+		log4g.Info("dispatcher[%s] added a handler for %v", p.Name, id_or_key_or_type[0])
 	} else {
 		p.globalHandlers = append(p.globalHandlers, h)
 		log4g.Info("dispatcher[%s] added global handler", p.Name)

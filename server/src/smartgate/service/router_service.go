@@ -10,7 +10,7 @@ import (
 
 func CreateEvidence(userId string, typ int8) (evidence *model.RouterEvidence, err error) {
 	evidence = new(model.RouterEvidence)
-	evidence.EvidenceId = util.NewUuid()[:16]
+	evidence.EvidenceId = util.NewUuid()
 	evidence.UserId = userId
 	evidence.Type = typ
 	evidence.CreateTime = time.Now()

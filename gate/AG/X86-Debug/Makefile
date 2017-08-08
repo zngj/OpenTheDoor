@@ -36,7 +36,7 @@ DISTNAME      = AG1.0.0
 DISTDIR = /home/feynman/SmartGate/gate/AG/X86-Debug/.tmp/AG1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-rpath,/home/feynman/Qt5.7.1/5.7/gcc_64/lib
-LIBS          = $(SUBLIBS) -lfftw3 -lasound -L/home/feynman/Qt5.7.1/5.7/gcc_64/lib -lQt5Widgets -L/usr/lib64 -lQt5Gui -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) -lfftw3 -lasound -ljsoncpp -L/home/feynman/Qt5.7.1/5.7/gcc_64/lib -lQt5Widgets -L/usr/lib64 -lQt5Gui -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -52,12 +52,26 @@ SOURCES       = ../Src/main.cpp \
 		../Src/UI/FormMain.cpp \
 		../Src/Drivers/Scanner/IScannerListener.cpp \
 		../Src/Drivers/Scanner/ScannerManager.cpp \
-		../Src/Soundwave/SoundDecode.cpp moc_FormMain.cpp
+		../Src/Soundwave/SoundDecode.cpp \
+		../Src/Network/NetMessage.cpp \
+		../Src/Network/NetRequest.cpp \
+		../Src/Network/Server.cpp \
+		../Src/Network/DataServer.cpp \
+		../Src/Storage/BasicConfig.cpp \
+		../Src/Utils/PathUtil.cpp \
+		../Src/Utils/TimeUtil.cpp moc_FormMain.cpp
 OBJECTS       = main.o \
 		FormMain.o \
 		IScannerListener.o \
 		ScannerManager.o \
 		SoundDecode.o \
+		NetMessage.o \
+		NetRequest.o \
+		Server.o \
+		DataServer.o \
+		BasicConfig.o \
+		PathUtil.o \
+		TimeUtil.o \
 		moc_FormMain.o
 DIST          = ../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../../Qt5.7.1/5.7/gcc_64/mkspecs/common/unix.conf \
@@ -213,11 +227,25 @@ DIST          = ../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../Src/Drivers/Scanner/IScannerListener.h \
 		../Src/Drivers/Scanner/ScannerManager.h \
 		../Src/Drivers/Scanner/ScannerState.h \
-		../Src/Soundwave/SoundDecode.h ../Src/main.cpp \
+		../Src/Soundwave/SoundDecode.h \
+		../Src/Network/NetMessage.h \
+		../Src/Network/NetRequest.h \
+		../Src/Network/Server.h \
+		../Src/Network/DataServer.h \
+		../Src/Storage/BasicConfig.h \
+		../Src/Utils/PathUtil.h \
+		../Src/Utils/TimeUtil.h ../Src/main.cpp \
 		../Src/UI/FormMain.cpp \
 		../Src/Drivers/Scanner/IScannerListener.cpp \
 		../Src/Drivers/Scanner/ScannerManager.cpp \
-		../Src/Soundwave/SoundDecode.cpp
+		../Src/Soundwave/SoundDecode.cpp \
+		../Src/Network/NetMessage.cpp \
+		../Src/Network/NetRequest.cpp \
+		../Src/Network/Server.cpp \
+		../Src/Network/DataServer.cpp \
+		../Src/Storage/BasicConfig.cpp \
+		../Src/Utils/PathUtil.cpp \
+		../Src/Utils/TimeUtil.cpp
 QMAKE_TARGET  = AG
 DESTDIR       = 
 TARGET        = AG
@@ -552,8 +580,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../Src/UI/FormMain.h ../Src/Drivers/Scanner/IScannerListener.h ../Src/Drivers/Scanner/ScannerManager.h ../Src/Drivers/Scanner/ScannerState.h ../Src/Soundwave/SoundDecode.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../Src/main.cpp ../Src/UI/FormMain.cpp ../Src/Drivers/Scanner/IScannerListener.cpp ../Src/Drivers/Scanner/ScannerManager.cpp ../Src/Soundwave/SoundDecode.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Src/UI/FormMain.h ../Src/Drivers/Scanner/IScannerListener.h ../Src/Drivers/Scanner/ScannerManager.h ../Src/Drivers/Scanner/ScannerState.h ../Src/Soundwave/SoundDecode.h ../Src/Network/NetMessage.h ../Src/Network/NetRequest.h ../Src/Network/Server.h ../Src/Network/DataServer.h ../Src/Storage/BasicConfig.h ../Src/Utils/PathUtil.h ../Src/Utils/TimeUtil.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Src/main.cpp ../Src/UI/FormMain.cpp ../Src/Drivers/Scanner/IScannerListener.cpp ../Src/Drivers/Scanner/ScannerManager.cpp ../Src/Soundwave/SoundDecode.cpp ../Src/Network/NetMessage.cpp ../Src/Network/NetRequest.cpp ../Src/Network/Server.cpp ../Src/Network/DataServer.cpp ../Src/Storage/BasicConfig.cpp ../Src/Utils/PathUtil.cpp ../Src/Utils/TimeUtil.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../Src/UI/FormMain.ui $(DISTDIR)/
 
 
@@ -809,7 +837,11 @@ main.o: ../Src/main.cpp ../Src/UI/FormMain.h \
 		../../../../Qt5.7.1/5.7/gcc_64/include/QtCore/qeventloop.h \
 		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h \
 		../../../../Qt5.7.1/5.7/gcc_64/include/QtGui/qguiapplication.h \
-		../../../../Qt5.7.1/5.7/gcc_64/include/QtGui/qinputmethod.h
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtGui/qinputmethod.h \
+		../Src/Network/DataServer.h \
+		../Src/Network/Server.h \
+		../Src/Network/NetRequest.h \
+		../Src/Network/NetMessage.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Src/main.cpp
 
 FormMain.o: ../Src/UI/FormMain.cpp ../Src/UI/FormMain.h \
@@ -956,6 +988,33 @@ ScannerManager.o: ../Src/Drivers/Scanner/ScannerManager.cpp ../Src/Drivers/Scann
 
 SoundDecode.o: ../Src/Soundwave/SoundDecode.cpp ../Src/Soundwave/SoundDecode.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SoundDecode.o ../Src/Soundwave/SoundDecode.cpp
+
+NetMessage.o: ../Src/Network/NetMessage.cpp ../Src/Network/NetMessage.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o NetMessage.o ../Src/Network/NetMessage.cpp
+
+NetRequest.o: ../Src/Network/NetRequest.cpp ../Src/Network/NetRequest.h \
+		../Src/Network/NetMessage.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o NetRequest.o ../Src/Network/NetRequest.cpp
+
+Server.o: ../Src/Network/Server.cpp ../Src/Network/Server.h \
+		../Src/Network/NetRequest.h \
+		../Src/Network/NetMessage.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Server.o ../Src/Network/Server.cpp
+
+DataServer.o: ../Src/Network/DataServer.cpp ../Src/Network/DataServer.h \
+		../Src/Network/Server.h \
+		../Src/Network/NetRequest.h \
+		../Src/Network/NetMessage.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o DataServer.o ../Src/Network/DataServer.cpp
+
+BasicConfig.o: ../Src/Storage/BasicConfig.cpp ../Src/Storage/BasicConfig.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BasicConfig.o ../Src/Storage/BasicConfig.cpp
+
+PathUtil.o: ../Src/Utils/PathUtil.cpp ../Src/Utils/PathUtil.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o PathUtil.o ../Src/Utils/PathUtil.cpp
+
+TimeUtil.o: ../Src/Utils/TimeUtil.cpp ../Src/Utils/TimeUtil.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o TimeUtil.o ../Src/Utils/TimeUtil.cpp
 
 moc_FormMain.o: moc_FormMain.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_FormMain.o moc_FormMain.cpp

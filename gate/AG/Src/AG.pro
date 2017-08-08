@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = AG
 TEMPLATE = app
 
-LIBS += -lfftw3 -lasound
+LIBS += -lfftw3 -lasound -ljsoncpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
@@ -30,13 +30,27 @@ SOURCES += main.cpp\
     UI/FormMain.cpp \
     Drivers/Scanner/IScannerListener.cpp \
     Drivers/Scanner/ScannerManager.cpp \
-    Soundwave/SoundDecode.cpp
+    Soundwave/SoundDecode.cpp \
+    Network/NetMessage.cpp \
+    Network/NetRequest.cpp \
+    Network/Server.cpp \
+    Network/DataServer.cpp \
+    Storage/BasicConfig.cpp \
+    Utils/PathUtil.cpp \
+    Utils/TimeUtil.cpp
 
 HEADERS  += UI/FormMain.h \
     Drivers/Scanner/IScannerListener.h \
     Drivers/Scanner/ScannerManager.h \
     Drivers/Scanner/ScannerState.h \
-    Soundwave/SoundDecode.h
+    Soundwave/SoundDecode.h \
+    Network/NetMessage.h \
+    Network/NetRequest.h \
+    Network/Server.h \
+    Network/DataServer.h \
+    Storage/BasicConfig.h \
+    Utils/PathUtil.h \
+    Utils/TimeUtil.h
 
 FORMS    += UI/FormMain.ui
 

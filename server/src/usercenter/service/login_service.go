@@ -1,9 +1,7 @@
 package service
 
 import (
-	"common/mysqlx"
 	"common/redisx"
-	"database/sql"
 	"github.com/carsonsx/log4g"
 	"github.com/google/uuid"
 	"strings"
@@ -11,6 +9,7 @@ import (
 	"usercenter/util"
 	"usercenter/vo"
 	"usercenter/token"
+	"common/dbx"
 )
 
 func SaveLoginSession(token string, wxsession *vo.WxappSession) error {
@@ -22,79 +21,48 @@ func SaveLoginSession(token string, wxsession *vo.WxappSession) error {
 }
 
 func saveUserInfo(openId string) (userId string, err error) {
-
-	var rows *sql.Rows
-	rows, err = mysqlx.GetDBConn().Query("select id from uc_user_info where open_id=?", openId)
-	if err != nil {
-		log4g.Error(err)
-		return
+	dao := dbx.NewDao()
+	err = dao.Query("select id from uc_user_info where open_id=?", openId).One(&userId)
+	if err == dbx.ErrNotFound {
+		userId = strings.Replace(uuid.New().String(), "-", "", -1)
+		err = dao.Exec("insert into uc_user_info (id,channel,open_id,insert_time) values (?,?,?,?)", userId, "weixin", openId, time.Now())
 	}
-	defer rows.Close()
-
-	if rows.Next() {
-		var id *string
-		err = rows.Scan(&id)
-		if err != nil {
-			log4g.Error(err)
-			return "", err
-		}
-		if id != nil {
-			userId = *id
-		}
-	}
-
-	if userId == "" {
-		_userId := strings.Replace(uuid.New().String(), "-", "", -1)
-		err = mysqlx.Exec(nil, "insert into uc_user_info (id,channel,open_id,insert_time) values (?,?,?,?)", _userId, "weixin", openId, time.Now())
-		if err != nil {
-			return
-		}
-		userId = _userId
-	}
-
 	return
 }
 
-func saveSessionInfo(accessToken, userId string, wxsession *vo.WxappSession) error {
+func saveSessionInfo(accessToken, userId string, wxsession *vo.WxappSession) (err error) {
 
 	now := time.Now()
 
-	var rows *sql.Rows
-	rows, err := mysqlx.GetDBConn().Query("select id, access_token from uc_login_log where status = ? and user_id=?", "1", userId)
-	if err != nil {
-		log4g.Error(err)
-		return err
-	}
-	defer rows.Close()
+	dao := dbx.NewDao()
 
-	if rows.Next() {
-		var id *int64
-		var token *string
-		err = rows.Scan(&id, &token)
+	var _id *int64
+	var _token *string
+	err = dao.Query("select id, access_token from uc_login_log where status = ? and user_id=?", "1", userId).One(&_id, &_token)
+	if err != nil && err != dbx.ErrNotFound {
+		return
+	}
+
+	dao.BeginTx()
+	defer func() {dao.CommitTx(err)}()
+
+	if err == nil { // 上次登录存在
+		err = redisx.Client.Del(util.GetAccessTokenKey(*_token)).Err()
 		if err != nil {
 			log4g.Error(err)
-			return err
+			return
 		}
-		if *token != "" {
-			err = redisx.Client.Del(util.GetAccessTokenKey(*token)).Err()
-			if err != nil {
-				log4g.Error(err)
-				return err
-			}
-			mysqlx.Exec(nil, "update uc_login_log set release_time=?,status=? where id=?", now, "0", *id)
-		}
+		err = dao.Exec("update uc_login_log set release_time=?,status=? where id=?", now, "0", *_id)
 	}
 
 	expiresAt := now.Add(time.Duration(wxsession.ExpiresIn) * time.Second)
-
-	err = mysqlx.Exec(nil, "insert into uc_login_log (user_id,access_token,login_time,expires_in,expires_at,status) values (?,?,?,?,?,?)",
+	err = dao.Exec("insert into uc_login_log (user_id,access_token,login_time,expires_in,expires_at,status) values (?,?,?,?,?,?)",
 		userId, accessToken, now, wxsession.ExpiresIn, expiresAt, "1")
 	if err != nil {
-		log4g.Error(err)
-		return err
+		return
 	}
 
-	token.Save(userId, accessToken, wxsession.Session_key, wxsession.Unionid, now, expiresAt)
+	err = token.Save(userId, accessToken, wxsession.Session_key, wxsession.Unionid, now, expiresAt)
 
-	return err
+	return
 }

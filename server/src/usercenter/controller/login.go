@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"common/cmnmsg"
 	"encoding/json"
 	"fmt"
 	"github.com/carsonsx/log4g"
@@ -13,6 +12,7 @@ import (
 	"usercenter/vo"
 	"errors"
 	"common/util"
+	"common/errcode"
 )
 
 const (
@@ -26,22 +26,22 @@ func WxappLogin(c *gin.Context) {
 	var login vo.WxappLogin
 	err := c.Bind(&login)
 	if err != nil {
-		cmnmsg.WriteErrorResponse(c.Writer, err)
+		errcode.WriteErrorResponse(c.Writer, err)
 		return
 	}
 	if login.Code == "" {
-		render.WriteJSON(c.Writer, cmnmsg.NewEmptyArgResponse("code"))
+		render.WriteJSON(c.Writer, errcode.NewEmptyArgResponse("code"))
 		return
 	}
 
 	session, err := code2session(login.Code)
 	if err != nil {
-		cmnmsg.WriteErrorResponse(c.Writer, err)
+		errcode.WriteErrorResponse(c.Writer, err)
 		return
 	}
 
 	if session.Openid == "" || session.Session_key == "" {
-		render.WriteJSON(c.Writer, cmnmsg.NewIllegalArgResponse("code"))
+		render.WriteJSON(c.Writer, errcode.NewIllegalArgResponse("code"))
 		return
 	}
 
@@ -54,14 +54,14 @@ func WxappLogin(c *gin.Context) {
 
 	accessToken := util.NewUuid()
 	if err = service.SaveLoginSession(accessToken, session); err != nil {
-		cmnmsg.WriteErrorResponse(c.Writer, err)
+		errcode.WriteErrorResponse(c.Writer, err)
 		return
 	}
 
 	var result vo.WxappLoginToken
 	result.AccessToken = accessToken
 	result.ExpiresIn = session.ExpiresIn
-	cmnmsg.WriteDataResponse(c.Writer, &result)
+	errcode.WriteDataResponse(c.Writer, &result)
 
 }
 

@@ -1,4 +1,4 @@
-package mysqlx
+package dbx
 
 import (
 	"database/sql"
@@ -161,7 +161,7 @@ func (e *InvalidResultError) Error() string {
 	return "dao: Result(nil " + e.Type.String() + ")"
 }
 
-func (r *result) Result(dest ...interface{}) (err error) {
+func (r *result) One(dest ...interface{}) (err error) {
 	if r.err != nil {
 		return r.err
 	}
@@ -174,21 +174,6 @@ func (r *result) Result(dest ...interface{}) (err error) {
 		}
 	}()
 
-	//rv := reflect.ValueOf(v)
-	//if rv.Kind() != reflect.Ptr || rv.IsNil() {
-	//	return &InvalidResultError{reflect.TypeOf(v)}
-	//}
-	//
-	//if r.rows != nil {
-	//	defer r.rows.Close()
-	//}
-	//
-	//columns, err := r.rows.Columns()
-	//if err != nil {
-	//	log4g.Error(err)
-	//	return err
-	//}
-
 	defer r.rows.Close()
 
 	if r.rows.Next() {
@@ -199,6 +184,7 @@ func (r *result) Result(dest ...interface{}) (err error) {
 		}
 	} else {
 		err = ErrNotFound
+		log4g.Warn("not found any record.")
 	}
 
 	return

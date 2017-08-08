@@ -6,7 +6,7 @@ import (
 )
 
 func verifyEvidenceFn(agent net4g.NetAgent)  {
-	if !_checkLogin(agent) {
+	if !checkLogin(agent) {
 		return
 	}
 	verify := new(msg.S2CVerifyEvidence)
@@ -15,7 +15,7 @@ func verifyEvidenceFn(agent net4g.NetAgent)  {
 }
 
 func userEvidenceFn(agent net4g.NetAgent)  {
-	if !_checkLogin(agent) {
+	if !checkLogin(agent) {
 		return
 	}
 	result := new(msg.S2CUserEvidence)

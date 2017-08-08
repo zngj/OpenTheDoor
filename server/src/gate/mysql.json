@@ -1,0 +1,6 @@
+{
+  "addr": "localhost:3306",
+  "db": "smartgate",
+  "username": "root",
+  "password": "root"
+}

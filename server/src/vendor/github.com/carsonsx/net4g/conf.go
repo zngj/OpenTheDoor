@@ -65,8 +65,9 @@ func searchJsonConfig(filename string, v interface{}) {
 	}
 	if !found {
 		log4g.Info("not found any net4g config")
+	} else {
+		NetConfig.Print()
 	}
-	NetConfig.Print()
 }
 
 func loadJsonConfig(filename string, v interface{}) bool {

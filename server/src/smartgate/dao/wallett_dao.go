@@ -1,26 +1,26 @@
 package dao
 
 import (
-	"common/mysqlx"
-	"smartgate/model"
 	"time"
+	"common/dbx"
+	"common/model"
 )
 
 func NewWalletDao() *walletDao {
 	d := new(walletDao)
-	d.dao = new(mysqlx.Dao)
+	d.dao = new(dbx.Dao)
 	return d
 }
 
 type walletDao struct {
-	dao *mysqlx.Dao
+	dao *dbx.Dao
 }
 
 func (d *walletDao) GetByUserId(userId string) (wallet *model.WalletInfo, err error) {
 	var balance float32
 	var wxpayQuick bool
 	err = d.dao.Query("select balance,wxpay_quick from sg_wallet_info where user_id = ?", userId).
-		Result(&balance, &wxpayQuick)
+		One(&balance, &wxpayQuick)
 	if err != nil {
 		return
 	}

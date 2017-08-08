@@ -226,8 +226,8 @@ Header:
 
 |参数名     |类型|是否必须|默认值  |说明    |
 |----------|----|-------|-------|--------|
-|code|int8|是|-|0-登录成功;1-GateId不存在|
-|gate_direction|string|否|-|in/out|
+|code|int|是|-|0-登录成功;3100-GateId不存在|
+|gate_direction|string|否|-|0-入;1-出|
 |station_name|string|否|-|站点名称|
 |city_name|string|否|-|城市名称|
 
@@ -235,7 +235,7 @@ Header:
 ```json
 {
     "code": 0,
-    "gate_direction": "in",
+    "gate_direction": 0,
     "station_name": "五一广场",
     "city_name": "长沙"
 }
@@ -307,7 +307,7 @@ Header:
 
 |参数名     |类型|是否必须|默认值  |说明    |
 |----------|----|-------|-------|--------|
-|code|int8|是|-|0-通过;<br/>1-凭证不存在;<br/>2-凭证已过期;<br/>3-凭证与机闸不匹配;<br/>4-用户不符合付费标准|
+|code|int|是|-|0-通过;<br/>3201-凭证不存在;<br/>3202-凭证已过期;<br/>3203-凭证与机闸不匹配;<br/>3204-用户不符合付费标准|
 
 样例：
 ```json

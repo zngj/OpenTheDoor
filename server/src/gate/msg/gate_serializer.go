@@ -238,8 +238,6 @@ func (s *GateSerializer) Deserialize(raw []byte) (v, h interface{}, rp *net4g.Ra
 	//}
 
 	//帧解析
-	log4g.Debug("Deserialize ...........")
-	log4g.Debug(raw)
 
 	//去0x10
 	met10 := false
@@ -254,8 +252,6 @@ func (s *GateSerializer) Deserialize(raw []byte) (v, h interface{}, rp *net4g.Ra
 			realRaw = append(realRaw, b)
 		}
 	}
-
-	log4g.Debug(realRaw)
 
 	rawLen := len(realRaw)
 	//长度

@@ -3,9 +3,9 @@ package service
 import (
 	"smartgate/dao"
 	"common/util"
-	"smartgate/model"
 	"time"
 	"github.com/carsonsx/log4g"
+	"common/model"
 )
 
 func CreateEvidence(userId string, typ int8) (evidence *model.RouterEvidence, err error) {

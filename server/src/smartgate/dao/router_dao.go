@@ -1,8 +1,8 @@
 package dao
 
 import (
-	"common/mysqlx"
-	"smartgate/model"
+	"common/dbx"
+	"common/model"
 )
 
 const (
@@ -14,12 +14,12 @@ const (
 
 func NewRouterDao() *routerDao {
 	d := new(routerDao)
-	d.dao = new(mysqlx.Dao)
+	d.dao = new(dbx.Dao)
 	return d
 }
 
 type routerDao struct {
-	dao *mysqlx.Dao
+	dao *dbx.Dao
 }
 
 func (d *routerDao) InsertEvidence(evidence *model.RouterEvidence) error {
@@ -31,6 +31,6 @@ func (d *routerDao) IsValidEvidence(evidenceId string) (bool, error) {
 }
 
 func (d *routerDao) GetUserIdByEvidenceId(evidenceId string) (userId string, err error) {
-	err = d.dao.Query(SQL_GET_USERID_BY_EVIDENCEID, evidenceId).Result(&userId)
+	err = d.dao.Query(SQL_GET_USERID_BY_EVIDENCEID, evidenceId).One(&userId)
 	return
 }

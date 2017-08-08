@@ -7,7 +7,7 @@ import (
 )
 
 func rsaKeyFn(agent net4g.NetAgent)  {
-	if !_checkLogin(agent) {
+	if !checkLogin(agent) {
 		return
 	}
 	rsaKey := new(msg.S2CRsaKey)

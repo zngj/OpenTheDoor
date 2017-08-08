@@ -1,18 +1,18 @@
 package controller
 
 import (
+	"common/errcode"
 	"github.com/gin-gonic/gin"
-	"usercenter/token"
-	"common/cmnmsg"
+	"smartgate/codec"
 	"smartgate/service"
 	"smartgate/vo"
-	"smartgate/codec"
+	"usercenter/token"
 )
 
 func RouterStatus(c *gin.Context) {
 	var rs vo.RouterStatusVO
 	rs.Status = 0
-	cmnmsg.WriteDataResponse(c.Writer, &rs)
+	errcode.WriteDataResponse(c.Writer, &rs)
 }
 
 func RouterEvidenceIn(c *gin.Context) {
@@ -28,26 +28,26 @@ func RouterEvidence(c *gin.Context) {
 	_routerEvidence(c, 0)
 }
 
-func _routerEvidence(c *gin.Context, typ int8)  {
+func _routerEvidence(c *gin.Context, typ int8) {
 	userId, err := token.GetUserIdFromHeader(c.Request.Header)
 	if err != nil {
-		cmnmsg.WriteErrorResponse(c.Writer, err)
+		errcode.WriteErrorResponse(c.Writer, err)
 		return
 	}
 	evidence, err := service.CreateEvidence(userId, typ)
 	if err != nil {
-		cmnmsg.WriteErrorResponse(c.Writer, err)
+		errcode.WriteErrorResponse(c.Writer, err)
 		return
 	}
 
 	evidenceKey, err := codec.Encrypt(evidence.EvidenceId)
 	if err != nil {
-		cmnmsg.WriteErrorResponse(c.Writer, err)
+		errcode.WriteErrorResponse(c.Writer, err)
 		return
 	}
 
 	var evidenceVo vo.EvidenceVO
 	evidenceVo.EvidenceKey = evidenceKey
 	evidenceVo.ExpiresAt = evidence.ExpiresAt.Unix()
-	cmnmsg.WriteDataResponse(c.Writer, &evidenceVo)
+	errcode.WriteDataResponse(c.Writer, &evidenceVo)
 }

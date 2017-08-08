@@ -32,8 +32,8 @@ func InitSerializer(s net4g.Serializer) {
 }
 
 type S2CGateLogin struct {
-	Code          int8   `json:"code"` // 0-登录成功;1-GateId不存在
-	GateDirection string `json:"gate_direction,omitempty"`
+	Code          int   `json:"code"` // 0-登录成功;1-GateId不存在
+	GateDirection int8 `json:"gate_direction,omitempty"`
 	StationName   string `json:"station_name,omitempty"`
 	CityName      string `json:"city_name,omitempty"`
 }
@@ -47,7 +47,7 @@ type C2SVerifyEvidence struct {
 }
 
 type S2CVerifyEvidence struct {
-	Code int8 `json:"code"` //0-通过;1-凭证不存在;2-凭证已过期;3-凭证与机闸不匹配;4-用户不符合付费标准
+	Code int `json:"code"` //0-通过;1-凭证不存在;2-凭证已过期;3-凭证与机闸不匹配;4-用户不符合付费标准
 }
 
 type C2SUserEvidence struct {

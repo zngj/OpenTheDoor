@@ -20,7 +20,7 @@ func Dispatch(dispatchers []*dispatcher, agent NetAgent) {
 	}
 }
 
-func NewDispatcher(name string, goroutineNum int) *dispatcher {
+func NewDispatcher(name string, goroutineNum ...int) *dispatcher {
 	p := new(dispatcher)
 	p.Name = name
 	p.createdChan = make(chan NetAgent, 100)
@@ -28,7 +28,11 @@ func NewDispatcher(name string, goroutineNum int) *dispatcher {
 	p.sessionClosedChan = make(chan NetAgent, 100)
 	p.destroyChan = make(chan bool, 1)
 	p.msgHandlers = make(map[interface{}]func(agent NetAgent))
-	p.goroutineNum = goroutineNum
+	if len(goroutineNum) > 0 {
+		p.goroutineNum = goroutineNum[0]
+	} else {
+		p.goroutineNum = 1
+	}
 	p.run()
 	log4g.Info("new a %s dispatcher", name)
 	return p

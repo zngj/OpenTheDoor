@@ -2,6 +2,15 @@ package model
 
 import "time"
 
+type GateInfo struct {
+	Id          string
+	Direction   int8
+	StationCode string
+	StationName string
+	CityCode    string
+	CityName    string
+}
+
 type RouterEvidence struct {
 	EvidenceId string
 	UserId string
@@ -11,3 +20,4 @@ type RouterEvidence struct {
 	Status int16
 	UsedTime *time.Time
 }
+

@@ -3,18 +3,17 @@ package token
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/render"
-	"common/cmnmsg"
 	"usercenter/vo"
-	"usercenter/usercode"
 	"github.com/carsonsx/log4g"
 	"net/http"
+	"common/errcode"
 )
 
 const HEADER_ACCESS_TOKEN  = "Access-Token"
 
 func VerifyToken(c *gin.Context) {
 	if CheckToken(c) {
-		cmnmsg.WriteSuccessResponse(c.Writer)
+		errcode.WriteSuccessResponse(c.Writer)
 	}
 }
 
@@ -25,14 +24,14 @@ func CheckToken(c *gin.Context) bool {
 		err := c.Bind(&verify)
 		if err != nil {
 			log4g.Error(err)
-			cmnmsg.WriteErrorResponse(c.Writer, err)
+			errcode.WriteErrorResponse(c.Writer, err)
 			return false
 		}
 	} else {
 		log4g.Debug("found access_token in header: %s", verify.AccessToken)
 	}
 	if verify.AccessToken == "" {
-		resp := cmnmsg.NewEmptyArgResponse("code")
+		resp := errcode.NewEmptyArgResponse("code")
 		log4g.Error(resp.Msg)
 		render.WriteJSON(c.Writer, resp)
 		return false
@@ -40,11 +39,11 @@ func CheckToken(c *gin.Context) bool {
 	valid, err := IsValid(verify.AccessToken)
 	if err != nil {
 		log4g.Error(err)
-		cmnmsg.WriteErrorResponse(c.Writer, err)
+		errcode.WriteErrorResponse(c.Writer, err)
 		return false
 	}
 	if !valid {
-		resp :=  usercode.NewUserTokenExpiredResponse()
+		resp :=  errcode.NewResponse(errcode.CODE_UC_TOKEN_EXPIRED)
 		log4g.Info(resp.Msg)
 		render.WriteJSON(c.Writer, resp)
 		return false

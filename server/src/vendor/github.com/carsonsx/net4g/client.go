@@ -59,7 +59,7 @@ func (c *TCPClient) DisableAutoReconnect() *TCPClient {
 	return c
 }
 
-func (c *TCPClient) Start() *TCPClient {
+func (c *TCPClient) Connect() *TCPClient {
 
 	// Init the connection manager
 	c.hub = NewNetHub(c.heartbeat, true)

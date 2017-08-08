@@ -1,15 +1,15 @@
 package service
 
 import (
-	"smartgate/model"
 	"smartgate/dao"
-	"common/mysqlx"
+	"common/dbx"
+	"common/model"
 )
 
 func GetWallet(userId string) (wallet *model.WalletInfo, err error) {
 	dao := dao.NewWalletDao()
 	wallet, err = dao.GetByUserId(userId)
-	if err == mysqlx.ErrNotFound {
+	if err == dbx.ErrNotFound {
 		wallet = new(model.WalletInfo)
 		wallet.UserId = userId
 		wallet.Balance = 100

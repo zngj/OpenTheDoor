@@ -1,4 +1,4 @@
-package cmnmsg
+package errcode
 
 import (
 	"common/httpx"
@@ -16,6 +16,14 @@ func NewResponseWithMsg(code int, msg string, tag ...string) *httpx.Response {
 		res.Tag = tag[0]
 	}
 	return res
+}
+
+func WriteResponse(rw gin.ResponseWriter, code int, tag ...string) {
+	render.WriteJSON(rw, NewResponse(code, tag...))
+}
+
+func WriteResponseWithMsg(rw gin.ResponseWriter, code int, msg string, tag ...string) {
+	render.WriteJSON(rw, NewResponseWithMsg(code, msg, tag...))
 }
 
 func WriteSuccessResponse(rw gin.ResponseWriter) {

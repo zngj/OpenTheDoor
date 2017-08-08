@@ -1,0 +1,9 @@
+{
+  "level": "trace",
+  "flag": "date|time|shortfile",
+  "loggers":[
+    {
+      "output": "stdout"
+    }
+  ]
+}

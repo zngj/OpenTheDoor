@@ -10,72 +10,98 @@ import (
 	"reflect"
 )
 
-func Serialize(serializer Serializer, v interface{}, prefix ...byte) (data []byte, err error) {
-	data, err = serializer.Serialize(v)
-	if len(prefix) > 0 {
-		data = append(prefix, data...)
+func RegisterId(s Serializer, v interface{}, id_at_most_one ...int) (id int, err error)  {
+	return s.RegisterId(reflect.TypeOf(v), id_at_most_one...)
+}
+func RegisterKey(s Serializer, v interface{}, key_at_most_one ...string) (key string, err error) {
+	return s.RegisterKey(reflect.TypeOf(v), key_at_most_one...)
+}
+
+func Serialize(serializer Serializer, v interface{}, h ...interface{}) (data []byte, err error) {
+	var header interface{}
+	if len(h) > 0 {
+		header = h[0]
 	}
+	data, err = serializer.Serialize(v, header)
 	return
+}
+
+func NewRawPackById(id int, data ...[]byte) *RawPack {
+	rp := new(RawPack)
+	rp.Id = id
+	if len(data) > 0 {
+		rp.Data = data[0]
+	}
+	return rp
+}
+
+func NewRawPackByKey(key string, data ...[]byte) *RawPack {
+	rp := new(RawPack)
+	rp.Key = key
+	if len(data) > 0 {
+		rp.Data = data[0]
+	}
+	return rp
+}
+
+func NewRawPackByType(t reflect.Type, data ...[]byte) *RawPack {
+	rp := new(RawPack)
+	rp.Type = t
+	if len(data) > 0 {
+		rp.Data = data[0]
+	}
+	return rp
 }
 
 type RawPack struct {
 	Id     int
 	Key    string
 	Type   reflect.Type
-	Prefix []byte
 	Data   []byte
 }
 
 type Serializer interface {
 	SetIdStartingValue(id int)
-	RegisterId(t reflect.Type, deserialize bool, id_at_most_one ...int) (id int, err error)
-	RegisterKey(t reflect.Type, deserialize bool, key_at_most_one ...string) (key string, err error)
-	Serialize(v interface{}) (data []byte, err error)
-	Deserialize(raw []byte) (v interface{}, rp *RawPack, err error)
+	RegisterId(t reflect.Type, id_at_most_one ...int) (id int, err error)
+	RegisterKey(t reflect.Type, key_at_most_one ...string) (key string, err error)
+	Serialize(v, h interface{}) (data []byte, err error)
+	Deserialize(raw []byte) (v, h interface{}, rp *RawPack, err error)
 	RangeId(f func(id int, t reflect.Type))
 	RangeKey(f func(key string, t reflect.Type))
 }
 
 func NewEmptySerializer() *EmptySerializer {
 	s := new(EmptySerializer)
-	s.type_id_map = make(map[reflect.Type]int)
-	s.id_type_map = make(map[int]reflect.Type)
-	s.type_key_map = make(map[reflect.Type]string)
-	s.key_type_map = make(map[string]reflect.Type)
-	s.deserialize_map = make(map[interface{}]bool)
+	s.IdsOfType = make(map[reflect.Type]int)
+	s.TypesOfId = make(map[int]reflect.Type)
+	s.KeysOfType = make(map[reflect.Type]string)
+	s.TypesOfKey = make(map[string]reflect.Type)
 	s.id = 1
 	return s
 }
 
 type EmptySerializer struct {
-	type_id_map     map[reflect.Type]int
-	type_key_map    map[reflect.Type]string
-	id_type_map     map[int]reflect.Type
-	key_type_map    map[string]reflect.Type
-	deserialize_map map[interface{}]bool
-	ids             []int
-	keys            []string
-	id              int
-	registered      bool
-	byId            bool
+	IdsOfType        map[reflect.Type]int
+	KeysOfType       map[reflect.Type]string
+	TypesOfId        map[int]reflect.Type
+	TypesOfKey       map[string]reflect.Type
+	ids              []int
+	keys             []string
+	id               int
+	byId             bool
 }
 
 func (s *EmptySerializer) SetIdStartingValue(id int) {
 	s.id = id
 }
 
-func (s *EmptySerializer) IsRegistered() bool {
-	return s.registered
-}
-
-
-func (s *EmptySerializer) RegisterId(t reflect.Type, deserialize bool, id_at_most_one ...int) (id int, err error) {
+func (s *EmptySerializer) RegisterId(t reflect.Type, id_at_most_one ...int) (id int, err error) {
 
 	if t == nil || t.Kind() != reflect.Ptr {
 		panic("type must be a pointer")
 	}
 
-	if len(s.type_key_map) > 0 {
+	if len(s.KeysOfType) > 0 {
 		panic("can not registered id and key in one serializer")
 	}
 
@@ -83,7 +109,7 @@ func (s *EmptySerializer) RegisterId(t reflect.Type, deserialize bool, id_at_mos
 		panic("only mapping one type with one id")
 	}
 
-	if _id, ok := s.type_id_map[t]; ok {
+	if _id, ok := s.IdsOfType[t]; ok {
 		text := fmt.Sprintf("%s has been registered by %d", t.String(), _id)
 		log4g.Error(text)
 		return 0, errors.New(text)
@@ -95,26 +121,24 @@ func (s *EmptySerializer) RegisterId(t reflect.Type, deserialize bool, id_at_mos
 		id = s.id
 	}
 
-	s.type_id_map[t] = id
-	s.id_type_map[id] = t
-	s.deserialize_map[id] = deserialize
+	s.IdsOfType[t] = id
+	s.TypesOfId[id] = t
 	s.ids = append(s.ids, id)
 
 	s.byId = true
-	s.registered = true
 
 	s.id++
 
 	return
 }
 
-func (s *EmptySerializer) RegisterKey(t reflect.Type, deserialize bool, key_at_most_one ...string) (key string, err error) {
+func (s *EmptySerializer) RegisterKey(t reflect.Type, key_at_most_one ...string) (key string, err error) {
 
 	if t == nil || t.Kind() != reflect.Ptr {
 		panic("type must be a pointer")
 	}
 
-	if len(s.type_id_map) > 0 {
+	if len(s.IdsOfType) > 0 {
 		panic("can not registered key and id in one serializer")
 	}
 
@@ -122,7 +146,7 @@ func (s *EmptySerializer) RegisterKey(t reflect.Type, deserialize bool, key_at_m
 		panic("only mapping one type with one key")
 	}
 
-	if _key, ok := s.type_key_map[t]; ok {
+	if _key, ok := s.KeysOfType[t]; ok {
 		text := fmt.Sprintf("%s has been registered by %s", t.Elem().Name(), _key)
 		log4g.Error(text)
 		err = errors.New(text)
@@ -135,14 +159,11 @@ func (s *EmptySerializer) RegisterKey(t reflect.Type, deserialize bool, key_at_m
 		key = t.String()
 	}
 
-	s.type_key_map[t] = key
-	s.key_type_map[key] = t
-	s.deserialize_map[key] = deserialize
+	s.KeysOfType[t] = key
+	s.TypesOfKey[key] = t
 	s.keys = append(s.keys, key)
 
 	s.byId = false
-	s.registered = true
-
 	log4g.Info("%v register by key '%s'\n", t, key)
 
 	return
@@ -150,13 +171,31 @@ func (s *EmptySerializer) RegisterKey(t reflect.Type, deserialize bool, key_at_m
 
 func (s *EmptySerializer) RangeId(f func(id int, t reflect.Type)) {
 	for _, id := range s.ids {
-		f(id, s.id_type_map[id])
+		f(id, s.TypesOfId[id])
 	}
 }
 
 func (s *EmptySerializer) RangeKey(f func(key string, t reflect.Type)) {
 	for _, key := range s.keys {
-		f(key, s.key_type_map[key])
+		f(key, s.TypesOfKey[key])
+	}
+}
+
+func (s *EmptySerializer) PreprocessRawPack(rp *RawPack) {
+	if rp.Type == nil {
+		if rp.Id > 0 {
+			rp.Type = s.TypesOfId[rp.Id]
+		} else if rp.Key != "" {
+			rp.Type = s.TypesOfKey[rp.Key]
+		}
+	}
+	if rp.Id == 0 && rp.Key == "" && rp.Type != nil {
+		if len(s.IdsOfType) > 0 {
+			rp.Id = s.IdsOfType[rp.Type]
+		}
+		if len(s.KeysOfType) > 0 {
+			rp.Key = s.KeysOfType[rp.Type]
+		}
 	}
 }
 
@@ -170,22 +209,36 @@ type ByteSerializer struct {
 	*EmptySerializer
 }
 
-func (s *ByteSerializer) Serialize(v interface{}) (data []byte, err error) {
+func (s *ByteSerializer) Serialize(v, h interface{}) (data []byte, err error) {
 	if rp, ok := v.(*RawPack); ok {
+		s.PreprocessRawPack(rp)
 		log4g.Trace("serialized - %v", rp)
-		data = util.AddIntHeader(rp.Data, NetConfig.MessageIdSize, uint64(rp.Id), NetConfig.LittleEndian)
+		data = util.AddIntHeader(rp.Data, NetConfig.IdSize, uint64(rp.Id), NetConfig.LittleEndian)
 	} else {
 		data = v.([]byte)
 	}
+	if NetConfig.HeaderSize > NetConfig.IdSize {
+		if h == nil {
+			log4g.Panic("header cannot be nil")
+		}
+		header := h.([]byte)
+		if NetConfig.HeaderSize != len(header) + NetConfig.IdSize {
+			log4g.Panic("invalid header length: excepted %d, actual %d", NetConfig.HeaderSize - NetConfig.IdSize, len(header))
+		}
+		_data := data
+		data = make([]byte, len(header)+len(_data))
+		copy(data, header)
+		copy(data[len(header):], _data)
+		}
 	return
 }
 
-func (s *ByteSerializer) Deserialize(raw []byte) (v interface{}, rp *RawPack, err error) {
+func (s *ByteSerializer) Deserialize(raw []byte) (v, h interface{}, rp *RawPack, err error) {
 	rp = new(RawPack)
-	rp.Id = int(util.GetIntHeader(raw, NetConfig.MessageIdSize, NetConfig.LittleEndian))
-	rp.Data = raw[NetConfig.MessageIdSize:]
+	rp.Id = int(util.GetIntHeader(raw, NetConfig.IdSize, NetConfig.LittleEndian))
+	rp.Data = raw[NetConfig.IdSize:]
 	v = rp.Data
-	log4g.Trace("deserialized - %v", *rp)
+	log4g.Trace("deserialize - %v", *rp)
 	return
 }
 
@@ -199,13 +252,13 @@ type StringSerializer struct {
 	*EmptySerializer
 }
 
-func (s *StringSerializer) Serialize(v interface{}) (raw []byte, err error) {
+func (s *StringSerializer) Serialize(v, h interface{}) (raw []byte, err error) {
 	return []byte(v.(string)), nil
 }
 
-func (s *StringSerializer) Deserialize(raw []byte) (v interface{}, rp *RawPack, err error) {
+func (s *StringSerializer) Deserialize(raw []byte) (v, h interface{}, rp *RawPack, err error) {
 	rp = new(RawPack)
-	return string(raw), rp, nil
+	return string(raw), nil, rp, nil
 }
 
 func NewJsonSerializer() Serializer {
@@ -218,27 +271,19 @@ type JsonSerializer struct {
 	*EmptySerializer
 }
 
-func (s *JsonSerializer) Serialize(v interface{}) (data []byte, err error) {
-
-	if !s.registered {
-		panic("not registered any id or key")
-	}
-
-	t := reflect.TypeOf(v)
-	if t == nil || t.Kind() != reflect.Ptr {
-		panic("value type must be a pointer")
-	}
+func (s *JsonSerializer) Serialize(v, h interface{}) (data []byte, err error) {
 
 	if rp, ok := v.(*RawPack); ok {
+		s.PreprocessRawPack(rp)
 		if s.byId {
-			if id, ok := s.type_id_map[rp.Type]; ok {
-				data = util.AddIntHeader(rp.Data, NetConfig.MessageIdSize, uint64(id), NetConfig.LittleEndian)
+			if id, ok := s.IdsOfType[rp.Type]; ok {
+				data = util.AddIntHeader(rp.Data, NetConfig.IdSize, uint64(id), NetConfig.LittleEndian)
 			} else {
 				err = errors.New(fmt.Sprintf("%v is not registed by any id", rp.Type))
 				log4g.Error(err)
 			}
 		} else {
-			if key, ok := s.type_key_map[rp.Type]; ok {
+			if key, ok := s.KeysOfType[rp.Type]; ok {
 				m := map[string]json.RawMessage{key: rp.Data}
 				data, err = json.Marshal(m)
 				if err != nil {
@@ -253,8 +298,12 @@ func (s *JsonSerializer) Serialize(v interface{}) (data []byte, err error) {
 			}
 		}
 	} else {
+		t := reflect.TypeOf(v)
+		if t == nil || t.Kind() != reflect.Ptr {
+			panic("value type must be a pointer")
+		}
 		if s.byId {
-			if id, ok := s.type_id_map[t]; ok {
+			if id, ok := s.IdsOfType[t]; ok {
 				data, err = json.Marshal(v)
 				if err != nil {
 					log4g.Error(err)
@@ -264,13 +313,13 @@ func (s *JsonSerializer) Serialize(v interface{}) (data []byte, err error) {
 					log4g.Trace("serializing %v - %v", t, v)
 					log4g.Trace("serialized %v - %s", t, string(data))
 				}
-				data = util.AddIntHeader(data, NetConfig.MessageIdSize, uint64(id), NetConfig.LittleEndian)
+				data = util.AddIntHeader(data, NetConfig.IdSize, uint64(id), NetConfig.LittleEndian)
 			} else {
 				err = errors.New(fmt.Sprintf("%v is not registed by any id", t))
 				log4g.Error(err)
 			}
 		} else {
-			if key, ok := s.type_key_map[t]; ok {
+			if key, ok := s.KeysOfType[t]; ok {
 				m := map[string]interface{}{key: v}
 				data, err = json.Marshal(m)
 				if err != nil {
@@ -289,37 +338,31 @@ func (s *JsonSerializer) Serialize(v interface{}) (data []byte, err error) {
 	return
 }
 
-func (s *JsonSerializer) Deserialize(raw []byte) (v interface{}, rp *RawPack, err error) {
-
-	if !s.registered {
-		panic("not registered any id or key")
-	}
+func (s *JsonSerializer) Deserialize(raw []byte) (v, h interface{}, rp *RawPack, err error) {
 
 	rp = new(RawPack)
 
 	if s.byId {
-		if len(raw) < NetConfig.MessageIdSize {
-			text := fmt.Sprintf("message length [%d] is short than id size [%d]", len(raw), NetConfig.MessageIdSize)
+		if len(raw) < NetConfig.IdSize {
+			text := fmt.Sprintf("message length [%d] is short than id size [%d]", len(raw), NetConfig.IdSize)
 			err = errors.New(text)
 			log4g.Error(err)
 			return
 		}
 
-		rp.Id = int(util.GetIntHeader(raw, NetConfig.MessageIdSize, NetConfig.LittleEndian))
+		rp.Id = int(util.GetIntHeader(raw, NetConfig.IdSize, NetConfig.LittleEndian))
+		rp.Data = raw[NetConfig.IdSize:]
 		var ok bool
-		if rp.Type, ok = s.id_type_map[rp.Id]; ok {
-			rp.Data = raw[NetConfig.MessageIdSize:]
-			if s.deserialize_map[rp.Id] {
-				v = reflect.New(rp.Type.Elem()).Interface()
-				if len(rp.Data) == 0 {
-					return
-				}
-				err = json.Unmarshal(rp.Data, v)
-				if err != nil {
-					log4g.Error(err)
-				} else {
-					log4g.Trace("deserialized %v - %s", rp.Type, string(rp.Data))
-				}
+		if rp.Type, ok = s.TypesOfId[rp.Id]; ok {
+			v = reflect.New(rp.Type.Elem()).Interface()
+			if len(rp.Data) == 0 {
+				return
+			}
+			err = json.Unmarshal(rp.Data, v)
+			if err != nil {
+				log4g.Error(err)
+			} else {
+				log4g.Trace("deserialize %v - %s", rp.Type, string(rp.Data))
 			}
 		} else {
 			err = errors.New(fmt.Sprintf("id[%d] is not registered by any type", rp.Id))
@@ -340,19 +383,17 @@ func (s *JsonSerializer) Deserialize(raw []byte) (v interface{}, rp *RawPack, er
 		}
 		for rp.Key, rp.Data = range m_raw {
 			var ok bool
-			if rp.Type, ok = s.key_type_map[rp.Key]; ok {
-				if s.deserialize_map[rp.Key] {
-					v = reflect.New(rp.Type.Elem()).Interface()
-					if len(rp.Data) == 0 {
-						continue
-					}
-					err = json.Unmarshal(rp.Data, v)
-					if err != nil {
-						log4g.Error(err)
-					} else {
-						log4g.Trace("deserialized %v - %s", rp.Type, string(raw))
-						break
-					}
+			if rp.Type, ok = s.TypesOfKey[rp.Key]; ok {
+				v = reflect.New(rp.Type.Elem()).Interface()
+				if len(rp.Data) == 0 {
+					continue
+				}
+				err = json.Unmarshal(rp.Data, v)
+				if err != nil {
+					log4g.Error(err)
+				} else {
+					log4g.Trace("deserialize %v - %s", rp.Type, string(raw))
+					break
 				}
 			} else {
 				err = errors.New(fmt.Sprintf("key '%s' is not registered by any type", rp.Key))
@@ -373,31 +414,27 @@ type ProtobufSerializer struct {
 	*EmptySerializer
 }
 
-func (s *ProtobufSerializer) Serialize(v interface{}) (data []byte, err error) {
-
-	if !s.registered {
-		log4g.Panic("not registered any id")
-	}
-
-	t := reflect.TypeOf(v)
-	if t == nil || t.Kind() != reflect.Ptr {
-		panic("value type must be a pointer")
-	}
+func (s *ProtobufSerializer) Serialize(v, h interface{}) (data []byte, err error) {
 
 	if rp, ok := v.(*RawPack); ok {
-		data = util.AddIntHeader(rp.Data, NetConfig.MessageIdSize, uint64(rp.Id), NetConfig.LittleEndian)
+		s.PreprocessRawPack(rp)
+		data = util.AddIntHeader(rp.Data, NetConfig.IdSize, uint64(rp.Id), NetConfig.LittleEndian)
 		if log4g.IsDebugEnabled() {
 			bytes, _ := json.Marshal(v)
-			log4g.Trace("serialize %v - %v", t, string(bytes))
+			log4g.Trace("serialize %d - %v", rp.Id, string(bytes))
 		}
 	} else {
-		if id, ok := s.type_id_map[t]; ok {
+		t := reflect.TypeOf(v)
+		if t == nil || t.Kind() != reflect.Ptr {
+			panic("value type must be a pointer")
+		}
+		if id, ok := s.IdsOfType[t]; ok {
 			data, err = proto.Marshal(v.(proto.Message))
 			if err != nil {
 				log4g.Error(err)
 				return
 			}
-			data = util.AddIntHeader(data, NetConfig.MessageIdSize, uint64(id), NetConfig.LittleEndian)
+			data = util.AddIntHeader(data, NetConfig.IdSize, uint64(id), NetConfig.LittleEndian)
 			if log4g.IsDebugEnabled() {
 				bytes, _ := json.Marshal(v)
 				log4g.Trace("serialize %v - %v", t, string(bytes))
@@ -410,42 +447,33 @@ func (s *ProtobufSerializer) Serialize(v interface{}) (data []byte, err error) {
 	return
 }
 
-func (s *ProtobufSerializer) Deserialize(raw []byte) (v interface{}, rp *RawPack, err error) {
-	if !s.registered {
-		log4g.Panic("not registered any id")
-	}
+func (s *ProtobufSerializer) Deserialize(raw []byte) (v, h interface{}, rp *RawPack, err error) {
 
-	if len(raw) < NetConfig.MessageIdSize {
-		text := fmt.Sprintf("message length [%d] is short than id size [%d]", len(raw), NetConfig.MessageIdSize)
+	if len(raw) < NetConfig.IdSize {
+		text := fmt.Sprintf("message length [%d] is short than id size [%d]", len(raw), NetConfig.IdSize)
 		err = errors.New(text)
 		log4g.Error(err)
 		return
 	}
 
 	rp = new(RawPack)
-
-	rp.Id = int(util.GetIntHeader(raw, NetConfig.MessageIdSize, NetConfig.LittleEndian))
+	rp.Id = int(util.GetIntHeader(raw, NetConfig.IdSize, NetConfig.LittleEndian))
+	rp.Data = raw[NetConfig.IdSize:]
 	var ok bool
-	if rp.Type, ok = s.id_type_map[rp.Id]; ok {
-		rp.Data = raw[NetConfig.MessageIdSize:]
-		if s.deserialize_map[rp.Id] {
-			v = reflect.New(rp.Type.Elem()).Interface()
-			if len(rp.Data) == 0 {
-				return
-			}
-			err = proto.UnmarshalMerge(rp.Data, v.(proto.Message))
-			if err != nil {
-				log4g.Error(err)
-			} else {
-				if log4g.IsDebugEnabled() {
-					bytes, _ := json.Marshal(v)
-					log4g.Trace("deserialize %v - %v", rp.Type, string(bytes))
-				}
+	if rp.Type, ok = s.TypesOfId[rp.Id]; ok {
+		v = reflect.New(rp.Type.Elem()).Interface()
+		if len(rp.Data) == 0 {
+			return
+		}
+		err = proto.UnmarshalMerge(rp.Data, v.(proto.Message))
+		if err != nil {
+			log4g.Error(err)
+		} else {
+			if log4g.IsDebugEnabled() {
+				bytes, _ := json.Marshal(v)
+				log4g.Trace("deserialize %v - %v", rp.Type, string(bytes))
 			}
 		}
-	} else {
-		err = errors.New(fmt.Sprintf("id[%d] is not registered by any type", rp.Id))
-		log4g.Error(err)
 	}
 	return
 }

@@ -139,19 +139,25 @@ func (p *dispatcher) dispatch(agent NetAgent) {
 	}
 
 	var key interface{}
+	var h func(agent NetAgent)
 
-	if agent.Msg() == nil {
-		if agent.RawPack().Id > 0 {
-			key = agent.RawPack().Id
-		} else if agent.RawPack().Key != "" {
-			key = agent.RawPack().Key
-		}
-	} else {
-		key = reflect.TypeOf(agent.Msg())
+	if agent.RawPack() != nil && agent.RawPack().Id > 0 {
+		key = agent.RawPack().Id
+		h, _ = p.msgHandlers[key]
 	}
 
-	if h, ok := p.msgHandlers[key]; ok {
-		log4g.Trace("dispatcher[%s] is dispatching %v to handler", p.Name, key)
+	if h == nil && agent.RawPack() != nil && agent.RawPack().Key != "" {
+		key = agent.RawPack().Key
+		h, _ = p.msgHandlers[key]
+	}
+
+	if h == nil && agent.Msg() != nil {
+		key = reflect.TypeOf(agent.Msg())
+		h = p.msgHandlers[key]
+	}
+
+	if h != nil {
+		log4g.Trace("dispatcher[%s] is dispatching %v", p.Name, key)
 		h(agent)
 	} else {
 		log4g.Trace("dispatcher[%s] not found any handler for %v", p.Name, key)
@@ -219,8 +225,8 @@ func (p *dispatcher) Kick(key string) {
 	p.hub.Kick(key)
 }
 
-func (p *dispatcher) Broadcast(v interface{}, filter func(session NetSession) bool, prefix ...byte) error {
-	b, err := Serialize(p.serializer, v, prefix...)
+func (p *dispatcher) Broadcast(v interface{}, filter func(session NetSession) bool, h ...interface{}) error {
+	b, err := Serialize(p.serializer, v, h...)
 	if err != nil {
 		log4g.Error(err)
 		return err
@@ -229,8 +235,8 @@ func (p *dispatcher) Broadcast(v interface{}, filter func(session NetSession) bo
 	return nil
 }
 
-func (p *dispatcher) BroadcastAll(v interface{}, prefix ...byte) error {
-	b, err := Serialize(p.serializer, v, prefix...)
+func (p *dispatcher) BroadcastAll(v interface{}, h ...interface{}) error {
+	b, err := Serialize(p.serializer, v, h...)
 	if err != nil {
 		log4g.Error(err)
 		return err
@@ -239,8 +245,8 @@ func (p *dispatcher) BroadcastAll(v interface{}, prefix ...byte) error {
 	return nil
 }
 
-func (p *dispatcher) BroadcastOthers(mySession NetSession, v interface{}, prefix ...byte) error {
-	b, err := Serialize(p.serializer, v, prefix...)
+func (p *dispatcher) BroadcastOthers(mySession NetSession, v interface{}, h ...interface{}) error {
+	b, err := Serialize(p.serializer, v, h...)
 	if err != nil {
 		log4g.Error(err)
 		return err
@@ -249,8 +255,8 @@ func (p *dispatcher) BroadcastOthers(mySession NetSession, v interface{}, prefix
 	return nil
 }
 
-func (p *dispatcher) BroadcastOne(v interface{}, errFunc func(error), prefix ...byte) error {
-	b, err := Serialize(p.serializer, v, prefix...)
+func (p *dispatcher) BroadcastOne(v interface{}, errFunc func(error), h ...interface{}) error {
+	b, err := Serialize(p.serializer, v, h...)
 	if err != nil {
 		log4g.Error(err)
 		return err
@@ -280,8 +286,8 @@ func (p *dispatcher) SetGroup(session NetSession, group string) {
 	p.hub.SetGroup(session, group)
 }
 
-func (p *dispatcher) Group(group string, v interface{}, prefix ...byte) error {
-	b, err := Serialize(p.serializer, v, prefix...)
+func (p *dispatcher) Group(group string, v interface{}, h ...interface{}) error {
+	b, err := Serialize(p.serializer, v, h...)
 	if err != nil {
 		log4g.Error(err)
 		return err
@@ -290,8 +296,8 @@ func (p *dispatcher) Group(group string, v interface{}, prefix ...byte) error {
 	return nil
 }
 
-func (p *dispatcher) GroupOne(group string, v interface{}, errFunc func(error), prefix ...byte) error {
-	b, err := Serialize(p.serializer, v, prefix...)
+func (p *dispatcher) GroupOne(group string, v interface{}, errFunc func(error), h ...interface{}) error {
+	b, err := Serialize(p.serializer, v, h...)
 	if err != nil {
 		log4g.Error(err)
 		return err

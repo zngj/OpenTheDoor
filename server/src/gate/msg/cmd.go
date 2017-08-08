@@ -2,62 +2,59 @@ package msg
 
 import (
 	"github.com/carsonsx/net4g"
-	"reflect"
 )
 
 const (
-	MSG_SET_GATE_NO         = 100
-	MSG_SET_GATE_NO_SUCCESS = 200
-
-	MSG_USER_IN         = 101
-	MSG_USER_IN_SUCCESS = 201
-
-	MSG_USER_OUT         = 102
-	MSG_USER_OUT_SUCCESS = 202
+	C2S_GATE_LOGIN      = 100
+	S2C_GATE_LOGIN      = 101
+	S2C_NOT_LOGIN       = 102
+	C2S_RSA_KEY         = 103
+	S2C_RSA_KEY         = 104
+	C2S_VERIFY_EVIDENCE = 200
+	S2C_VERIFY_EVIDENCE = 201
+	C2S_USER_EVIDENCE   = 202
+	S2C_USER_EVIDENCE   = 203
 )
 
-var Dispatcher = net4g.NewDispatcher("gate", 1)
+var Serializer = NewGateSerializer()
 
-var Serializer = net4g.NewJsonSerializer()
-
-func init() {
-
-	net4g.NetConfig.MessageLengthSize = 1
-	net4g.NetConfig.MessageIdSize = 1
-
-	Serializer.RegisterId(SetGateNoType, true, MSG_SET_GATE_NO)
-	Serializer.RegisterId(SetGateNoSuccessType, true, MSG_SET_GATE_NO_SUCCESS)
-	Serializer.RegisterId(UserInType, true, MSG_USER_IN)
-	Serializer.RegisterId(UserInSuccessType, true, MSG_USER_IN_SUCCESS)
-	Serializer.RegisterId(UserOutType, true, MSG_USER_OUT)
-	Serializer.RegisterId(UserOutSuccessType, true, MSG_USER_OUT_SUCCESS)
-
+func OnInit() {
+	InitSerializer(Serializer)
 }
 
-var SetGateNoType = reflect.TypeOf(&SetGateNo{})
-var SetGateNoSuccessType = reflect.TypeOf(&SetGateNoSuccess{})
-var UserInType = reflect.TypeOf(&UserIn{})
-var UserInSuccessType = reflect.TypeOf(&UserInSuccess{})
-var UserOutType = reflect.TypeOf(&UserOut{})
-var UserOutSuccessType = reflect.TypeOf(&UserOutSuccess{})
-
-type SetGateNo struct {
-	No string `json:"no"`
+func InitSerializer(s net4g.Serializer) {
+	net4g.RegisterId(s, new(S2CGateLogin), S2C_GATE_LOGIN)
+	net4g.RegisterId(s, new(S2CRsaKey), S2C_RSA_KEY)
+	net4g.RegisterId(s, new(C2SVerifyEvidence), C2S_VERIFY_EVIDENCE)
+	net4g.RegisterId(s, new(S2CVerifyEvidence), S2C_VERIFY_EVIDENCE)
+	net4g.RegisterId(s, new(C2SUserEvidence), C2S_USER_EVIDENCE)
+	net4g.RegisterId(s, new(S2CUserEvidence), S2C_USER_EVIDENCE)
 }
 
-type SetGateNoSuccess struct {
+type S2CGateLogin struct {
+	Code          int8   `json:"code"` // 0-登录成功;1-GateId不存在
+	GateDirection string `json:"gate_direction,omitempty"`
+	StationName   string `json:"station_name,omitempty"`
+	CityName      string `json:"city_name,omitempty"`
 }
 
-type UserIn struct {
-	QrCode string `json:"qr"`
+type S2CRsaKey struct {
+	Key string `json:"key"`
 }
 
-type UserInSuccess struct {
+type C2SVerifyEvidence struct {
+	EvidenceKey string `json:"evidence_key"`
 }
 
-type UserOut struct {
-	QrCode string `json:"qr"`
+type S2CVerifyEvidence struct {
+	Code int8 `json:"code"` //0-通过;1-凭证不存在;2-凭证已过期;3-凭证与机闸不匹配;4-用户不符合付费标准
 }
 
-type UserOutSuccess struct {
+type C2SUserEvidence struct {
+	EvidenceKey string `json:"evidence_key"`
+	ScanTime    int64    `json:"scan_time"`
+}
+
+type S2CUserEvidence struct {
+	Success bool `json:"success"`
 }

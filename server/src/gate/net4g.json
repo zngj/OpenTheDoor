@@ -1,0 +1,5 @@
+{
+  "read_mode": "begin_end",
+  "length_size": 1,
+  "id_size": 1
+}

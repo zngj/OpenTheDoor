@@ -14,7 +14,9 @@ const (
 	READ_MODE_BEGIN_END ReadMode = "begin_end"
 )
 
-var NetConfig struct {
+var NetConfig netConfig
+
+type netConfig struct {
 	ReadMode           ReadMode      `json:"read_mode"`
 	MaxLength          uint64        `json:"max_length"`
 	BeginBytes         []byte        `json:"-"`
@@ -28,6 +30,11 @@ var NetConfig struct {
 	NetTolerableTime   time.Duration `json:"net_tolerable_time"`
 	IdSize             int           `json:"id_size"`
 	KeepWriteData      bool          `json:"keep_write_data"`
+}
+
+func (c *netConfig) Print()  {
+	log4g.Info("Net4g Config:")
+	log4g.JsonInfo(&NetConfig)
 }
 
 var searchPath = []string{"", "conf/", "config/"}
@@ -59,9 +66,7 @@ func searchJsonConfig(filename string, v interface{}) {
 	if !found {
 		log4g.Info("not found any net4g config")
 	}
-
-	log4g.Info("Net4g Config -------------------->")
-	log4g.JsonInfo(&NetConfig)
+	NetConfig.Print()
 }
 
 func loadJsonConfig(filename string, v interface{}) bool {

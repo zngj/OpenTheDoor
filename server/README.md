@@ -231,7 +231,7 @@ Header:
 |station_name|string|否|-|站点名称|
 |city_name|string|否|-|城市名称|
 
-样例：
+示例：
 ```json
 {
     "code": 0,
@@ -272,7 +272,7 @@ Header:
 |----------|----|-------|-------|--------|
 |key|string|是|-|私钥|
 
-样例：
+示例：
 ```json
 {
     "key": "\n-----BEGIN RSA PRIVATE KEY-----\nMIICXQIBAAKBgQDZsfv1qscqYdy4vY+P4e3cAtmvppXQcRvrF1cB4drkv0haU24Y\n7m5qYtT52Kr539RdbKKdLAM6s20lWy7+5C0DgacdwYWd/7PeCELyEipZJL07Vro7\nAte8Bfjya+wltGK9+XNUIHiumUKULW4KDx21+1NLAUeJ6PeW+DAkmJWF6QIDAQAB\nAoGBAJlNxenTQj6OfCl9FMR2jlMJjtMrtQT9InQEE7m3m7bLHeC+MCJOhmNVBjaM\nZpthDORdxIZ6oCuOf6Z2+Dl35lntGFh5J7S34UP2BWzF1IyyQfySCNexGNHKT1G1\nXKQtHmtc2gWWthEg+S6ciIyw2IGrrP2Rke81vYHExPrexf0hAkEA9Izb0MiYsMCB\n/jemLJB0Lb3Y/B8xjGjQFFBQT7bmwBVjvZWZVpnMnXi9sWGdgUpxsCuAIROXjZ40\nIRZ2C9EouwJBAOPjPvV8Sgw4vaseOqlJvSq/C/pIFx6RVznDGlc8bRg7SgTPpjHG\n4G+M3mVgpCX1a/EU1mB+fhiJ2LAZ/pTtY6sCQGaW9NwIWu3DRIVGCSMm0mYh/3X9\nDAcwLSJoctiODQ1Fq9rreDE5QfpJnaJdJfsIJNtX1F+L3YceeBXtW0Ynz2MCQBI8\n9KP274Is5FkWkUFNKnuKUK4WKOuEXEO+LpR+vIhs7k6WQ8nGDd4/mujoJBr5mkrw\nDPwqA3N5TMNDQVGv8gMCQQCaKGJgWYgvo3/milFfImbp+m7/Y3vCptarldXrYQWO\nAQjxwc71ZGBFDITYvdgJM1MTqc8xQek1FXn1vfpy2c6O\n-----END RSA PRIVATE KEY-----\n"
@@ -292,7 +292,7 @@ Header:
 |----------|----|-------|-------|--------|
 |evidence_key|string|是|-|凭证|
 
-样例：
+示例：
 ```json
 {
     "evidence_key": "0cf4524163c34d13916e2e649d889367"
@@ -309,7 +309,7 @@ Header:
 |----------|----|-------|-------|--------|
 |code|int|是|-|0-通过;<br/>3201-凭证不存在;<br/>3202-凭证已过期;<br/>3203-凭证与机闸不匹配;<br/>3204-用户不符合付费标准|
 
-样例：
+示例：
 ```json
 {
     "code": 0
@@ -330,7 +330,7 @@ Header:
 |evidence_key|string|是|-|出入闸凭证|
 |scan_time|int64|是|-|扫码时间|
 
-样例：
+示例：
 ```json
 {
     "evidence_key": "0cf4524163c34d13916e2e649d889367",
@@ -348,7 +348,7 @@ Header:
 |----------|----|-------|-------|--------|
 |success|bool|是|-|是否成功|
 
-样例：
+示例：
 ```json
 {
     "success": true

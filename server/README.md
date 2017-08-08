@@ -196,77 +196,31 @@ Header:
 
 ### 消息封包格式
 
-```code
-MSG = SIZE(1) + MSGID(1) + JSON_PAYLOAD(size-2)
-```
+见《闸机后台协议.doc》
 
-### MSGID:
+### 3-1 闸机登录
+当闸机成功连接后，向服务端发送登录协议，登录成功后获取闸机的信息
 
-|MSG|ID|Msg Reply|ID|
-|---|---|---|---|
-|MSG_SET_GATE_NO|100|MSG_SET_GATE_NO_SUCCESS|200|
-|MSG_USER_IN|101|MSG_USER_IN_SUCCESS|201|
-|MSG_USER_OUT|102|MSG_USER_OUT_SUCCESS|202|
+#### 请求MsgID: 100 (C2S_GATE_LOGIN)
 
-### 3-1 设置闸机编号
-当闸机成功连接到服务端后进行闸机编号设置，当闸机断线重连后也需要设置
+消息体：无
 
-#### 请求: MSG_SET_GATE_NO
-参数说明：
+#### 应答MsgID：101 (S2C_GATE_LOGIN)
 
+消息体：
 |参数名     |类型|是否必须|默认值  |说明    |
 |----------|----|-------|-------|--------|
-|no|string|是|-|闸机编号|
+|code|int8|是|-|0:登录成功;1-GateId不存在|
 
-请求样例：
+样例：
 ```json
 {
-    "no": "010101",
+    "code": 0,
+    "station_name": "五一广场",
+    "city_name": "长沙"
 }
 ```
-
-#### 应答：MSG_SET_GATE_NO_SUCCESS
-收到消息即为成功
-
-
-### 3-2 上报用户入闸数据
-当闸机开启后上报用户入闸数据
-
-#### 请求: MSG_USER_IN
-参数说明：
-
-|参数名     |类型|是否必须|默认值  |说明    |
-|----------|----|-------|-------|--------|
-|qr|string|是|-|入闸二维码数据|
-
-请求样例：
 ```json
 {
-    "qr": "TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCBieSB0aGlz",
+    "code": 1
 }
-```
-
-#### 应答：MSG_USER_IN_SUCCESS
-收到消息即为成功
-
-
-### 3-3 上报用户出闸数据
-当闸机开启后上报用户出闸数据
-
-#### 请求: MSG_USER_OUT
-参数说明：
-
-|参数名     |类型|是否必须|默认值  |说明    |
-|----------|----|-------|-------|--------|
-|qr|string|是|-|出闸二维码数据|
-
-请求样例：
-```json
-{
-    "qr": "IHNpbmd1bGFyIHBhc3Npb24gZnJvbSBvdGhlciBhbmltYWxzLCB3aGljaCBpcyBhIGx1c3Qgb2Yg",
-}
-```
-
-#### 应答：MSG_USER_OUT_SUCCESS
-收到消息即为成功
-

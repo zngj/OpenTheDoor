@@ -11,6 +11,10 @@ import (
 
 var ErrNotFound = errors.New("not found")
 
+func IsNotErrNotFound(err error) bool  {
+	return err != nil && ErrNotFound == err
+}
+
 func NewDao() *Dao {
 	return new(Dao)
 }
@@ -24,7 +28,7 @@ type Dao struct {
 
 func (dao *Dao) Connect() {
 	if dao.Db == nil {
-		log4g.Debug("connected database")
+		log4g.Trace("connected database")
 		dao.Db = GetDBConn()
 	}
 	//dao.db_counter++
@@ -52,6 +56,7 @@ func (dao *Dao) BeginTx() error {
 		dao.Tx, err = dao.Db.Begin()
 		if err != nil {
 			log4g.Error(err)
+			log4g.Error("\n" + string(debug.Stack()))
 			return err
 		}
 	}
@@ -67,7 +72,8 @@ func (dao *Dao) CommitTx(errs ...error) {
 	if dao.tx_counter == 1 {
 		err := dao.Tx.Commit()
 		if err != nil {
-			log4g.Error(errs)
+			log4g.Error(err)
+			log4g.Error("\n" + string(debug.Stack()))
 		}
 		//dao.Disconnect()
 	}
@@ -94,6 +100,7 @@ func (dao *Dao) rollback(err ...error)  {
 		e := dao.Tx.Rollback()
 		if e != nil {
 			log4g.Error(e)
+			log4g.Error("\n" + string(debug.Stack()))
 		}
 		if dao.tx_counter > 0 {
 			dao.tx_counter = 0
@@ -106,8 +113,8 @@ func (dao *Dao) Exec(query string, args ...interface{}) error {
 	var err error
 	defer func() { dao.CommitTx(err) }()
 
-	log4g.Debug("exec sql: %s", query)
-	log4g.Debug("exec arg: %v", args)
+	log4g.Debug("exec  sql: %s", query)
+	log4g.Debug("exec args: %v", args)
 
 	_, err = dao.Tx.Exec(query, args...)
 	if err != nil {
@@ -124,8 +131,8 @@ func (dao *Dao) Query(query string, args ...interface{}) *result {
 
 	r := new(result)
 
-	log4g.Debug("query sql: %s", query)
-	log4g.Debug("query arg: %v", args)
+	log4g.Debug("query  sql: %s", query)
+	log4g.Debug("query args: %v", args)
 
 	var rows *sql.Rows
 	rows, err := dao.Db.Query(query, args...)
@@ -180,8 +187,10 @@ func (r *result) One(dest ...interface{}) (err error) {
 		err = r.rows.Scan(dest...)
 		if err != nil {
 			log4g.Error(err)
+			log4g.Error("\n" + string(debug.Stack()))
 			return
 		}
+		log4g.Debug("query result: %v", dest)
 	} else {
 		err = ErrNotFound
 		log4g.Warn("not found any record.")
@@ -194,6 +203,7 @@ func (r *result) Map(dest ...interface{}) (records []map[string]interface{}, err
 	columns, err := r.rows.Columns()
 	if err != nil {
 		log4g.Error(err)
+		log4g.Error("\n" + string(debug.Stack()))
 		return nil, err
 	}
 
@@ -203,6 +213,7 @@ func (r *result) Map(dest ...interface{}) (records []map[string]interface{}, err
 		err = r.rows.Scan(dest...)
 		if err != nil {
 			log4g.Error(err)
+			log4g.Error("\n" + string(debug.Stack()))
 			return
 		}
 		record := make(map[string]interface{})

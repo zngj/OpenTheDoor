@@ -10,7 +10,7 @@
 
 参数：
 
-|参数名     |类型|是否必须|默认值  |说明    |
+|参数名|类型|是否必须|默认值|说明|
 |----------|----|-------|-------|--------|
 |code|string|是|-|登录凭证|
 
@@ -48,7 +48,7 @@
 
 Header:
 
-|Key     |Value|描述|
+|Key|Value|描述|
 |----------|----|-------|
 |Access-Token|登录返回的access_token|用户访问授权|
 
@@ -77,7 +77,7 @@ Header:
 
 Header:
 
-|Key     |Value|描述|
+|Key|Value|描述|
 |----------|----|-------|
 |Access-Token|登录返回的access_token|用户访问授权|
 
@@ -108,7 +108,7 @@ Header:
 
 Header:
 
-|Key     |Value|描述|
+|Key|Value|描述|
 |----------|----|-------|
 |Access-Token|登录返回的access_token|用户访问授权|
 
@@ -138,7 +138,7 @@ Header:
 
 Header:
 
-|Key     |Value|描述|
+|Key|Value|描述|
 |----------|----|-------|
 |Access-Token|登录返回的access_token|用户访问授权|
 
@@ -159,7 +159,6 @@ Header:
     "msg": "token was expired"
 }
 ```
-
 
 ### 2-4 获取用户出阐凭证
 
@@ -169,7 +168,7 @@ Header:
 
 Header:
 
-|Key     |Value|描述|
+|Key|Value|描述|
 |----------|----|-------|
 |Access-Token|登录返回的access_token|用户访问授权|
 
@@ -191,6 +190,79 @@ Header:
 }
 ```
 
+### 2-5 获取用户行程(出入闸)通知
+
+说明：
+1. uri: /notification/router
+2. Method: GET
+
+Header:
+
+|Key|Value|描述|
+|----------|----|-------|
+|Access-Token|登录返回的access_token|用户访问授权|
+
+返回：
+```json:
+{
+    "code": 0,
+    "msg": "success",
+    "data": {
+        "notification_id": 9,
+        "direction": 0, //入闸
+        "in_gate_id": "010100101",
+        "in_station_id": "0101001",
+        "in_station_name": "五一广场",
+        "in_time": 1502304832
+    }
+}
+```
+```json:
+{
+    "code": 0,
+    "msg": "success",
+    "data": {
+        "notification_id": 2,
+        "direction": 1, //出闸
+        "in_gate_id": "010100101",
+        "in_station_id": "0101001",
+        "in_station_name": "五一广场",
+        "in_time": 1502304832,
+        "out_gate_id": "010100202",
+        "out_station_id": "0101002",
+        "out_station_name": "黄兴广场",
+        "out_time": 1502308606,
+        "money": 2
+    }
+}
+```
+```json:
+{
+    "code": 5,
+    "msg": "not found"
+}
+```
+
+### 2-6 行程已通知用户(消费)
+
+说明：
+1. uri: /notification/consume/:notification_id
+2. Method: PUT
+3. :notification_id为通知的ID
+
+Header:
+
+|Key|Value|描述|
+|----------|----|-------|
+|Access-Token|登录返回的access_token|用户访问授权|
+
+返回：
+```json:
+{
+    "code": 0,
+    "msg": "success"
+}
+```
 
 ## Gate协议 - TCP
 
@@ -359,7 +431,7 @@ Header:
 ```json
 {
     "evidence_id": "0cf4524163c34d13916e2e649d889367",
-    "scan_time": 1502120737000  //Millisecond
+    "scan_time": 1502120737
 }
 ```
 

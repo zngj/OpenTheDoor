@@ -2,14 +2,13 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"usercenter/token"
 	"smartgate/service"
-	"smartgate/vo"
+	"common/vo"
 	"common/errcode"
 )
 
 func WalletInfo(c *gin.Context) {
-	userId, err := token.GetUserIdFromHeader(c.Request.Header)
+	userId, err := GetUserId(c.Request.Header)
 	if err != nil {
 		errcode.WriteErrorResponse(c.Writer, err)
 		return

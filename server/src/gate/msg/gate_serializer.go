@@ -280,7 +280,6 @@ func (s *GateSerializer) Deserialize(raw []byte) (v, h interface{}, rp *net4g.Ra
 
 	var sgHeader SGHeader
 	sgHeader.fromBytes(data)
-	log4g.JsonDebug(sgHeader)
 	h = &sgHeader
 
 	rp = new(net4g.RawPack)

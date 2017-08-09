@@ -5,14 +5,13 @@ import (
 	"fmt"
 	"github.com/carsonsx/log4g"
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/render"
 	"io/ioutil"
 	"net/http"
 	"usercenter/service"
 	"usercenter/vo"
 	"errors"
 	"common/util"
-	"common/errcode"
+	"common/sg"
 )
 
 const (
@@ -23,46 +22,36 @@ const (
 
 func WxappLogin(c *gin.Context) {
 
+	sgc := sg.Context(c)
 	var login vo.WxappLogin
-	err := c.Bind(&login)
-	if err != nil {
-		errcode.WriteErrorResponse(c.Writer, err)
+	if sgc.CheckError(c.Bind(&login)) {
 		return
 	}
-	if login.Code == "" {
-		render.WriteJSON(c.Writer, errcode.NewEmptyArgResponse("code"))
+	if sgc.CheckParamEmpty(login.Code, "code") {
 		return
 	}
-
 	session, err := code2session(login.Code)
-	if err != nil {
-		errcode.WriteErrorResponse(c.Writer, err)
+	if sgc.CheckError(err) {
+		return
+	}
+	if sgc.CheckParamEmpty(session.Openid, "code") || sgc.CheckParamEmpty(session.Session_key, "code") {
 		return
 	}
 
-	if session.Openid == "" || session.Session_key == "" {
-		render.WriteJSON(c.Writer, errcode.NewIllegalArgResponse("code"))
-		return
-	}
-
-	//save session to redis
 	log4g.Debug("session_key=" + session.Session_key)
 	log4g.Debug("expires_in=%d", session.ExpiresIn)
 	log4g.Debug("openid=" + session.Openid)
 	log4g.Debug("unionid=" + session.Unionid)
 
-
 	accessToken := util.NewUuid()
-	if err = service.SaveLoginSession(accessToken, session); err != nil {
-		errcode.WriteErrorResponse(c.Writer, err)
+	if sgc.CheckError(service.SaveLoginSession(accessToken, session)) {
 		return
 	}
 
-	var result vo.WxappLoginToken
+	result := new(vo.WxappLoginToken)
 	result.AccessToken = accessToken
 	result.ExpiresIn = session.ExpiresIn
-	errcode.WriteDataResponse(c.Writer, &result)
-
+	sgc.WriteData(result)
 }
 
 func code2session(code string) (session *vo.WxappSession, err error) {

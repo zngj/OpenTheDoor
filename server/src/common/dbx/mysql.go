@@ -23,7 +23,7 @@ func init()  {
 
 	file.LoadJsonConfig("mysql.json", &config)
 
-	url = fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&loc=Asia%%2FChongqing",
+	url = fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&loc=Asia%%2FChongqing&parseTime=true",
 		config.Username,
 		config.Password,
 		config.Addr,

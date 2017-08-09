@@ -17,3 +17,11 @@ func GetWallet(userId string) (wallet *model.WalletInfo, err error) {
 	}
 	return
 }
+
+func ChargeWallet()  {
+
+}
+
+func ConsumeWallet(userId string, money float32) error {
+	return dao.NewWalletDao().Decrease(userId, money)
+}

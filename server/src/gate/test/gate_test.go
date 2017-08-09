@@ -5,7 +5,11 @@ import (
 	"github.com/carsonsx/log4g"
 	"github.com/carsonsx/net4g"
 	"testing"
+	"common/util"
+	"time"
 )
+
+var gateId = "010100101"
 
 func TestLogin(t *testing.T) {
 	start(login)
@@ -13,31 +17,27 @@ func TestLogin(t *testing.T) {
 
 func login()  {
 	dispatcher.AddHandler(loginResult, msg.S2C_GATE_LOGIN)
-	header := msg.NewSGHeader("010100101")
+	header := msg.NewSGHeader(gateId)
 	rp := new(net4g.RawPack)
 	rp.Id = msg.C2S_GATE_LOGIN
 	agent.Write(rp, header)
 }
 
 func loginResult(agent net4g.NetAgent) {
-	log4g.JsonDebug(agent.Msg())
-	if agent.Msg().(*msg.S2CGateLogin).ErrCode == 0 {
+
+	if gl := agent.Msg().(*msg.S2CGateLogin); gl.ErrCode == 0 {
+		log4g.Info("gate %s login success", gl.GateId)
+		log4g.JsonDebug(agent.Msg())
 		net4g.TestDone()
 	}
 }
 
 func TestNotLogin(t *testing.T) {
-	start(netLogin)
+	start(notLogin)
 }
 
-func netLogin()  {
-	dispatcher.AddHandler(notLoginResult, msg.S2C_NOT_LOGIN)
+func notLogin()  {
 	rsaKey()
-}
-
-func notLoginResult(agent net4g.NetAgent) {
-	log4g.Debug("* gate not login")
-	net4g.TestDone()
 }
 
 func TestRsaKey(t *testing.T) {
@@ -46,7 +46,7 @@ func TestRsaKey(t *testing.T) {
 
 func rsaKey() {
 	dispatcher.AddHandler(rsaKeyResult, msg.S2C_RSA_KEY)
-	header := msg.NewSGHeader("010100101")
+	header := msg.NewSGHeader(gateId)
 	rp := new(net4g.RawPack)
 	rp.Id = msg.C2S_RSA_KEY
 	agent.Write(rp, header)
@@ -63,30 +63,33 @@ func TestVerifyEvidence(t *testing.T) {
 
 func verifyEvidence() {
 	dispatcher.AddHandler(verifyEvidenceResult, msg.S2C_VERIFY_EVIDENCE)
-	header := msg.NewSGHeader("010100101")
+	header := msg.NewSGHeader(gateId)
 	ve := new(msg.C2SVerifyEvidence)
-	ve.EvidenceKey = "1111"
+	ve.EvidenceId = "0d61539e6b954dc5943fd2f1a33819aa"
 	agent.Write(ve, header)
 }
 
 func verifyEvidenceResult(agent net4g.NetAgent) {
-	log4g.Debug("* verify evidence result: %d", agent.Msg().(*msg.S2CVerifyEvidence).ErrCode)
+	result := agent.Msg().(*msg.S2CVerifyEvidence)
+	log4g.Debug("* verify evidence result: [%d]%s", result.ErrCode, result.ErrMsg)
 	net4g.TestDone()
 }
 
-func TestUserEvidence(t *testing.T) {
-	start(login, userEvidence)
+func TestSubmitEvidence(t *testing.T) {
+	gateId = "010100202"
+	start(login, submitEvidence)
 }
 
-func userEvidence() {
-	dispatcher.AddHandler(userEvidenceResult, msg.S2C_SUBMIT_EVIDENCE)
-	header := msg.NewSGHeader("010100101")
+func submitEvidence() {
+	dispatcher.AddHandler(submitEvidenceResult, msg.S2C_SUBMIT_EVIDENCE)
+	header := msg.NewSGHeader(gateId)
 	ue := new(msg.C2SSubmitEvidence)
-	ue.EvidenceKey = "1111"
+	ue.EvidenceId = "ff2ec54dc7434237959b661c472584da"
+	ue.ScanTime = util.TimeToUnixMilli(time.Now())
 	agent.Write(ue, header)
 }
 
-func userEvidenceResult(agent net4g.NetAgent) {
+func submitEvidenceResult(agent net4g.NetAgent) {
 	log4g.Debug("* upload user evidence result: %v", agent.Msg().(*msg.S2CSubmitEvidence).ErrCode)
 	net4g.TestDone()
 }

@@ -5,9 +5,15 @@ import (
 	"github.com/gin-gonic/gin"
 	"smartgate/codec"
 	"smartgate/service"
-	"smartgate/vo"
+	"common/vo"
 	"usercenter/token"
+	"net/http"
 )
+
+func GetUserId(header http.Header) (userId string, err error) {
+	accessToken := header.Get(token.HEADER_ACCESS_TOKEN)
+	return token.GetUserId(accessToken)
+}
 
 func RouterStatus(c *gin.Context) {
 	var rs vo.RouterStatusVO
@@ -16,12 +22,12 @@ func RouterStatus(c *gin.Context) {
 }
 
 func RouterEvidenceIn(c *gin.Context) {
-	_routerEvidence(c, 0)
+	_routerEvidence(c, service.GATE_DIRECTION_IN)
 
 }
 
 func RouterEvidenceOut(c *gin.Context) {
-	_routerEvidence(c, 1)
+	_routerEvidence(c, service.GATE_DIRECTION_OUT)
 }
 
 func RouterEvidence(c *gin.Context) {
@@ -29,7 +35,7 @@ func RouterEvidence(c *gin.Context) {
 }
 
 func _routerEvidence(c *gin.Context, typ int8) {
-	userId, err := token.GetUserIdFromHeader(c.Request.Header)
+	userId, err := GetUserId(c.Request.Header)
 	if err != nil {
 		errcode.WriteErrorResponse(c.Writer, err)
 		return
@@ -47,6 +53,7 @@ func _routerEvidence(c *gin.Context, typ int8) {
 	}
 
 	var evidenceVo vo.EvidenceVO
+	evidenceVo.EvidenceId =evidence.EvidenceId + " (debug)"
 	evidenceVo.EvidenceKey = evidenceKey
 	evidenceVo.ExpiresAt = evidence.ExpiresAt.Unix()
 	errcode.WriteDataResponse(c.Writer, &evidenceVo)

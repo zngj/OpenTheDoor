@@ -41,19 +41,19 @@ func ToJsonString(v interface{}) string {
 
 func JsonInfo(v interface{}) {
 	if IsInfoEnabled() {
-		Info(ToJsonString(v))
+		loggers.Log(LEVEL_INFO, ToJsonString(v))
 	}
 }
 
 func JsonDebug(v interface{}) {
 	if IsDebugEnabled() {
-		Debug(ToJsonString(v))
+		loggers.Log(LEVEL_DEBUG, ToJsonString(v))
 	}
 }
 
 func JsonTrace(v interface{}) {
 	if IsTraceEnabled() {
-		Trace(ToJsonString(v))
+		loggers.Log(LEVEL_TRACE, ToJsonString(v))
 	}
 }
 

@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin/render"
 	"usercenter/vo"
 	"github.com/carsonsx/log4g"
-	"net/http"
 	"common/errcode"
 )
 
@@ -31,9 +30,7 @@ func CheckToken(c *gin.Context) bool {
 		log4g.Debug("found access_token in header: %s", verify.AccessToken)
 	}
 	if verify.AccessToken == "" {
-		resp := errcode.NewEmptyArgResponse("code")
-		log4g.Error(resp.Msg)
-		render.WriteJSON(c.Writer, resp)
+		errcode.WriteEmptyArgResponse(c.Writer, "code")
 		return false
 	}
 	valid, err := IsValid(verify.AccessToken)
@@ -56,9 +53,4 @@ func VerifyTokenFn(c *gin.Context) {
 	if !CheckToken(c) {
 		c.Abort()
 	}
-}
-
-func GetUserIdFromHeader(header http.Header) (userId string, err error) {
-	accessToken := header.Get(HEADER_ACCESS_TOKEN)
-	return GetUserId(accessToken)
 }

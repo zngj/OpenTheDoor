@@ -44,9 +44,9 @@ Page({
     console.log(rawData);
     this.setData({
       "qrImgs": [
-         wxqrcode.createQrCodeImg(this.encrypt(this.getRandom(2) + rawData + ":" + new Date().getTime() ), { 'size': 200 })
-        ,wxqrcode.createQrCodeImg(this.encrypt(this.getRandom(2) + rawData + ":" + new Date().getTime() ), { 'size': 200 })
-        ,wxqrcode.createQrCodeImg(this.encrypt(this.getRandom(2) + rawData + ":" + new Date().getTime() ), { 'size': 200 })
+         wxqrcode.createQrCodeImg(this.encrypt(this.getRandom(2) + rawData + "=" + new Date().getTime() ), { 'size': 200 })
+        ,wxqrcode.createQrCodeImg(this.encrypt(this.getRandom(2) + rawData + "=" + new Date().getTime() ), { 'size': 200 })
+        ,wxqrcode.createQrCodeImg(this.encrypt(this.getRandom(2) + rawData + "=" + new Date().getTime() ), { 'size': 200 })
     ]});
   },
   nextPeople: function () {
@@ -57,7 +57,11 @@ Page({
     });
   },
   getRandom(len){
-    return (Math.random() + '').replace("0.", "").substr(0, len);
+    var s="";
+    for(var i=0;i<len;i++){
+      s+=String.fromCharCode("A".charCodeAt(0) + Math.ceil(Math.random() * 25))
+    }
+    return s;
   },
  
   encrypt: function (word) {
@@ -67,7 +71,7 @@ Page({
     var srcs = aes.CryptoJS.enc.Base64.parse(word);
     //var srcs = aes.CryptoJS.enc.Utf8.parse(word);
     var encrypted = aes.CryptoJS.AES.encrypt(srcs, key, { iv: iv, mode: aes.CryptoJS.mode.CBC, padding: aes.CryptoJS.pad.Pkcs7 });
-    var word = encrypted.ciphertext.toString(aes.CryptoJS.enc.Base64).toUpperCase();
+    var word = encrypted.ciphertext.toString(aes.CryptoJS.enc.Base64);
     console.log(word.length);
     console.log(word);
     return word;

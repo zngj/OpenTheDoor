@@ -41,6 +41,7 @@ Page({
   },
   makeCode: function (rawData) {
     console.log(rawData.length);
+    console.log(rawData);
     this.setData({
       "qrImgs": [
          wxqrcode.createQrCodeImg(this.encrypt(this.getRandom(2) + rawData + ":" + new Date().getTime() ), { 'size': 200 })
@@ -60,6 +61,7 @@ Page({
   },
  
   encrypt: function (word) {
+    console.log(word);
     var key = aes.CryptoJS.enc.Utf8.parse("5454395434473454");   //十六位十六进制数作为秘钥
     var iv = aes.CryptoJS.enc.Utf8.parse('6916665466156476');  //十六位十六进制数作为秘钥偏移量
     var srcs = aes.CryptoJS.enc.Base64.parse(word);
@@ -67,6 +69,7 @@ Page({
     var encrypted = aes.CryptoJS.AES.encrypt(srcs, key, { iv: iv, mode: aes.CryptoJS.mode.CBC, padding: aes.CryptoJS.pad.Pkcs7 });
     var word = encrypted.ciphertext.toString(aes.CryptoJS.enc.Base64).toUpperCase();
     console.log(word.length);
+    console.log(word);
     return word;
   },
   decrypt: function (word) {

@@ -13,15 +13,15 @@ func verifyEvidenceFn(agent net4g.NetAgent)  {
 	}
 	evidence := agent.Msg().(*msg.C2SVerifyEvidence)
 	verifyResult := new(msg.S2CVerifyEvidence)
-	if evidence.EvidenceKey == "" {
+	if evidence.EvidenceId == "" {
 		verifyResult.ErrCode = errcode.CODE_COMMON_EMPTY_ARG
 		verifyResult.ErrMsg = errcode.GetMsg(verifyResult.ErrCode)
-	} else if len(evidence.EvidenceKey) != 32 {
-		verifyResult.ErrCode = errcode.CODE_COMMON_WRONG_ARG
+	} else if len(evidence.EvidenceId) != 32 {
+		verifyResult.ErrCode = errcode.CODE_GATE_INVALID_EVIDENCE
 		verifyResult.ErrMsg = errcode.GetMsg(verifyResult.ErrCode)
 	} else {
 		var err error
-		verifyResult.ErrCode, err = service.VerifyEvidence(evidence.EvidenceKey)
+		verifyResult.ErrCode, err = service.VerifyEvidence(evidence.EvidenceId, getGateId(agent))
 		if err != nil {
 			verifyResult.ErrCode = errcode.CODE_COMMON_ERROR
 			verifyResult.ErrMsg = err.Error()

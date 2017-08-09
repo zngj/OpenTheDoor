@@ -47,7 +47,7 @@ type S2CRsaKey struct {
 }
 
 type C2SVerifyEvidence struct {
-	EvidenceKey string `json:"evidence_key"`
+	EvidenceId string `json:"evidence_id"`
 }
 
 type S2CVerifyEvidence struct {
@@ -56,7 +56,7 @@ type S2CVerifyEvidence struct {
 }
 
 type C2SSubmitEvidence struct {
-	EvidenceKey string `json:"evidence_key"`
+	EvidenceId string `json:"evidence_id"`
 	ScanTime    int64  `json:"scan_time"`
 }
 

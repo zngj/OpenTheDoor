@@ -30,10 +30,10 @@ func getGateIdFromHeader(agent net4g.NetAgent) string {
 	return getSGHeader(agent).GateId
 }
 
-func getGateIdFromSession(agent net4g.NetAgent) string {
+func getGateId(agent net4g.NetAgent) string {
 	return agent.Session().Key()
 }
 
 func write(agent net4g.NetAgent, v interface{}) {
-	agent.Write(v, msg.NewSGHeader(getGateIdFromSession(agent)))
+	agent.Write(v, msg.NewSGHeader(getGateId(agent)))
 }

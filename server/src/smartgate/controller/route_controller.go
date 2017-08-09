@@ -16,16 +16,16 @@ func RouterStatus(c *gin.Context) {
 }
 
 func RouterEvidenceIn(c *gin.Context) {
-	_routerEvidence(c, 1)
+	_routerEvidence(c, 0)
 
 }
 
 func RouterEvidenceOut(c *gin.Context) {
-	_routerEvidence(c, 2)
+	_routerEvidence(c, 1)
 }
 
 func RouterEvidence(c *gin.Context) {
-	_routerEvidence(c, 0)
+	_routerEvidence(c, 2)
 }
 
 func _routerEvidence(c *gin.Context, typ int8) {

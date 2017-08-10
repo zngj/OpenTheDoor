@@ -1,5 +1,15 @@
 # SmartGate Server
 
+## 出入闸凭证格式
+
+### Demo阶段
+32位uuid+10位时间戳
+如：0cf4524163c34d13916e2e649d8893671502120737
+
+### 正式阶段
+将10位时间戳插入到32位uuid中，加入验证位，再加密混淆
+
+
 ## 用户协议 - HTTPS
 
 ### 1-1 小程序用户登录
@@ -332,27 +342,27 @@ Header:
 闸机获取私钥用于解密出入闸凭证
 
 #### MsgID: 103
-协议：请求私钥<br/>
+协议：请求公钥<br/>
 别名：C2S_RSA_KEY<br/>
 发送：闸机 -> 后台<br/>
 数据：无
 
 #### MsgID：104
-协议：私钥结果<br/>
+协议：下发公钥<br/>
 别名：S2C_RSA_KEY<br/>
 发送：后台 -> 闸机<br/>
 数据：
 
 |参数名     |类型|默认值  |说明    |
 |----------|----|-------|--------|
-|key|string|-|私钥|
+|key|string|-|公钥|
 |errcode|int|-|1至999-通用错误|
 |errmsg|string|-|错误内容|
 
 示例：
 ```json
 {
-    "key": "\n-----BEGIN RSA PRIVATE KEY-----\nMIICXQIBAAKBgQDZsfv1qscqYdy4vY+P4e3cAtmvppXQcRvrF1cB4drkv0haU24Y\n7m5qYtT52Kr539RdbKKdLAM6s20lWy7+5C0DgacdwYWd/7PeCELyEipZJL07Vro7\nAte8Bfjya+wltGK9+XNUIHiumUKULW4KDx21+1NLAUeJ6PeW+DAkmJWF6QIDAQAB\nAoGBAJlNxenTQj6OfCl9FMR2jlMJjtMrtQT9InQEE7m3m7bLHeC+MCJOhmNVBjaM\nZpthDORdxIZ6oCuOf6Z2+Dl35lntGFh5J7S34UP2BWzF1IyyQfySCNexGNHKT1G1\nXKQtHmtc2gWWthEg+S6ciIyw2IGrrP2Rke81vYHExPrexf0hAkEA9Izb0MiYsMCB\n/jemLJB0Lb3Y/B8xjGjQFFBQT7bmwBVjvZWZVpnMnXi9sWGdgUpxsCuAIROXjZ40\nIRZ2C9EouwJBAOPjPvV8Sgw4vaseOqlJvSq/C/pIFx6RVznDGlc8bRg7SgTPpjHG\n4G+M3mVgpCX1a/EU1mB+fhiJ2LAZ/pTtY6sCQGaW9NwIWu3DRIVGCSMm0mYh/3X9\nDAcwLSJoctiODQ1Fq9rreDE5QfpJnaJdJfsIJNtX1F+L3YceeBXtW0Ynz2MCQBI8\n9KP274Is5FkWkUFNKnuKUK4WKOuEXEO+LpR+vIhs7k6WQ8nGDd4/mujoJBr5mkrw\nDPwqA3N5TMNDQVGv8gMCQQCaKGJgWYgvo3/milFfImbp+m7/Y3vCptarldXrYQWO\nAQjxwc71ZGBFDITYvdgJM1MTqc8xQek1FXn1vfpy2c6O\n-----END RSA PRIVATE KEY-----\n"
+    "key": "\n-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDZsfv1qscqYdy4vY+P4e3cAtmv\nppXQcRvrF1cB4drkv0haU24Y7m5qYtT52Kr539RdbKKdLAM6s20lWy7+5C0Dgacd\nwYWd/7PeCELyEipZJL07Vro7Ate8Bfjya+wltGK9+XNUIHiumUKULW4KDx21+1NL\nAUeJ6PeW+DAkmJWF6QIDAQAB\n-----END PUBLIC KEY-----\n"
 }
 ```
 ```json
@@ -374,12 +384,12 @@ Header:
 
 |参数名     |类型|默认值  |说明    |
 |----------|----|-------|--------|
-|evidence_id|string|-|凭证|
+|evidence_key|string|-|凭证|
 
 示例：
 ```json
 {
-    "evidence_id": "0cf4524163c34d13916e2e649d889367"
+    "evidence_key": "MjWCCOKE9yDNMarR1l/j0nVok9wxExvKPtKleA/1OiO6Cvn0BM01Fdjb9MxSF9yTYBG48Bh85ZcQdaZ97TM3o8NJ1rOoKaqD+R1LdK/c6RGxHQ6rUPdXBU7yZP2rOBeN/xhjC7ge+iHwn6/3nwURr+33V1BUb7GzJqGerU6e59Q="
 }
 ```
 
@@ -424,13 +434,13 @@ Header:
 
 |参数名     |类型|默认值  |说明    |
 |----------|----|-------|--------|
-|evidence_id|string|-|出入闸凭证|
-|scan_time|int64|-|扫码时间|
+|evidence_key|string|-|出入闸凭证|
+|scan_time|int64|-|扫码unix时间戳|
 
 示例：
 ```json
 {
-    "evidence_id": "0cf4524163c34d13916e2e649d889367",
+    "evidence_key": "MjWCCOKE9yDNMarR1l/j0nVok9wxExvKPtKleA/1OiO6Cvn0BM01Fdjb9MxSF9yTYBG48Bh85ZcQdaZ97TM3o8NJ1rOoKaqD+R1LdK/c6RGxHQ6rUPdXBU7yZP2rOBeN/xhjC7ge+iHwn6/3nwURr+33V1BUb7GzJqGerU6e59Q=",
     "scan_time": 1502120737
 }
 ```

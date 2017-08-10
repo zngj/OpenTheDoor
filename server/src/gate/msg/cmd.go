@@ -1,34 +1,22 @@
 package msg
 
-import (
-	"github.com/carsonsx/net4g"
-)
-
 const (
-	C2S_GATE_LOGIN      = 100
-	S2C_GATE_LOGIN      = 101
-	S2C_NOT_LOGIN       = 102
-	C2S_RSA_KEY         = 103
-	S2C_RSA_KEY         = 104
-	C2S_VERIFY_EVIDENCE = 200
-	S2C_VERIFY_EVIDENCE = 201
-	C2S_SUBMIT_EVIDENCE = 202
-	S2C_SUBMIT_EVIDENCE = 203
+	GATE_LOGIN      = 100
+	NOT_LOGIN       = 101
+	RSA_KEY         = 102
+	VERIFY_EVIDENCE = 103
+	SUBMIT_EVIDENCE = 104
 )
 
 var Serializer = NewGateSerializer()
 
 func OnInit() {
-	InitSerializer(Serializer)
-}
-
-func InitSerializer(s net4g.Serializer) {
-	net4g.RegisterId(s, new(S2CGateLogin), S2C_GATE_LOGIN)
-	net4g.RegisterId(s, new(S2CRsaKey), S2C_RSA_KEY)
-	net4g.RegisterId(s, new(C2SVerifyEvidence), C2S_VERIFY_EVIDENCE)
-	net4g.RegisterId(s, new(S2CVerifyEvidence), S2C_VERIFY_EVIDENCE)
-	net4g.RegisterId(s, new(C2SSubmitEvidence), C2S_SUBMIT_EVIDENCE)
-	net4g.RegisterId(s, new(S2CSubmitEvidence), S2C_SUBMIT_EVIDENCE)
+	Serializer.SerializeId(new(S2CGateLogin), GATE_LOGIN)
+	Serializer.SerializeId(new(S2CRsaKey), RSA_KEY)
+	Serializer.DeserializeId(new(C2SVerifyEvidence), VERIFY_EVIDENCE)
+	Serializer.SerializeId(new(S2CVerifyEvidence), VERIFY_EVIDENCE)
+	Serializer.DeserializeId(new(C2SSubmitEvidence), SUBMIT_EVIDENCE)
+	Serializer.SerializeId(new(S2CSubmitEvidence), SUBMIT_EVIDENCE)
 }
 
 type S2CGateLogin struct {

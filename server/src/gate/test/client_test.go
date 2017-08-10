@@ -10,8 +10,19 @@ var dispatcher = net4g.NewDispatcher("client")
 var serializer = msg.NewGateSerializer()
 var agent net4g.NetAgent
 
+func onInit()  {
+
+	serializer.DeserializeId(new(msg.S2CGateLogin), msg.GATE_LOGIN)
+	serializer.DeserializeId(new(msg.S2CRsaKey), msg.RSA_KEY)
+	serializer.SerializeId(new(msg.C2SVerifyEvidence), msg.VERIFY_EVIDENCE)
+	serializer.DeserializeId(new(msg.S2CVerifyEvidence), msg.VERIFY_EVIDENCE)
+	serializer.SerializeId(new(msg.C2SSubmitEvidence), msg.SUBMIT_EVIDENCE)
+	serializer.DeserializeId(new(msg.S2CSubmitEvidence), msg.SUBMIT_EVIDENCE)
+
+}
+
 func notLoginResult(agent net4g.NetAgent) {
-	log4g.Debug("* gate not login")
+	log4g.Debug("[client]gate not login")
 	net4g.TestDone()
 }
 
@@ -26,8 +37,9 @@ func connect(callback func()) {
 	net4g.NetConfig.IdSize = 1
 	net4g.NetConfig.Print()
 
-	msg.InitSerializer(serializer)
-	dispatcher.AddHandler(notLoginResult, msg.S2C_NOT_LOGIN)
+	onInit()
+
+	dispatcher.AddHandler(notLoginResult, msg.NOT_LOGIN)
 	dispatcher.OnConnectionCreated(func(a net4g.NetAgent) {
 		agent = a
 		callback()

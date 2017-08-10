@@ -15,17 +15,17 @@ func TestLogin(t *testing.T) {
 }
 
 func login()  {
-	dispatcher.AddHandler(loginResult, msg.S2C_GATE_LOGIN)
+	dispatcher.AddHandler(loginResult, msg.GATE_LOGIN)
 	header := msg.NewSGHeader(gateId)
 	rp := new(net4g.RawPack)
-	rp.Id = msg.C2S_GATE_LOGIN
+	rp.Id = msg.GATE_LOGIN
 	agent.Write(rp, header)
 }
 
 func loginResult(agent net4g.NetAgent) {
 
 	if gl := agent.Msg().(*msg.S2CGateLogin); gl.ErrCode == 0 {
-		log4g.Info("gate %s login success", gl.GateId)
+		log4g.Info("[client]gate %s login success", gl.GateId)
 		log4g.JsonDebug(agent.Msg())
 		net4g.TestDone()
 	}
@@ -44,10 +44,10 @@ func TestRsaKey(t *testing.T) {
 }
 
 func rsaKey() {
-	dispatcher.AddHandler(rsaKeyResult, msg.S2C_RSA_KEY)
+	dispatcher.AddHandler(rsaKeyResult, msg.RSA_KEY)
 	header := msg.NewSGHeader(gateId)
 	rp := new(net4g.RawPack)
-	rp.Id = msg.C2S_RSA_KEY
+	rp.Id = msg.RSA_KEY
 	agent.Write(rp, header)
 }
 
@@ -61,7 +61,7 @@ func TestVerifyEvidence(t *testing.T) {
 }
 
 func verifyEvidence() {
-	dispatcher.AddHandler(verifyEvidenceResult, msg.S2C_VERIFY_EVIDENCE)
+	dispatcher.AddHandler(verifyEvidenceResult, msg.VERIFY_EVIDENCE)
 	header := msg.NewSGHeader(gateId)
 	ve := new(msg.C2SVerifyEvidence)
 	ve.EvidenceKey = "GoQSYpFTFiN/bfwj19iMpQlR/ilzBFYaNn2i2EejPyGfQFxGAhZic69Jn4yMeV0ohcba3Tvn1Dv2CyIK/eOG9A5eir9V10ZVk5j60wOhV4qMJ8QiHxqjYCbFHUAivF0H8l10mR3rU4QJkD9iymFBT7jF3uMp+qMox/p541bxRHg="
@@ -80,7 +80,7 @@ func TestSubmitEvidence(t *testing.T) {
 }
 
 func submitEvidence() {
-	dispatcher.AddHandler(submitEvidenceResult, msg.S2C_SUBMIT_EVIDENCE)
+	dispatcher.AddHandler(submitEvidenceResult, msg.SUBMIT_EVIDENCE)
 	header := msg.NewSGHeader(gateId)
 	ue := new(msg.C2SSubmitEvidence)
 	ue.EvidenceKey = "RQ6nROMjHQ4TgWRhMZyqM5wPh2/hgaw6Et8SyTbJ2yqMgjQUAy/q1Bz8yqyXstZGa8oI2oEJs9koxzyHBf+I06jo22CqXOmJFwvX+JaFY8XlgQ+7eCa3zOn9NPXSnGJxcVUFD+20bQJRhti4T7dhsZT+y0/lT6ZNKSsnOEqjFbE="

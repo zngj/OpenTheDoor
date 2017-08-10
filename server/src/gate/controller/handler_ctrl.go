@@ -8,14 +8,11 @@ import (
 var Dispatcher = net4g.NewDispatcher("gate", 10)
 
 func OnInit() {
-
 	Dispatcher.OnConnectionCreated(onConnectionCreated)
-
-	Dispatcher.AddHandler(gateLoginFn, msg.C2S_GATE_LOGIN)
-	Dispatcher.AddHandler(rsaKeyFn, msg.C2S_RSA_KEY)
-	Dispatcher.AddHandler(verifyEvidenceFn, msg.C2S_VERIFY_EVIDENCE)
-	Dispatcher.AddHandler(submitEvidenceFn, msg.C2S_SUBMIT_EVIDENCE)
-
+	Dispatcher.AddHandler(gateLoginFn, msg.GATE_LOGIN)
+	Dispatcher.AddHandler(rsaKeyFn, msg.RSA_KEY)
+	Dispatcher.AddHandler(verifyEvidenceFn, msg.VERIFY_EVIDENCE)
+	Dispatcher.AddHandler(submitEvidenceFn, msg.SUBMIT_EVIDENCE)
 }
 
 func onConnectionCreated(agent net4g.NetAgent) {

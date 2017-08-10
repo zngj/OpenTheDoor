@@ -179,7 +179,7 @@ func (s *GateSerializer) Serialize(v, h interface{}) (data []byte, err error) {
 		}
 
 		var ok bool
-		id, ok = s.IdsOfType[t]
+		id, ok = s.SerializerIdsOfType[t]
 		if !ok {
 			err = errors.New(fmt.Sprintf("%v is not registed by any id", t))
 			log4g.Error(err)
@@ -285,8 +285,12 @@ func (s *GateSerializer) Deserialize(raw []byte) (v, h interface{}, rp *net4g.Ra
 	rp = new(net4g.RawPack)
 	rp.Id = int(sgHeader.Id)
 	rp.Data = data[32:]
+
 	var ok bool
-	if rp.Type, ok = s.TypesOfId[rp.Id]; ok {
+	if rp.Type, ok = s.DeserializerTypesOfId[rp.Id]; ok {
+		if log4g.IsTraceEnabled() {
+			log4g.Trace("deserialize %v - %s", rp.Type, string(rp.Data))
+		}
 		v = reflect.New(rp.Type.Elem()).Interface()
 		if len(rp.Data) == 0 {
 			return
@@ -295,8 +299,6 @@ func (s *GateSerializer) Deserialize(raw []byte) (v, h interface{}, rp *net4g.Ra
 		if err != nil {
 			log4g.Error(err)
 			log4g.Error(string(rp.Data))
-		} else {
-			log4g.Trace("deserialize %v - %s", rp.Type, string(rp.Data))
 		}
 	}
 

@@ -11,6 +11,6 @@ func rsaKeyFn(agent net4g.NetAgent)  {
 		return
 	}
 	rsaKey := new(msg.S2CRsaKey)
-	rsaKey.Key = string(codec.Private_Key)
+	rsaKey.Key = string(codec.Public_Key)
 	write(agent, rsaKey)
 }

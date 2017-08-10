@@ -296,15 +296,12 @@ Header:
 
 #### MsgID: 100
 协议：闸机登录<br/>
-别名：C2S_GATE_LOGIN<br/>
-发送：闸机 -> 后台<br/>
-数据：无
+别名：GATE_LOGIN<br/>
+发送：闸机 <-> 后台<br/>
 
-#### MsgID：101
-协议：登录结果<br/>
-别名：S2C_GATE_LOGIN<br/>
-发送：后台 -> 闸机<br/>
-数据：
+请求数据：无
+
+返回数据：
 
 |参数名     |类型|默认值  |说明    |
 |----------|----|-------|--------|
@@ -315,7 +312,7 @@ Header:
 |errcode|int|-|1至999-通用错误<br/>3100-无效的闸机ID|
 |errmsg|string|-|错误内容|
 
-示例：
+返回示例：
 ```json
 {
     "gate_id": "010100101",
@@ -331,9 +328,9 @@ Header:
 }
 ```
 
-#### MsgID: 102
+#### MsgID: 101
 协议：闸机未登录<br/>
-别名：S2C_NOT_LOGIN<br/>
+别名：NOT_LOGIN<br/>
 发送：后台 -> 闸机<br/>
 描述：后台收到闸机发送的非登录协议，检查到闸机未登录，会向闸机发送此协议<br/>
 数据：无
@@ -341,17 +338,14 @@ Header:
 ### 3-2 获取私钥
 闸机获取私钥用于解密出入闸凭证
 
-#### MsgID: 103
-协议：请求公钥<br/>
-别名：C2S_RSA_KEY<br/>
-发送：闸机 -> 后台<br/>
-数据：无
+#### MsgID: 102
+协议：获取公钥<br/>
+别名：RSA_KEY<br/>
+发送：闸机 <-> 后台<br/>
 
-#### MsgID：104
-协议：下发公钥<br/>
-别名：S2C_RSA_KEY<br/>
-发送：后台 -> 闸机<br/>
-数据：
+请求数据：无
+
+返回数据：
 
 |参数名     |类型|默认值  |说明    |
 |----------|----|-------|--------|
@@ -359,7 +353,7 @@ Header:
 |errcode|int|-|1至999-通用错误|
 |errmsg|string|-|错误内容|
 
-示例：
+返回示例：
 ```json
 {
     "key": "\n-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDZsfv1qscqYdy4vY+P4e3cAtmv\nppXQcRvrF1cB4drkv0haU24Y7m5qYtT52Kr539RdbKKdLAM6s20lWy7+5C0Dgacd\nwYWd/7PeCELyEipZJL07Vro7Ate8Bfjya+wltGK9+XNUIHiumUKULW4KDx21+1NL\nAUeJ6PeW+DAkmJWF6QIDAQAB\n-----END PUBLIC KEY-----\n"
@@ -376,35 +370,32 @@ Header:
 ### 3-3 验证凭证
 闸机能过扫描二维码，获取用户的出入闸凭证并解密，发送到后台验证
 
-#### MsgID: 200
+#### MsgID: 103
 协议：请求验证凭证<br/>
-别名：C2S_VERIFY_EVIDENCE<br/>
-发送：闸机 -> 后台<br/>
-数据：
+别名：VERIFY_EVIDENCE<br/>
+发送：闸机 <-> 后台<br/>
+
+请求数据：
 
 |参数名     |类型|默认值  |说明    |
 |----------|----|-------|--------|
 |evidence_key|string|-|凭证|
 
-示例：
+请求示例：
 ```json
 {
     "evidence_key": "MjWCCOKE9yDNMarR1l/j0nVok9wxExvKPtKleA/1OiO6Cvn0BM01Fdjb9MxSF9yTYBG48Bh85ZcQdaZ97TM3o8NJ1rOoKaqD+R1LdK/c6RGxHQ6rUPdXBU7yZP2rOBeN/xhjC7ge+iHwn6/3nwURr+33V1BUb7GzJqGerU6e59Q="
 }
 ```
 
-#### MsgID: 201
-协议：验证凭证结果<br/>
-别名：S2C_VERIFY_EVIDENCE<br/>
-发送：后台 -> 闸机<br/>
-数据：
+返回数据：
 
 |参数名     |类型|默认值  |说明    |
 |----------|----|-------|--------|
 |errcode|int|-|1到999-通用错误<br/>3201-无效凭证<br/>3202-凭证已过期<br/>3203-凭证与机闸不匹配<br/>3204-用户不符合付费标准|
 |errmsg|string|-|错误内容|
 
-示例：
+返回示例：
 ```json
 {
    //成功
@@ -426,18 +417,19 @@ Header:
 ### 3-4 提交出入凭证
 开闸后，闸机提交用户出入凭证
 
-#### MsgID: 202
+#### MsgID: 104
 协议：提交凭证<br/>
-别名：C2S_SUBMIT_EVIDENCE<br/>
-发送：闸机 -> 后台<br/>
-数据：
+别名：SUBMIT_EVIDENCE<br/>
+发送：闸机 <-> 后台<br/>
+
+请求数据：
 
 |参数名     |类型|默认值  |说明    |
 |----------|----|-------|--------|
 |evidence_key|string|-|出入闸凭证|
 |scan_time|int64|-|扫码unix时间戳|
 
-示例：
+请求示例：
 ```json
 {
     "evidence_key": "MjWCCOKE9yDNMarR1l/j0nVok9wxExvKPtKleA/1OiO6Cvn0BM01Fdjb9MxSF9yTYBG48Bh85ZcQdaZ97TM3o8NJ1rOoKaqD+R1LdK/c6RGxHQ6rUPdXBU7yZP2rOBeN/xhjC7ge+iHwn6/3nwURr+33V1BUb7GzJqGerU6e59Q=",
@@ -445,18 +437,14 @@ Header:
 }
 ```
 
-#### MsgID: 203
-协议：提交凭证结果<br/>
-别名：S2C_USER_EVIDENCE<br/>
-发送：后台 -> 闸机<br/>
-数据：
+返回数据：
 
 |参数名     |类型|默认值  |说明    |
 |----------|----|-------|--------|
 |errcode|int|-|1到999-通用错误|
 |errmsg|string|-|错误内容|
 
-示例：
+返回示例：
 ```json
 {
    //成功

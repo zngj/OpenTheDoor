@@ -5,7 +5,6 @@ import (
 	"github.com/carsonsx/log4g"
 	"github.com/carsonsx/net4g"
 	"testing"
-	"common/util"
 	"time"
 )
 
@@ -65,7 +64,7 @@ func verifyEvidence() {
 	dispatcher.AddHandler(verifyEvidenceResult, msg.S2C_VERIFY_EVIDENCE)
 	header := msg.NewSGHeader(gateId)
 	ve := new(msg.C2SVerifyEvidence)
-	ve.EvidenceId = "0d61539e6b954dc5943fd2f1a33819aa"
+	ve.EvidenceKey = "GoQSYpFTFiN/bfwj19iMpQlR/ilzBFYaNn2i2EejPyGfQFxGAhZic69Jn4yMeV0ohcba3Tvn1Dv2CyIK/eOG9A5eir9V10ZVk5j60wOhV4qMJ8QiHxqjYCbFHUAivF0H8l10mR3rU4QJkD9iymFBT7jF3uMp+qMox/p541bxRHg="
 	agent.Write(ve, header)
 }
 
@@ -76,7 +75,7 @@ func verifyEvidenceResult(agent net4g.NetAgent) {
 }
 
 func TestSubmitEvidence(t *testing.T) {
-	gateId = "010100202"
+	//gateId = "010100202"
 	start(login, submitEvidence)
 }
 
@@ -84,8 +83,8 @@ func submitEvidence() {
 	dispatcher.AddHandler(submitEvidenceResult, msg.S2C_SUBMIT_EVIDENCE)
 	header := msg.NewSGHeader(gateId)
 	ue := new(msg.C2SSubmitEvidence)
-	ue.EvidenceId = "ff2ec54dc7434237959b661c472584da"
-	ue.ScanTime = util.TimeToUnixMilli(time.Now())
+	ue.EvidenceKey = "RQ6nROMjHQ4TgWRhMZyqM5wPh2/hgaw6Et8SyTbJ2yqMgjQUAy/q1Bz8yqyXstZGa8oI2oEJs9koxzyHBf+I06jo22CqXOmJFwvX+JaFY8XlgQ+7eCa3zOn9NPXSnGJxcVUFD+20bQJRhti4T7dhsZT+y0/lT6ZNKSsnOEqjFbE="
+	ue.ScanTime = time.Now().Unix()
 	agent.Write(ue, header)
 }
 

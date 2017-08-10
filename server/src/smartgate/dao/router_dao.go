@@ -6,8 +6,8 @@ import (
 )
 
 const (
-	SQL_EVIDENCE_INSERT          = "insert sg_router_evidence (evidence_id,user_id,direction,create_time,expires_at,status) values (?,?,?,?,?,?)"
-	SQL_GET_USERID_BY_EVIDENCEID = "select user_id from sg_router_evidence where evidence_id = ? "
+	SQL_EVIDENCE_INSERT        = "insert sg_router_evidence (evidence_id,user_id,direction,create_time,expires_at,status) values (?,?,?,?,?,?)"
+	SQL_GET_USERID_BY_EVIDENCE = "select user_id from sg_router_evidence where evidence_id = ? "
 )
 
 func NewRouterDao() *routerDao {
@@ -29,7 +29,7 @@ func (d *routerDao) IsValidEvidence(evidenceId string) (bool, error) {
 }
 
 func (d *routerDao) GetUserIdByEvidenceId(evidenceId string) (userId string, err error) {
-	err = d.dao.Query(SQL_GET_USERID_BY_EVIDENCEID, evidenceId).One(&userId)
+	err = d.dao.Query(SQL_GET_USERID_BY_EVIDENCE, evidenceId).One(&userId)
 	return
 }
 
@@ -71,7 +71,7 @@ func InsertRouteInfoOfOut(router *model.RouterInfo) error {
 }
 
 func UpdateRouteInfoOfIn(router *model.RouterInfo) error {
-	sql := "update sg_router_info set in_station_code=?,in_station_name=?,in_gate_code=?,in_evidence=?,in_time=?,status=? where id=?"
+	sql := "update sg_router_info set in_station_id=?,in_station_name=?,in_gate_id=?,in_evidence=?,in_time=?,status=? where id=?"
 	return dbx.NewDao().Exec(sql, router.InStationId, router.InStationName, router.InGateId, router.InEvidence, router.InTime, router.Status, router.Id)
 }
 

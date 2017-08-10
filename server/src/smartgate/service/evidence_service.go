@@ -7,7 +7,6 @@ import (
 	"common/redisx"
 	"common/util"
 	"common/vo"
-	"gate/msg"
 	"github.com/carsonsx/log4g"
 	"smartgate/dao"
 	"fmt"
@@ -68,27 +67,26 @@ const (
 	ROUTER_STATUS_EXCEPTION_ONLY_OUT = int8(5)
 )
 
-func SubmitEvidence(submitEvidence *msg.C2SSubmitEvidence, gateId string) {
-	log4g.Debug("submitting evidence %s", submitEvidence.EvidenceKey)
+func SubmitEvidence(evidenceId string, scanTime int64, gateId string) {
+	log4g.Debug("submitting evidence %s", evidenceId)
 	gateInfo, err := dao.GetGateInfo(gateId)
 	if err != nil {
 		//TODO submit evidence later
 		return
 	}
-	if err := _submitEvidence(submitEvidence, gateInfo); err != nil {
+	if err := _submitEvidence(evidenceId, scanTime, gateInfo); err != nil {
 		//TODO submit evidence later
 	}
 }
 
-func _submitEvidence(submitEvidence *msg.C2SSubmitEvidence, gateInfo *model.GateInfo) error {
+func _submitEvidence(evidenceId string , scanUnixTime int64, gateInfo *model.GateInfo) error {
 
-	evidenceId := submitEvidence.EvidenceKey[0:len(submitEvidence.EvidenceKey)-10]
 	evidence, err := dao.GetRouterEvidence(evidenceId)
 	if err != nil {
 		return err
 	}
 
-	scanTime := time.Unix(submitEvidence.ScanTime, 0)
+	scanTime := time.Unix(scanUnixTime, 0)
 	var ongoingRouter *model.RouterInfo
 	ongoingRouter, err = dao.GetOngoingRouterInfo(evidence.UserId)
 

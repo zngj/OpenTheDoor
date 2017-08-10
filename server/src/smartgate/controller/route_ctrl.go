@@ -5,7 +5,7 @@ import (
 	"common/vo"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"smartgate/codec"
+	"common/codec"
 	"smartgate/service"
 	"usercenter/token"
 	"fmt"

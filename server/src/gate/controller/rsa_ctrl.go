@@ -3,7 +3,7 @@ package controller
 import (
 	"github.com/carsonsx/net4g"
 	"gate/msg"
-	"smartgate/codec"
+	"common/codec"
 )
 
 func rsaKeyFn(agent net4g.NetAgent)  {

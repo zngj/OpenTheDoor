@@ -5,6 +5,7 @@ import (
 	"gate/msg"
 	"smartgate/service"
 	"common/errcode"
+	"smartgate/codec"
 )
 
 func verifyEvidenceFn(agent net4g.NetAgent)  {
@@ -12,27 +13,36 @@ func verifyEvidenceFn(agent net4g.NetAgent)  {
 		return
 	}
 	evidence := agent.Msg().(*msg.C2SVerifyEvidence)
-	write(agent, verifyEvidence(evidence.EvidenceId, getGateId(agent)))
+
+	write(agent, verifyEvidence(evidence.EvidenceKey, getGateId(agent)))
 }
 
-func verifyEvidence(evidenceId, gateId string) *msg.S2CVerifyEvidence {
-	verifyResult := new(msg.S2CVerifyEvidence)
-	if evidenceId == "" {
+func verifyEvidence(evidenceEncryptKey, gateId string) (verifyResult *msg.S2CVerifyEvidence) {
+	verifyResult = new(msg.S2CVerifyEvidence)
+	if evidenceEncryptKey == "" {
 		verifyResult.ErrCode = errcode.CODE_COMMON_EMPTY_ARG
 		verifyResult.ErrMsg = errcode.GetMsg(verifyResult.ErrCode)
-	} else if len(evidenceId) != 32 {
+		return
+	}
+	evidenceKey, err := codec.PublicDecrypt(evidenceEncryptKey)
+	if err != nil {
+		verifyResult.ErrCode = errcode.CODE_COMMON_ERROR
+		verifyResult.ErrMsg = err.Error()
+		return
+	}
+	if len(evidenceKey) != 42 {
 		verifyResult.ErrCode = errcode.CODE_GATE_INVALID_EVIDENCE
 		verifyResult.ErrMsg = errcode.GetMsg(verifyResult.ErrCode)
+		return
+	}
+	evidenceId := evidenceKey[0:len(evidenceKey)-10]
+	verifyResult.ErrCode, err = service.VerifyEvidence(evidenceId, gateId)
+	if err != nil {
+		verifyResult.ErrCode = errcode.CODE_COMMON_ERROR
+		verifyResult.ErrMsg = err.Error()
 	} else {
-		var err error
-		verifyResult.ErrCode, err = service.VerifyEvidence(evidenceId, gateId)
-		if err != nil {
-			verifyResult.ErrCode = errcode.CODE_COMMON_ERROR
-			verifyResult.ErrMsg = err.Error()
-		} else {
-			if verifyResult.ErrCode > 0 {
-				verifyResult.ErrMsg = errcode.GetMsg(verifyResult.ErrCode)
-			}
+		if verifyResult.ErrCode > 0 {
+			verifyResult.ErrMsg = errcode.GetMsg(verifyResult.ErrCode)
 		}
 	}
 	return verifyResult
@@ -45,7 +55,7 @@ func submitEvidenceFn(agent net4g.NetAgent)  {
 	evidence := agent.Msg().(*msg.C2SSubmitEvidence)
 	result := new(msg.S2CSubmitEvidence)
 	gateId := getGateId(agent)
-	verifyResult := verifyEvidence(evidence.EvidenceId, gateId)
+	verifyResult := verifyEvidence(evidence.EvidenceKey, gateId)
 	if verifyResult.ErrCode > 0 {
 		result.ErrCode = verifyResult.ErrCode
 		result.ErrMsg = verifyResult.ErrMsg

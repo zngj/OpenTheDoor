@@ -215,7 +215,7 @@ func (s *GateSerializer) Serialize(v, h interface{}) (data []byte, err error) {
 	//封装成帧
 	x := new(gateList)
 	//长度
-	x.addUint16(uint16(len(data) + 2))
+	x.addUint16(uint16(len(data) + 2)) //消息总长度加2个字节的校验
 	log4g.Debug("frame len: %d", len(data) +2)
 	//数据
 	x.addBytes(data)

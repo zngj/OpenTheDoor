@@ -2,12 +2,13 @@ package controller
 
 import (
 	"common/errcode"
+	"common/vo"
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"smartgate/codec"
 	"smartgate/service"
-	"common/vo"
 	"usercenter/token"
-	"net/http"
+	"fmt"
 )
 
 func GetUserId(header http.Header) (userId string, err error) {
@@ -45,16 +46,16 @@ func _routerEvidence(c *gin.Context, typ int8) {
 		errcode.WriteErrorResponse(c.Writer, err)
 		return
 	}
-
-	evidenceKey, err := codec.Encrypt(evidence.EvidenceId)
+	evidenceKey := fmt.Sprintf("%s%d",evidence.EvidenceId,evidence.ExpiresAt.Unix())
+	evidenceEncryptKey, err := codec.PrivateEncrypt(evidenceKey)
 	if err != nil {
 		errcode.WriteErrorResponse(c.Writer, err)
 		return
 	}
 
 	var evidenceVo vo.EvidenceVO
-	evidenceVo.EvidenceId =evidence.EvidenceId + " (debug)"
-	evidenceVo.EvidenceKey = evidenceKey
+	evidenceVo.EvidenceId = evidenceKey + " (debug)"
+	evidenceVo.EvidenceKey = evidenceEncryptKey
 	evidenceVo.ExpiresAt = evidence.ExpiresAt.Unix()
 	errcode.WriteDataResponse(c.Writer, &evidenceVo)
 }

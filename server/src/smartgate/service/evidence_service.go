@@ -69,7 +69,7 @@ const (
 )
 
 func SubmitEvidence(submitEvidence *msg.C2SSubmitEvidence, gateId string) {
-	log4g.Debug("submitting evidence %s", submitEvidence.EvidenceId)
+	log4g.Debug("submitting evidence %s", submitEvidence.EvidenceKey)
 	gateInfo, err := dao.GetGateInfo(gateId)
 	if err != nil {
 		//TODO submit evidence later
@@ -82,7 +82,7 @@ func SubmitEvidence(submitEvidence *msg.C2SSubmitEvidence, gateId string) {
 
 func _submitEvidence(submitEvidence *msg.C2SSubmitEvidence, gateInfo *model.GateInfo) error {
 
-	evidenceId := submitEvidence.EvidenceId
+	evidenceId := submitEvidence.EvidenceKey[0:len(submitEvidence.EvidenceKey)-10]
 	evidence, err := dao.GetRouterEvidence(evidenceId)
 	if err != nil {
 		return err

@@ -14,7 +14,7 @@ func CreateEvidence(userId string, typ int8) (evidence *model.RouterEvidence, er
 	evidence.UserId = userId
 	evidence.Direction = typ
 	evidence.CreateTime = time.Now()
-	evidence.ExpiresAt = evidence.CreateTime.AddDate(0, 0, 1)
+	evidence.ExpiresAt = evidence.CreateTime.Add(5 * time.Minute)
 	evidence.Status = 1
 	err = dao.NewRouterDao().InsertEvidence(evidence)
 	if err == nil {

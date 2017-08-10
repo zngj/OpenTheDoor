@@ -5,7 +5,8 @@
 #include "NetMessage.h"
 #include <mutex>
 #include <condition_variable>
-
+#include <string>
+using namespace std;
 #define MAX_FRAME_SIZE  (64*1024)
 
 class NetRequest
@@ -21,8 +22,10 @@ private:
     int frameLength;
     bool frameOK;
     bool met10;
+
 public:
     NetRequest();
+    NetRequest(string sn,int type,Json::Value &json);
     virtual ~NetRequest();
 
     bool putData(uint8_t data);
@@ -32,6 +35,9 @@ public:
     bool matchMessage(NetRequest *req);
 
     void assignMessage(NetRequest *req);
+
+    NetMessage * getSendMsg();
+    NetMessage *waitFor(int mills);
 };
 
 #endif // NETREQUEST_H

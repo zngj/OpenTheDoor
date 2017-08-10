@@ -36,7 +36,7 @@ DISTNAME      = AG1.0.0
 DISTDIR = /home/feynman/SmartGate/gate/AG/X86-Debug/.tmp/AG1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-rpath,/home/feynman/Qt5.7.1/5.7/gcc_64/lib
-LIBS          = $(SUBLIBS) -lfftw3 -lasound -ljsoncpp -L/home/feynman/Qt5.7.1/5.7/gcc_64/lib -lQt5Widgets -L/usr/lib64 -lQt5Gui -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) -lfftw3 -lasound -ljsoncpp -lssl -lcrypto -L/home/feynman/Qt5.7.1/5.7/gcc_64/lib -lQt5Widgets -L/usr/lib64 -lQt5Gui -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -59,7 +59,10 @@ SOURCES       = ../Src/main.cpp \
 		../Src/Network/DataServer.cpp \
 		../Src/Storage/BasicConfig.cpp \
 		../Src/Utils/PathUtil.cpp \
-		../Src/Utils/TimeUtil.cpp moc_FormMain.cpp
+		../Src/Utils/TimeUtil.cpp \
+		../Src/Lib/Base64/Base64.cpp \
+		../Src/Crypto/AES128.cpp \
+		../Src/Crypto/RSA1024.cpp moc_FormMain.cpp
 OBJECTS       = main.o \
 		FormMain.o \
 		IScannerListener.o \
@@ -72,6 +75,9 @@ OBJECTS       = main.o \
 		BasicConfig.o \
 		PathUtil.o \
 		TimeUtil.o \
+		Base64.o \
+		AES128.o \
+		RSA1024.o \
 		moc_FormMain.o
 DIST          = ../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../../Qt5.7.1/5.7/gcc_64/mkspecs/common/unix.conf \
@@ -234,7 +240,10 @@ DIST          = ../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../Src/Network/DataServer.h \
 		../Src/Storage/BasicConfig.h \
 		../Src/Utils/PathUtil.h \
-		../Src/Utils/TimeUtil.h ../Src/main.cpp \
+		../Src/Utils/TimeUtil.h \
+		../Src/Lib/Base64/Base64.h \
+		../Src/Crypto/AES128.h \
+		../Src/Crypto/RSA1024.h ../Src/main.cpp \
 		../Src/UI/FormMain.cpp \
 		../Src/Drivers/Scanner/IScannerListener.cpp \
 		../Src/Drivers/Scanner/ScannerManager.cpp \
@@ -245,7 +254,10 @@ DIST          = ../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../Src/Network/DataServer.cpp \
 		../Src/Storage/BasicConfig.cpp \
 		../Src/Utils/PathUtil.cpp \
-		../Src/Utils/TimeUtil.cpp
+		../Src/Utils/TimeUtil.cpp \
+		../Src/Lib/Base64/Base64.cpp \
+		../Src/Crypto/AES128.cpp \
+		../Src/Crypto/RSA1024.cpp
 QMAKE_TARGET  = AG
 DESTDIR       = 
 TARGET        = AG
@@ -580,8 +592,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../Src/UI/FormMain.h ../Src/Drivers/Scanner/IScannerListener.h ../Src/Drivers/Scanner/ScannerManager.h ../Src/Drivers/Scanner/ScannerState.h ../Src/Soundwave/SoundDecode.h ../Src/Network/NetMessage.h ../Src/Network/NetRequest.h ../Src/Network/Server.h ../Src/Network/DataServer.h ../Src/Storage/BasicConfig.h ../Src/Utils/PathUtil.h ../Src/Utils/TimeUtil.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../Src/main.cpp ../Src/UI/FormMain.cpp ../Src/Drivers/Scanner/IScannerListener.cpp ../Src/Drivers/Scanner/ScannerManager.cpp ../Src/Soundwave/SoundDecode.cpp ../Src/Network/NetMessage.cpp ../Src/Network/NetRequest.cpp ../Src/Network/Server.cpp ../Src/Network/DataServer.cpp ../Src/Storage/BasicConfig.cpp ../Src/Utils/PathUtil.cpp ../Src/Utils/TimeUtil.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Src/UI/FormMain.h ../Src/Drivers/Scanner/IScannerListener.h ../Src/Drivers/Scanner/ScannerManager.h ../Src/Drivers/Scanner/ScannerState.h ../Src/Soundwave/SoundDecode.h ../Src/Network/NetMessage.h ../Src/Network/NetRequest.h ../Src/Network/Server.h ../Src/Network/DataServer.h ../Src/Storage/BasicConfig.h ../Src/Utils/PathUtil.h ../Src/Utils/TimeUtil.h ../Src/Lib/Base64/Base64.h ../Src/Crypto/AES128.h ../Src/Crypto/RSA1024.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Src/main.cpp ../Src/UI/FormMain.cpp ../Src/Drivers/Scanner/IScannerListener.cpp ../Src/Drivers/Scanner/ScannerManager.cpp ../Src/Soundwave/SoundDecode.cpp ../Src/Network/NetMessage.cpp ../Src/Network/NetRequest.cpp ../Src/Network/Server.cpp ../Src/Network/DataServer.cpp ../Src/Storage/BasicConfig.cpp ../Src/Utils/PathUtil.cpp ../Src/Utils/TimeUtil.cpp ../Src/Lib/Base64/Base64.cpp ../Src/Crypto/AES128.cpp ../Src/Crypto/RSA1024.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../Src/UI/FormMain.ui $(DISTDIR)/
 
 
@@ -841,7 +853,9 @@ main.o: ../Src/main.cpp ../Src/UI/FormMain.h \
 		../Src/Network/DataServer.h \
 		../Src/Network/Server.h \
 		../Src/Network/NetRequest.h \
-		../Src/Network/NetMessage.h
+		../Src/Network/NetMessage.h \
+		../Src/Crypto/AES128.h \
+		../Src/Lib/Base64/Base64.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Src/main.cpp
 
 FormMain.o: ../Src/UI/FormMain.cpp ../Src/UI/FormMain.h \
@@ -1004,10 +1018,13 @@ Server.o: ../Src/Network/Server.cpp ../Src/Network/Server.h \
 DataServer.o: ../Src/Network/DataServer.cpp ../Src/Network/DataServer.h \
 		../Src/Network/Server.h \
 		../Src/Network/NetRequest.h \
-		../Src/Network/NetMessage.h
+		../Src/Network/NetMessage.h \
+		../Src/Storage/BasicConfig.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o DataServer.o ../Src/Network/DataServer.cpp
 
-BasicConfig.o: ../Src/Storage/BasicConfig.cpp ../Src/Storage/BasicConfig.h
+BasicConfig.o: ../Src/Storage/BasicConfig.cpp ../Src/Storage/BasicConfig.h \
+		../Src/Utils/TimeUtil.h \
+		../Src/Utils/PathUtil.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BasicConfig.o ../Src/Storage/BasicConfig.cpp
 
 PathUtil.o: ../Src/Utils/PathUtil.cpp ../Src/Utils/PathUtil.h
@@ -1015,6 +1032,16 @@ PathUtil.o: ../Src/Utils/PathUtil.cpp ../Src/Utils/PathUtil.h
 
 TimeUtil.o: ../Src/Utils/TimeUtil.cpp ../Src/Utils/TimeUtil.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o TimeUtil.o ../Src/Utils/TimeUtil.cpp
+
+Base64.o: ../Src/Lib/Base64/Base64.cpp ../Src/Lib/Base64/Base64.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Base64.o ../Src/Lib/Base64/Base64.cpp
+
+AES128.o: ../Src/Crypto/AES128.cpp ../Src/Crypto/AES128.h \
+		../Src/Lib/Base64/Base64.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o AES128.o ../Src/Crypto/AES128.cpp
+
+RSA1024.o: ../Src/Crypto/RSA1024.cpp ../Src/Crypto/RSA1024.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o RSA1024.o ../Src/Crypto/RSA1024.cpp
 
 moc_FormMain.o: moc_FormMain.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_FormMain.o moc_FormMain.cpp

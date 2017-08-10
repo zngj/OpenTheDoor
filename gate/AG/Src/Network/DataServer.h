@@ -10,8 +10,10 @@ private:
     static DataServer *server;
     static mutex mtx;
     DataServer();
+    void login();
 protected:
      string getEndpoint();
+     void onConnected();
 
 public:
      static DataServer * getInstance();

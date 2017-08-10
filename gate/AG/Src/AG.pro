@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = AG
 TEMPLATE = app
 
-LIBS += -lfftw3 -lasound -ljsoncpp
+LIBS += -lfftw3 -lasound -ljsoncpp -lssl -lcrypto
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
@@ -37,7 +37,10 @@ SOURCES += main.cpp\
     Network/DataServer.cpp \
     Storage/BasicConfig.cpp \
     Utils/PathUtil.cpp \
-    Utils/TimeUtil.cpp
+    Utils/TimeUtil.cpp \
+    Lib/Base64/Base64.cpp \
+    Crypto/AES128.cpp \
+    Crypto/RSA1024.cpp
 
 HEADERS  += UI/FormMain.h \
     Drivers/Scanner/IScannerListener.h \
@@ -50,7 +53,10 @@ HEADERS  += UI/FormMain.h \
     Network/DataServer.h \
     Storage/BasicConfig.h \
     Utils/PathUtil.h \
-    Utils/TimeUtil.h
+    Utils/TimeUtil.h \
+    Lib/Base64/Base64.h \
+    Crypto/AES128.h \
+    Crypto/RSA1024.h
 
 FORMS    += UI/FormMain.ui
 

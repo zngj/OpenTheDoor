@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"runtime/debug"
 	"sync"
+	"fmt"
 )
 
 func Dispatch(dispatchers []*dispatcher, agent NetAgent) {
@@ -18,6 +19,17 @@ func Dispatch(dispatchers []*dispatcher, agent NetAgent) {
 	if !found {
 		log4g.Warn("not found any running dispatcher")
 	}
+
+	//for _, p := range dispatchers {
+	//	if p.running {
+	//		select {
+	//		case a := <-p.dispatchChan:
+	//			log4g.Debug(a)
+	//		default:
+	//		}
+	//
+	//	}
+	//}
 }
 
 func NewDispatcher(name string, goroutineNum ...int) *dispatcher {
@@ -33,7 +45,7 @@ func NewDispatcher(name string, goroutineNum ...int) *dispatcher {
 	} else {
 		p.goroutineNum = 1
 	}
-	p.run()
+	p.listen()
 	log4g.Info("new a %s dispatcher", name)
 	return p
 }
@@ -58,10 +70,15 @@ type dispatcher struct {
 	wg                       sync.WaitGroup
 }
 
-func (p *dispatcher) AddHandler(h func(agent NetAgent), id_or_key_or_type ...interface{}) {
-	if len(id_or_key_or_type) > 0 {
-		p.msgHandlers[id_or_key_or_type[0]] = h
-		log4g.Info("dispatcher[%s] added a handler for %v", p.Name, id_or_key_or_type[0])
+func (p *dispatcher) AddHandler(h func(agent NetAgent), id_or_type ...interface{}) {
+	if len(id_or_type) > 0 {
+		id := id_or_type[0]
+		if reflect.TypeOf(id).Kind() == reflect.Ptr {
+			id = reflect.TypeOf(id)
+
+		}
+		p.msgHandlers[id] = h
+		log4g.Info("dispatcher[%s] added a handler for id[%v]", p.Name, id)
 	} else {
 		p.globalHandlers = append(p.globalHandlers, h)
 		log4g.Info("dispatcher[%s] added global handler", p.Name)
@@ -72,7 +89,6 @@ func (p *dispatcher) OnConnectionCreated(h func(agent NetAgent)) {
 	p.connectionCreatedHandlers = append(p.connectionCreatedHandlers, h)
 }
 
-
 func (p *dispatcher) OnConnectionClosed(h func(agent NetAgent)) {
 	p.connectionClosedHandlers = append(p.connectionClosedHandlers, h)
 }
@@ -81,38 +97,33 @@ func (p *dispatcher) OnDestroy(h func()) {
 	p.destroyHandler = h
 }
 
-
-func (p *dispatcher) run() {
+func (p *dispatcher) listen() {
+	log4g.Info("dispatcher goroutine number: %d", p.goroutineNum)
 	p.wg.Add(p.goroutineNum)
-
-	go func() {
-		defer p.wg.Done()
-	outer:
-		for {
-			select {
-			case <-p.destroyChan:
-				p.onDestroyHandler()
-				break outer
-			case agent := <-p.sessionClosedChan:
-				p.onConnectionClosedHandlers(agent)
-			case agent := <-p.createdChan:
-				p.onConnectionCreatedHandlers(agent)
-			case data := <-p.dispatchChan:
-				p.dispatch(data)
-			}
-		}
-	}()
-
-	for i := 0; i < p.goroutineNum - 1; i++ {
+	counter := 1
+	for i := 0; i < p.goroutineNum; i++ {
 		go func() {
 			defer p.wg.Done()
+			th := fmt.Sprintf("%dth", counter)
+			if counter == 1 {
+				th = "1st"
+			} else if counter == 2 {
+				th = "2nd"
+			}
+			log4g.Info("started %s goroutine of dispatcher[%s]", th, p.Name)
+			counter++
 		outer:
 			for {
 				select {
 				case <-p.destroyChan:
+					p.onDestroyHandler()
 					break outer
-				case data := <-p.dispatchChan:
-					p.dispatch(data)
+				case agent := <-p.sessionClosedChan:
+					p.onConnectionClosedHandlers(agent)
+				case agent := <-p.createdChan:
+					p.onConnectionCreatedHandlers(agent)
+				case agent := <-p.dispatchChan:
+					p.dispatch(agent)
 				}
 			}
 		}()
@@ -120,7 +131,6 @@ func (p *dispatcher) run() {
 
 	p.running = true
 }
-
 
 func (p *dispatcher) dispatch(agent NetAgent) {
 
@@ -142,29 +152,23 @@ func (p *dispatcher) dispatch(agent NetAgent) {
 		h(agent)
 	}
 
-	var key interface{}
+	var id interface{}
 	var h func(agent NetAgent)
 
-	if agent.RawPack() != nil && agent.RawPack().Id > 0 {
-		key = agent.RawPack().Id
-		h, _ = p.msgHandlers[key]
+	if agent.RawPack() != nil && agent.RawPack().Id != nil {
+		id = agent.RawPack().Id
+		h, _ = p.msgHandlers[id]
 	}
-
-	if h == nil && agent.RawPack() != nil && agent.RawPack().Key != "" {
-		key = agent.RawPack().Key
-		h, _ = p.msgHandlers[key]
-	}
-
 	if h == nil && agent.Msg() != nil {
-		key = reflect.TypeOf(agent.Msg())
-		h = p.msgHandlers[key]
+		id = reflect.TypeOf(agent.Msg())
+		h = p.msgHandlers[id]
 	}
 
 	if h != nil {
-		log4g.Trace("dispatcher[%s] is dispatching %v", p.Name, key)
+		log4g.Trace("dispatcher[%s] is dispatching %v", p.Name, id)
 		h(agent)
 	} else {
-		log4g.Trace("dispatcher[%s] not found any handler for %v", p.Name, key)
+		log4g.Trace("dispatcher[%s] not found any handler for %v", p.Name, id)
 	}
 
 	for _, i := range p.after_interceptors {
@@ -188,7 +192,6 @@ func (p *dispatcher) onConnectionCreatedHandlers(agent NetAgent) {
 		h(agent)
 	}
 }
-
 
 func (p *dispatcher) onConnectionClosedHandlers(agent NetAgent) {
 
@@ -223,7 +226,6 @@ func (p *dispatcher) onDestroyHandler() {
 		p.destroyHandler()
 	}
 }
-
 
 func (p *dispatcher) Kick(key string) {
 	p.hub.Kick(key)

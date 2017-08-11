@@ -169,22 +169,21 @@ func (s *GateSerializer) Serialize(v, h interface{}) (data []byte, err error) {
 	var id int
 
 	if rp, ok := v.(*net4g.RawPack); ok {
-		s.PreprocessRawPack(rp)
-		id = rp.Id
+		s.PreRawPack(rp)
+		id = rp.IntId()
 		data = rp.Data
 	} else {
 		t := reflect.TypeOf(v)
 		if t == nil || t.Kind() != reflect.Ptr {
 			panic("value type must be a pointer")
 		}
-
-		var ok bool
-		id, ok = s.SerializerIdsOfType[t]
+		_id, ok := s.SerializerTypeIdMap[t]
 		if !ok {
 			err = errors.New(fmt.Sprintf("%v is not registed by any id", t))
 			log4g.Error(err)
 			return
 		}
+		id,_ = _id.(int)
 
 		data, err = json.Marshal(v)
 		if err != nil {
@@ -203,7 +202,7 @@ func (s *GateSerializer) Serialize(v, h interface{}) (data []byte, err error) {
 	sgHeader.Id = uint8(id)
 	sgHeader.No = WriteNo
 	WriteNo++
-	sgHeader.Length = uint16(len(data))
+	sgHeader.Length = uint16(len(data) + 32)
 	headBytes := sgHeader.toBytes()
 	data = util.CombineBytes(headBytes, data)
 
@@ -287,7 +286,7 @@ func (s *GateSerializer) Deserialize(raw []byte) (v, h interface{}, rp *net4g.Ra
 	rp.Data = data[32:]
 
 	var ok bool
-	if rp.Type, ok = s.DeserializerTypesOfId[rp.Id]; ok {
+	if rp.Type, ok = s.DeserializerIdTypeMap[rp.Id]; ok {
 		if log4g.IsTraceEnabled() {
 			log4g.Trace("deserialize %v - %s", rp.Type, string(rp.Data))
 		}

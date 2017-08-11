@@ -6,6 +6,7 @@ import (
 	"github.com/carsonsx/net4g"
 	"testing"
 	"time"
+	"reflect"
 )
 
 var gateId = "010100101"
@@ -91,4 +92,12 @@ func submitEvidence() {
 func submitEvidenceResult(agent net4g.NetAgent) {
 	log4g.Debug("* upload user evidence result: %v", agent.Msg().(*msg.S2CSubmitEvidence).ErrCode)
 	net4g.TestDone()
+}
+
+func TestType(t *testing.T) {
+
+	var s *string
+
+
+	log4g.Debug(reflect.TypeOf(s))
 }

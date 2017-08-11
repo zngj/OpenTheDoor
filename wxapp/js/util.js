@@ -6,15 +6,15 @@ var request = {
   },
   requestRemote: function (options) {
     options.url = "https://sgu.youstars.com.cn" + options.url;
-    options.method = options.method||"POST";
-    options.header = options.header||{ 'content-type': 'application/json' };
+    options.method = options.method || "POST";
+    options.header = options.header || { 'content-type': 'application/json' };
     var originComplete = options.complete;
-    options.complete = function (c) { 
-      if (originComplete){
+    options.complete = function (c) {
+      if (originComplete) {
         originComplete(c);
       }
-      console.log(options); 
-      console.log(c); 
+      console.log(options);
+      console.log(c);
     };
     wx.request(options);
   },
@@ -128,11 +128,39 @@ function showMsg(title) {
     }
   });
 }
+var util = {
+  intToBytes: function (value) {
+    var src = [];
+    src[3] = ((value >> 24) & 0xFF);
+    src[2] = ((value >> 16) & 0xFF);
+    src[1] = ((value >> 8) & 0xFF);
+    src[0] = (value & 0xFF);
+    return src;
+  },
+
+  bytesToInt: function (src, offset) {
+    var value = ((src[offset] & 0xFF)
+      | ((src[offset + 1] & 0xFF) << 8)
+      | ((src[offset + 2] & 0xFF) << 16)
+      | ((src[offset + 3] & 0xFF) << 24));
+    console.log(src[offset])
+    return value;
+  },
+  mix: function (bytes) {
+    var newBytes = [this.getRandom(), this.getRandom()];
+    newBytes = newBytes.concat(bytes).concat(this.intToBytes(new Date().getTime()));
+    return newBytes;
+  },
+  getRandom: function () {
+    return Math.ceil(Math.random() * 255);
+  },
+}
 module.exports = {
   redirectTo: redirectTo,
   isMobile: isMobile,
   initRequest: initRequest,
   request: theRequest,
-  showMsg: showMsg
+  showMsg: showMsg,
+  util: util
 }
 

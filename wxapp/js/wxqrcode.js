@@ -1617,6 +1617,18 @@ var createQrCodeImg = function(text, options) {
 
     return qr.createImgTag(cellsize, margin, size);
 };
+
+var byteToBase64 = function(bytes) {
+  var base64 = base64EncodeOutputStream();
+  for (var i = 0; i < bytes.length; i += 1) {
+    base64.writeByte(bytes[i]);
+  }
+  base64.flush();
+  return base64;
+}
 module.exports = {
 	createQrCodeImg : createQrCodeImg
+  , stringToBytes : qrcode.stringToBytes
+  , byteToBase64: byteToBase64
+  , createStringToBytes : qrcode.createStringToBytes
 };

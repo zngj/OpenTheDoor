@@ -5,7 +5,7 @@ import (
 	"github.com/carsonsx/net4g"
 )
 
-var Dispatcher = net4g.NewDispatcher("gate", 10)
+var Dispatcher = net4g.NewDispatcher("gate")
 
 func OnInit() {
 	Dispatcher.OnConnectionCreated(onConnectionCreated)

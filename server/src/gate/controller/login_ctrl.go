@@ -42,7 +42,7 @@ func gateLoginFn(agent net4g.NetAgent)  {
 
 func checkLogin(agent net4g.NetAgent) bool {
 	if !agent.Session().GetBool(_IS_LOGIN_KEY) {
-		agent.Write(net4g.NewRawPackById(msg.NOT_LOGIN), msg.NewSGHeader(getGateIdFromHeader(agent)))
+		agent.Write(net4g.NewRawPack(msg.NOT_LOGIN), msg.NewSGHeader(getGateIdFromHeader(agent)))
 		return false
 	}
 	return true

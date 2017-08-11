@@ -11,12 +11,12 @@ const (
 var Serializer = NewGateSerializer()
 
 func OnInit() {
-	Serializer.SerializeId(new(S2CGateLogin), GATE_LOGIN)
-	Serializer.SerializeId(new(S2CRsaKey), RSA_KEY)
-	Serializer.DeserializeId(new(C2SVerifyEvidence), VERIFY_EVIDENCE)
-	Serializer.SerializeId(new(S2CVerifyEvidence), VERIFY_EVIDENCE)
-	Serializer.DeserializeId(new(C2SSubmitEvidence), SUBMIT_EVIDENCE)
-	Serializer.SerializeId(new(S2CSubmitEvidence), SUBMIT_EVIDENCE)
+	Serializer.RegisterSerializeId(new(S2CGateLogin), GATE_LOGIN)
+	Serializer.RegisterSerializeId(new(S2CRsaKey), RSA_KEY)
+	Serializer.RegisterDeserializeId(new(C2SVerifyEvidence), VERIFY_EVIDENCE)
+	Serializer.RegisterSerializeId(new(S2CVerifyEvidence), VERIFY_EVIDENCE)
+	Serializer.RegisterDeserializeId(new(C2SSubmitEvidence), SUBMIT_EVIDENCE)
+	Serializer.RegisterSerializeId(new(S2CSubmitEvidence), SUBMIT_EVIDENCE)
 }
 
 type S2CGateLogin struct {
@@ -24,7 +24,7 @@ type S2CGateLogin struct {
 	GateDirection int8   `json:"gate_direction,omitempty"`
 	StationName   string `json:"station_name,omitempty"`
 	CityName      string `json:"city_name,omitempty"`
-	ErrCode       int    `json:"errcode"` //3100
+	ErrCode       int    `json:"errcode"`
 	ErrMsg        string `json:"errmsg,omitempty"`
 }
 

@@ -45,7 +45,7 @@ int ScannerManager::Open(const char *portName)
         spFd = open(portName, O_RDWR | O_NOCTTY);
         if (spFd >= 0) {
             // set port baudrate
-            this->PortSetting(B9600 | CS8 | CLOCAL | CREAD);
+            this->PortSetting(B115200 | CS8 | CLOCAL | CREAD);
             tcflush(spFd, TCIFLUSH);
 
             this->isRunning = true;

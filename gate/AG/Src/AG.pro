@@ -40,7 +40,9 @@ SOURCES += main.cpp\
     Utils/TimeUtil.cpp \
     Lib/Base64/Base64.cpp \
     Crypto/AES128.cpp \
-    Crypto/RSA1024.cpp
+    Crypto/RSA1024.cpp \
+    Business/ScannerCheck.cpp \
+    Business/CryptoManager.cpp
 
 HEADERS  += UI/FormMain.h \
     Drivers/Scanner/IScannerListener.h \
@@ -56,7 +58,9 @@ HEADERS  += UI/FormMain.h \
     Utils/TimeUtil.h \
     Lib/Base64/Base64.h \
     Crypto/AES128.h \
-    Crypto/RSA1024.h
+    Crypto/RSA1024.h \
+    Business/ScannerCheck.h \
+    Business/CryptoManager.h
 
 FORMS    += UI/FormMain.ui
 

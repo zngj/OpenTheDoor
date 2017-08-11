@@ -10,10 +10,14 @@ using namespace std;
 class RSA1024
 {
 private:
-     RSA* rsaKey;
+     RSA* rsaPubKey;
+     RSA* rsaPriKey;
 public:
     RSA1024(string & fileName);
-    int decrypto(uint8_t* encrypto,uint8_t* raw);
+    RSA1024(const char* memPub);
+    RSA1024(const char *memPub,const char*memPri);
+    int decrypto(uint8_t *encrypto, int dataLen, uint8_t *raw);
+    int encrypto(uint8_t *raw, int dataLen, uint8_t *enc);
 };
 
 #endif // RSA1024_H

@@ -5,7 +5,7 @@
 #include "ScannerState.h"
 #include "IScannerListener.h"
 
-#define CODE_SIZE   (128)
+#define CODE_SIZE   (512)
 
 class ScannerManager
 {

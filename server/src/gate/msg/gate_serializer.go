@@ -203,7 +203,7 @@ func (s *GateSerializer) Serialize(v, h interface{}) (data []byte, err error) {
 	sgHeader.Id = uint8(id)
 	sgHeader.No = WriteNo
 	WriteNo++
-	sgHeader.Length = uint16(len(data))
+	sgHeader.Length = uint16(len(data) + 32)
 	headBytes := sgHeader.toBytes()
 	data = util.CombineBytes(headBytes, data)
 

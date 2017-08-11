@@ -15,6 +15,55 @@ string DataServer::getEndpoint()
     return BasicConfig::getInstance()->getNameNode();
 }
 
+//login
+void DataServer::onConnected()
+{
+
+
+    std::thread tdLogin(&DataServer::login,this);
+    tdLogin.detach();
+
+}
+
+void DataServer::login()
+{
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    Json::Value js;
+    int retCode=-1;
+
+
+    //login
+    NetRequest * req=this->createNetRequest(100,"010100101",js);
+
+
+
+    NetMessage *msg=req->waitFor(1000);
+    if(msg!=nullptr)
+    {
+        retCode=msg->getRetCode();
+    }
+    this->deleteNetRequest(req);
+
+    if(retCode!=0) return;
+
+    //get key
+
+    req=this->createNetRequest(102,"010100101",js);
+
+
+
+    msg=req->waitFor(1000);
+    if(msg!=nullptr)
+    {
+        retCode=msg->getRetCode();
+    }
+    this->deleteNetRequest(req);
+
+
+
+}
+
 DataServer *DataServer::getInstance()
 {
     unique_lock<mutex> lock(mtx);

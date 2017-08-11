@@ -11,6 +11,12 @@ NetRequest::NetRequest()
     this->msgRcv=nullptr;
 }
 
+NetRequest::NetRequest(string sn,int type,Json::Value &json):NetRequest()
+{
+    this->msgRcv=nullptr;
+    this->msgSnd=new NetMessage(sn,type,json);
+}
+
 NetRequest::~NetRequest()
 {
     if(this->frameBuffer!=nullptr)
@@ -79,7 +85,7 @@ bool NetRequest::putData(uint8_t data)
 
             if (frameLength >=8) //2(帧头)+2(长度)+N(数据)+2(校验和)+2(帧尾)
             {
-                uint16_t fLen = frameBuffer[2]|(frameBuffer[3]<<8);
+                uint16_t fLen = frameBuffer[3]|(frameBuffer[2]<<8);
 
                 uint16_t sum = 0;
                 if (fLen == (frameLength - 2 - 2 - 2))//做长度的校验
@@ -90,8 +96,8 @@ bool NetRequest::putData(uint8_t data)
                         sum += frameBuffer[4 + j];
                     }
 
-                    uint8_t checkLow = frameBuffer[2 + fLen];
-                    uint8_t checkHigh = frameBuffer[2 + fLen + 1];
+                    uint8_t checkLow = frameBuffer[2 + fLen+1];
+                    uint8_t checkHigh = frameBuffer[2 + fLen ];
 
                     if (((sum & 0xff) == checkLow) && ((sum >> 8) & 0xff) == checkHigh) //校验和通过
                     {
@@ -101,7 +107,8 @@ bool NetRequest::putData(uint8_t data)
                         {
                             delete this->msgRcv;
                         }
-                        this->msgRcv=new NetMessage(frameBuffer,frameLength-8);
+
+                        this->msgRcv=new NetMessage(frameBuffer+4,frameLength-8);
                     }
 
                 }
@@ -138,15 +145,33 @@ NetMessage *NetRequest::getRcvMsg()
 
 bool NetRequest::matchMessage(NetRequest *req)
 {
-    uint8_t idSnd=this->msgSnd->getID();
-    uint8_t idRcv=req->msgRcv->getID();
+    uint8_t idSnd=this->msgSnd->getMsgType();
+    uint8_t idRcv=req->msgRcv->getMsgType();
     return (idSnd==idRcv)?true:false;
     return false;
 }
 
 void NetRequest::assignMessage(NetRequest *req)
 {
+    this->msgRcv=req->msgRcv->clone();
+    std::unique_lock<std::mutex> lock(this->mtx);
+    this->cond.notify_all();
+}
 
+NetMessage *NetRequest::getSendMsg()
+{
+    return this->msgSnd;
+}
+
+NetMessage *NetRequest::waitFor(int mills)
+{
+    std::unique_lock<std::mutex> lock(this->mtx);
+    if(mills>0)
+    {
+        cond.wait_for(lock,std::chrono::milliseconds(mills));
+    }
+
+    return this->msgRcv;
 }
 
 

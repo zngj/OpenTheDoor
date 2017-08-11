@@ -1,12 +1,16 @@
 #include "Server.h"
 #include "NetRequest.h"
 #include "NetMessage.h"
+#include "Storage/BasicConfig.h"
 
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <poll.h>
 #include <unistd.h>
+#include <string.h>
+
+#include <iostream>
 
 Server::Server()
 {
@@ -60,6 +64,8 @@ void Server::procRx()
         }
 
         this->isRunning=true;
+
+        this->onConnected();
         while (true)
         {
             int length = recv(sockfd, buffer, BUFFER_SIZE, 0);
@@ -75,6 +81,7 @@ void Server::procRx()
                         std::unique_lock<std::mutex> lock(mtxReq,std::defer_lock);
                         lock.lock();
 
+                        std::cout<<lstReq.size()<<std::endl;
                         for(NetRequest* req : lstReq)
                         {
                             if(req->matchMessage(request))
@@ -99,5 +106,53 @@ void Server::procRx()
 bool Server::isInitialized()
 {
     return true;
+}
+
+
+NetRequest *Server::createNetRequest(int type, string sn, Json::Value &json)
+{
+    string snReal=sn;
+    if(sn.length()==0)
+    {
+        snReal=BasicConfig::getInstance()->getSN();
+    }
+    NetRequest *request=new NetRequest(snReal,type,json);
+    if(this->threadPerRequest)
+    {
+
+    }
+    else
+    {
+         std::unique_lock<std::mutex> lock(this->mtxReq,std::defer_lock);
+
+         lock.lock();
+
+         this->lstReq.push_back(request);
+
+         lock.unlock();
+         int sndLength=0;
+         NetMessage *msg=request->getSendMsg();
+         char *data=(char*)msg->getSendFrame(&sndLength);
+         if(this->isRunning)
+         {
+             send(sockfd,data,sndLength,MSG_NOSIGNAL);
+         }
+
+    }
+    return request;
+}
+
+void Server::deleteNetRequest(NetRequest *request)
+{
+    if(!this->threadPerRequest)
+    {
+        std::unique_lock<std::mutex> lock(this->mtxReq,std::defer_lock);
+        lock.lock();
+
+        this->lstReq.remove(request);
+
+        lock.unlock();
+    }
+    delete request;
 }
 

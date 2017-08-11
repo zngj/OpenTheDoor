@@ -30,9 +30,12 @@ protected:
     bool threadPerRequest;
     virtual string getEndpoint()=0;
     virtual bool isInitialized();
+    virtual void onConnected()=0;
 public:
     Server();
     void start();
+    NetRequest *createNetRequest(int type, string sn, Json::Value &json);
+    void deleteNetRequest(NetRequest *request);
 };
 
 #endif // SERVER_H

@@ -29,6 +29,7 @@ CryptoManager::CryptoManager()
               "-----END RSA PRIVATE KEY-----";
 
       this->rsa1024=new RSA1024(keyPub,keyPri);
+      this->aes128=new AES128("5454395434473454","6916665466156476");
 
 }
 
@@ -47,4 +48,19 @@ void CryptoManager::changeRSAPubKey(string key)
     if(this->rsa1024!=nullptr) delete this->rsa1024;
 
     this->rsa1024=new RSA1024(key.c_str(),nullptr);
+}
+
+
+int CryptoManager::aesDecrypt(string base64,uint8_t*raw)
+{
+    if(this->aes128==nullptr) return -1;
+
+    return this->aes128->decrypto(base64,raw);
+}
+
+int CryptoManager::rsaDecrypt(uint8_t* rsa,uint8_t*raw)
+{
+    if(this->rsa1024==nullptr) return -1;
+
+    return this->rsa1024->decrypto(rsa,128,raw);
 }

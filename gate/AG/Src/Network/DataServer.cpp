@@ -1,6 +1,7 @@
 #include "DataServer.h"
 
 #include "Storage/BasicConfig.h"
+#include "Business/CryptoManager.h"
 
 mutex DataServer::mtx;
 DataServer * DataServer::server=nullptr;
@@ -57,24 +58,22 @@ void DataServer::login()
     if(msg!=nullptr)
     {
         retCode=msg->getRetCode();
+        if(retCode==0)
+        {
+            Json::Value* pJson=msg->getJson();
+
+            string key=(*pJson)["key"].asString();
+
+            if(key.size()>0)
+            {
+                CryptoManager::getInstance()->changeRSAPubKey(key);
+            }
+        }
     }
     this->deleteNetRequest(req);
 
 
-    js["evidence_key"]="pQjfmNL7SK3lV3CKJLAhOfB27VirJAhSLT59HC1uenn2DUGfxV4bLs0Xni4uf7JEjQiob1940NzBUQ9E7XTA5KnII0/L1qrjpyaa/qQi9cF6hvOqNwCmoRd5vO3l28pd0mfIZB9hO6jHuXSAdQI1KsnXBXz05ZJeMBvG2r19K9k=";
 
-
-
-    req=this->createNetRequest(103,"010100101",js);
-
-
-
-    msg=req->waitFor(1000);
-    if(msg!=nullptr)
-    {
-        retCode=msg->getRetCode();
-    }
-    this->deleteNetRequest(req);
 
 
 }

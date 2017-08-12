@@ -16,6 +16,7 @@ public:
     RSA1024(string & fileName);
     RSA1024(const char* memPub);
     RSA1024(const char *memPub,const char*memPri);
+    virtual ~RSA1024();
     int decrypto(uint8_t *encrypto, int dataLen, uint8_t *raw);
     int encrypto(uint8_t *raw, int dataLen, uint8_t *enc);
 };

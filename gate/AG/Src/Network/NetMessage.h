@@ -49,6 +49,9 @@ public:
 
     char *getSendFrame(int * length);
 
+    Json::Value * getJson();
+
+
 };
 
 #endif // NETMESSAGE_H

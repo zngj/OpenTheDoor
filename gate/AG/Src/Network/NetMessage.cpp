@@ -272,3 +272,8 @@ char *NetMessage::getSendFrame(int *length)
 
     }
 }
+
+Json::Value *NetMessage::getJson()
+{
+    return &(this->json);
+}

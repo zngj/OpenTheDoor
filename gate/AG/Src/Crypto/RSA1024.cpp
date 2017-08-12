@@ -50,6 +50,18 @@ RSA1024::RSA1024(const char *memPub, const char *memPri)
 
 }
 
+RSA1024::~RSA1024()
+{
+    if(this->rsaPubKey!=nullptr)
+    {
+        RSA_free(this->rsaPubKey);
+    }
+    if(this->rsaPriKey!=nullptr)
+    {
+        RSA_free(this->rsaPriKey);
+    }
+}
+
 
 int RSA1024::encrypto(uint8_t* raw,int dataLen,uint8_t* enc)
 {

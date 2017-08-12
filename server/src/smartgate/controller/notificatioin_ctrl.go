@@ -15,10 +15,10 @@ func GetRouterNotification(c *gin.Context) {
 	if sgc.CheckParamEmpty(category) {
 		return
 	}
-	if sgc.CheckParamEqual(category, service.NOTFICATION_ROUTER, param) {
+	if sgc.CheckParamEqual(category, service.NOTIFICATION_ROUTER, param) {
 		return
 	}
-	userId, err := GetUserId(c.Request.Header)
+	userId, err := GetUserId(c)
 	if sgc.CheckError(err) {
 		return
 	}

@@ -2,55 +2,50 @@ package token
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/render"
-	"usercenter/vo"
+	"common/vo"
 	"github.com/carsonsx/log4g"
 	"common/errcode"
+	"common/sg"
 )
 
 const HEADER_ACCESS_TOKEN  = "Access-Token"
 
 func VerifyToken(c *gin.Context) {
+	sgc := sg.Context(c)
 	if CheckToken(c) {
-		errcode.WriteSuccessResponse(c.Writer)
+		sgc.WriteSuccess()
 	}
 }
 
 func CheckToken(c *gin.Context) bool {
+	sgc := sg.Context(c)
 	var verify vo.VerifyToken
 	verify.AccessToken = c.Request.Header.Get(HEADER_ACCESS_TOKEN)
 	if verify.AccessToken == "" {
 		err := c.Bind(&verify)
-		if err != nil {
-			log4g.Error(err)
-			errcode.WriteErrorResponse(c.Writer, err)
+		if sgc.CheckError(err) {
 			return false
 		}
 	} else {
 		log4g.Debug("found access_token in header: %s", verify.AccessToken)
 	}
-	if verify.AccessToken == "" {
-		errcode.WriteEmptyArgResponse(c.Writer, "code")
+	if sgc.CheckParamEmpty(verify.AccessToken) {
 		return false
 	}
 	valid, err := IsValid(verify.AccessToken)
-	if err != nil {
-		log4g.Error(err)
-		errcode.WriteErrorResponse(c.Writer, err)
+	if sgc.CheckError(err) {
 		return false
 	}
 	if !valid {
-		resp :=  errcode.NewResponse(errcode.CODE_UC_TOKEN_EXPIRED)
-		log4g.Info(resp.Msg)
-		render.WriteJSON(c.Writer, resp)
+		sgc.Write(errcode.CODE_UC_TOKEN_EXPIRED)
 		return false
 	}
 	return true
 }
 
 func VerifyTokenFn(c *gin.Context) {
-	log4g.Debug("checking token...")
 	if !CheckToken(c) {
+		log4g.Info("access token is expired")
 		c.Abort()
 	}
 }

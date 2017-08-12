@@ -43,8 +43,8 @@ func GetRouterEvidence(evidenceId string) (evidence *model.RouterEvidence, err e
 
 func GetOngoingRouterInfo(userId string) (router *model.RouterInfo, err error) {
 	router = new(model.RouterInfo)
-	sql := "select id,user_id,in_station_id,in_station_name,in_gate_id,in_evidence,in_time from sg_router_info where user_id=? and status=1"
-	err = dbx.NewDao().Query(sql, userId).One(&router.Id, &router.UserId, &router.InStationId, &router.InStationName, &router.InGateId, &router.InEvidence, &router.InTime)
+	sql := "select id,user_id,status from sg_router_info where user_id=? and status <> 2 order by id desc"
+	err = dbx.NewDao().Query(sql, userId).One(&router.Id, &router.UserId, &router.Status)
 	return
 }
 
@@ -71,8 +71,8 @@ func InsertRouteInfoOfOut(router *model.RouterInfo) error {
 }
 
 func UpdateRouteInfoOfIn(router *model.RouterInfo) error {
-	sql := "update sg_router_info set in_station_id=?,in_station_name=?,in_gate_id=?,in_evidence=?,in_time=?,status=? where id=?"
-	return dbx.NewDao().Exec(sql, router.InStationId, router.InStationName, router.InGateId, router.InEvidence, router.InTime, router.Status, router.Id)
+	sql := "update sg_router_info set in_station_id=?,in_station_name=?,in_gate_id=?,in_evidence=?,in_time=?,money=?,status=? where id=?"
+	return dbx.NewDao().Exec(sql, router.InStationId, router.InStationName, router.InGateId, router.InEvidence, router.InTime, router.Money, router.Status, router.Id)
 }
 
 func GetNotification(userId, category string) (n *model.Notification, err error) {

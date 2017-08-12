@@ -7,13 +7,10 @@ import (
 	"reflect"
 	"runtime"
 	"errors"
+	"fmt"
 )
 
 var ErrNotFound = errors.New("not found")
-
-func IsNotErrNotFound(err error) bool  {
-	return err != nil && ErrNotFound == err
-}
 
 func NewDao() *Dao {
 	return new(Dao)
@@ -183,6 +180,9 @@ func (r *result) One(dest ...interface{}) (err error) {
 
 	defer r.rows.Close()
 
+
+
+
 	if r.rows.Next() {
 		err = r.rows.Scan(dest...)
 		if err != nil {
@@ -190,7 +190,11 @@ func (r *result) One(dest ...interface{}) (err error) {
 			log4g.Error("\n" + string(debug.Stack()))
 			return
 		}
-		log4g.Debug("query result: %v", dest)
+		result := ""
+		for _, d := range dest {
+			result += fmt.Sprintf("\n%v" , reflect.Indirect(reflect.ValueOf(d)))
+		}
+		log4g.Debug("query result: %s", result)
 	} else {
 		err = ErrNotFound
 		log4g.Warn("not found any record.")

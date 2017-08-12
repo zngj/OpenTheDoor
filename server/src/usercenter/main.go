@@ -4,13 +4,15 @@ import (
 	"github.com/gin-gonic/gin"
 	"usercenter/controller"
 	"usercenter/token"
+	"common/ginx"
 )
 
 var DB = make(map[string]string)
 
 func main() {
 
-	r := gin.Default()
+	r := gin.New()
+	r.Use(ginx.Logger(), ginx.Recovery())
 
 	// Get user value
 	r.GET("/", func(c *gin.Context) {

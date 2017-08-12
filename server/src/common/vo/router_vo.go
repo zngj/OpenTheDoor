@@ -1,7 +1,7 @@
 package vo
 
 type RouterStatusVO struct {
-	Status int16 `json:"status"`
+	Status int8 `json:"status"`
 }
 
 type EvidenceVO struct {

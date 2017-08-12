@@ -6,6 +6,7 @@ import (
 	"smartgate/service"
 	"common/errcode"
 	"common/codec"
+	"time"
 )
 
 func verifyEvidenceFn(agent net4g.NetAgent)  {
@@ -26,6 +27,7 @@ func verifyEvidenceFn(agent net4g.NetAgent)  {
 
 func verifyEvidence(evidenceId, gateId string) (verifyResult *msg.S2CVerifyEvidence) {
 	verifyResult = new(msg.S2CVerifyEvidence)
+	verifyResult.VerifyTime = time.Now().Unix()
 	if evidenceId == "" {
 		verifyResult.ErrCode = errcode.CODE_COMMON_EMPTY_ARG
 		verifyResult.ErrMsg = errcode.GetMsg(verifyResult.ErrCode)

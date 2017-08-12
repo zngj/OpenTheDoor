@@ -23,5 +23,5 @@ func ChargeWallet()  {
 }
 
 func ConsumeWallet(userId string, money float32) error {
-	return dao.NewWalletDao().Decrease(userId, money)
+	return dao.NewWalletDao().Consume(userId, money)
 }

@@ -1,22 +1,23 @@
 #ifndef FORMMAIN_H
 #define FORMMAIN_H
 
-#include <QDialog>
+#include <QWidget>
 
-namespace Ui {
-class FormMain;
-}
+#include "BaseDialog.h"
 
-class FormMain : public QDialog
+class FormMain:public BaseDialog
 {
-    Q_OBJECT
-
 public:
     explicit FormMain(QWidget *parent = 0);
     ~FormMain();
-
+protected:
+    void customDraw(QPainter &painter);
+    void keyPressEvent(QKeyEvent *event);
+    void processControlEvent(UserControl *control, ControlEvent event);
+    void customEvent(QEvent *event);
 private:
-    Ui::FormMain *ui;
+   FrameEdit * frameEdit;
+   QRDisplay *qrDisplay;
 };
 
 #endif // FORMMAIN_H

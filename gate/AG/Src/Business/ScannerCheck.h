@@ -18,7 +18,7 @@ class ScannerCheck:IScannerListener
 private:
     static ScannerCheck* checker;
     static mutex mtx;
-
+    const static int MAX_SEG_NUM=4;
 private:
     condition_variable condQr;
     ScannerCheck();

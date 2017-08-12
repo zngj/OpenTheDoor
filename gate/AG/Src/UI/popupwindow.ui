@@ -1,6 +1,6 @@
 <ui version="4.0">
- <class>FormMain</class>
- <widget class="QDialog" name="FormMain">
+ <class>PopupWindow</class>
+ <widget class="QDialog" name="PopupWindow">
   <property name="geometry">
    <rect>
     <x>0</x>

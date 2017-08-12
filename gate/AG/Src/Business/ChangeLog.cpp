@@ -14,7 +14,7 @@ ChangeLog::ChangeLog(const char *mem,int index)
     }
 }
 
-ChangeLog::ChangeLog(const char *key, uint32_t time)
+ChangeLog::ChangeLog(uint32_t time,const char *key)
 {
     memset(this->buffer,0,LOG_SIZE);
     buffer[0]='L';
@@ -37,8 +37,9 @@ int ChangeLog::getScannTime()
     return (this->buffer[4])|(this->buffer[5]<<8)|(this->buffer[6]<<16)|(this->buffer[7]<<24);
 }
 
-uint8_t *ChangeLog::serialize()
+uint8_t *ChangeLog::serialize(bool upload)
 {
+    buffer[3]=upload?1:0;
 
     for(int i=0;i<8;i++)
     {

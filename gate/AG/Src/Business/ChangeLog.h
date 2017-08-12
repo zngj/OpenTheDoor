@@ -18,11 +18,11 @@ private:
     int64_t logId;
 public:
     ChangeLog(const char * mem,int index);
-    ChangeLog(const char *key, uint32_t time);
+    ChangeLog(uint32_t time,const char *key);
     string getEvidence();
     int getScannTime();
 
-    uint8_t *serialize();
+    uint8_t *serialize(bool upload);
 
     bool isUploaed();
 };

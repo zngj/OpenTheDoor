@@ -51,11 +51,11 @@ void CryptoManager::changeRSAPubKey(string key)
 }
 
 
-int CryptoManager::aesDecrypt(string base64,uint8_t*raw)
+int CryptoManager::aesDecrypt(uint8_t* enc,int length,uint8_t*raw)
 {
     if(this->aes128==nullptr) return -1;
 
-    return this->aes128->decrypto(base64,raw);
+    return this->aes128->decrypto(enc,length,raw);
 }
 
 int CryptoManager::rsaDecrypt(uint8_t* rsa,uint8_t*raw)

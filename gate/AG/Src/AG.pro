@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = AG
 TEMPLATE = app
 
-LIBS += -lfftw3 -lasound -ljsoncpp -lssl -lcrypto
+LIBS += -lfftw3 -lasound -ljsoncpp -lssl -lcrypto -lqrencode
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
@@ -27,7 +27,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-    UI/FormMain.cpp \
     Drivers/Scanner/IScannerListener.cpp \
     Drivers/Scanner/ScannerManager.cpp \
     Soundwave/SoundDecode.cpp \
@@ -44,9 +43,23 @@ SOURCES += main.cpp\
     Business/ScannerCheck.cpp \
     Business/CryptoManager.cpp \
     Business/ChangeLogManager.cpp \
-    Business/ChangeLog.cpp
+    Business/ChangeLog.cpp \
+    UI/BaseDialog.cpp \
+    UI/PopupWindow.cpp \
+    UI/UIListener.cpp \
+    UI/UserControl/FrameEdit.cpp \
+    UI/UserControl/IEventListener.cpp \
+    UI/UserControl/LineEdit.cpp \
+    UI/UserControl/ListView.cpp \
+    UI/UserControl/PushButton.cpp \
+    UI/UserControl/QRDisplay.cpp \
+    UI/UserControl/SplitterLabel.cpp \
+    UI/UserControl/StaticLabel.cpp \
+    UI/UserControl/StepLabel.cpp \
+    UI/UserControl/UserControl.cpp \
+    UI/FormMain.cpp
 
-HEADERS  += UI/FormMain.h \
+HEADERS  += \
     Drivers/Scanner/IScannerListener.h \
     Drivers/Scanner/ScannerManager.h \
     Drivers/Scanner/ScannerState.h \
@@ -64,7 +77,27 @@ HEADERS  += UI/FormMain.h \
     Business/ScannerCheck.h \
     Business/CryptoManager.h \
     Business/ChangeLogManager.h \
-    Business/ChangeLog.h
+    Business/ChangeLog.h \
+    UI/BaseDialog.h \
+    UI/PopupWindow.h \
+    UI/UIListener.h \
+    UI/UserControl/ControlCommon.h \
+    UI/UserControl/FrameEdit.h \
+    UI/UserControl/IEventListener.h \
+    UI/UserControl/LineEdit.h \
+    UI/UserControl/ListView.h \
+    UI/UserControl/PushButton.h \
+    UI/UserControl/QRDisplay.h \
+    UI/UserControl/SplitterLabel.h \
+    UI/UserControl/StaticLabel.h \
+    UI/UserControl/StepLabel.h \
+    UI/UserControl/UserControl.h \
+    UI/FormMain.h
 
-FORMS    += UI/FormMain.ui
+FORMS    += \
+    UI/BaseDialog.ui \
+    UI/popupwindow.ui
+
+RESOURCES += \
+    resource.qrc
 

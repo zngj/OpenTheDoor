@@ -26,13 +26,18 @@ private:
     list<ChangeLog*> listLog;
     condition_variable condLog;
     thread* trdLog;
-    ChangeLog *lastLog;
+
+    int lastIndex;
+    int64_t lastId;
+
+
 private:
     ChangeLogManager();
     void log2Server();
     bool initialized=false;
 
     void init();
+    bool saveLog(ChangeLog *log,bool upload);
 public:
     static ChangeLogManager * getInstance();
 

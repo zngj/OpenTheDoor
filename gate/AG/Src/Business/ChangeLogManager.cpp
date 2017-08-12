@@ -2,6 +2,8 @@
 #include "Utils/PathUtil.h"
 #include "Network/DataServer.h"
 
+#include <iostream>
+
 #include <unistd.h>
 #include <fcntl.h>
 
@@ -11,7 +13,8 @@ ChangeLogManager* ChangeLogManager::mng=nullptr;
 
 ChangeLogManager::ChangeLogManager()
 {
-
+       lastId=-1;
+       lastIndex=-1;
 }
 
 void ChangeLogManager::log2Server()
@@ -21,7 +24,7 @@ void ChangeLogManager::log2Server()
 
     DataServer* server=DataServer::getInstance();
 
-    Json::Value js;
+
 
     this->init();
     while (true) {
@@ -39,6 +42,34 @@ void ChangeLogManager::log2Server()
         lock.unlock();
         if(log==nullptr) continue;
 
+        Json::Value js;
+        js["evidence_key"]=log->getEvidence();
+        js["scan_time"]=log->getScannTime();
+
+        NetRequest * req=server->createNetRequest(104,"010100101",js);
+
+        NetMessage *msg=req->waitFor(1000);
+        if(msg!=nullptr)
+        {
+            int ret=msg->getRetCode();
+            if(ret==0)
+            {
+                if(saveLog(log,true))
+                {
+                    lock.lock();
+                    listLog.pop_front();
+                    delete log;
+                    lock.unlock();
+                }
+            }
+
+        }
+        server->deleteNetRequest(req);
+
+
+
+
+
     }
 }
 
@@ -46,6 +77,8 @@ void ChangeLogManager::init()
 {
 
     if(this->initialized) return;
+
+
 
     uint8_t buffer[ChangeLog::LOG_SIZE];
 
@@ -68,22 +101,31 @@ void ChangeLogManager::init()
         {
             listLog.push_back(log);
         }
-
-        if(lastLog==nullptr)
+        if(log->logId>lastId)
         {
-            this->lastLog=log;
+            this->lastId=log->logId;
+            this->lastIndex=index;
         }
-        else if(lastLog->logId<log->logId)
-        {
-            delete lastLog;
-            this->lastLog=log;
-        }
-
         index++;
 
     }
 
     this->initialized=true;
+}
+
+bool ChangeLogManager::saveLog(ChangeLog *log,bool upload)
+{
+    if(this->fd<0) return false;
+
+    uint8_t *buffer=log->serialize(upload);
+    lseek(fd, log->index * ChangeLog::LOG_SIZE, SEEK_SET);
+    int len=write(fd,buffer,ChangeLog::LOG_SIZE);
+    if(len!=ChangeLog::LOG_SIZE) return false;
+    fsync(fd);
+
+    std::cout<<"logIndex:"<<log->index<<std::endl;
+    return true;
+
 }
 
 ChangeLogManager *ChangeLogManager::getInstance()
@@ -103,17 +145,26 @@ bool ChangeLogManager::addLog(ChangeLog *log)
     if(listLog.size()<MAX_LOG_NUM)
     {
         listLog.push_back(log);
-        if(this->lastLog==nullptr)
+        if(this->lastId<0)
         {
             log->logId=0;
+            log->index=0;
+            this->lastId=0;
+            this->lastIndex=0;
         }
         else
         {
-            log->logId=lastLog->logId+1;
+            log->logId=++lastId;
+            log->index=(++lastIndex)%MAX_LOG_NUM;
         }
-        this->lastLog=log;
+
+        std::cout<<log->index<<std::endl;
+        if(this->saveLog(log,false))
+        {
+            ret=true;
+        }
         condLog.notify_all();
-        ret=true;
+
     }
 
     return ret;

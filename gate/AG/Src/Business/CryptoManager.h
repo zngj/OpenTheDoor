@@ -20,7 +20,7 @@ private:
 public:
     static CryptoManager* getInstance();
     void changeRSAPubKey(string key);
-    int aesDecrypt(string base64, uint8_t *raw);
+    int aesDecrypt(uint8_t* enc,int length,uint8_t*raw);
     int rsaDecrypt(uint8_t *rsa, uint8_t *raw);
 };
 

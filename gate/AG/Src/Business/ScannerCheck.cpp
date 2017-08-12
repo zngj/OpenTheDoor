@@ -7,7 +7,7 @@
 #include "Utils/TimeUtil.h"
 
 #include "Network/DataServer.h"
-
+#include "Business/ChangeLogManager.h"
 #include <math.h>
 
 
@@ -19,13 +19,22 @@ ScannerCheck::ScannerCheck()
 
 }
 
+
 void ScannerCheck::checkCode()
 {
+
     uint8_t aesDec[256];
     uint8_t rsaDec[256];
+
+    uint8_t frame[256];
+    int frameLen=1;
+    int segIndex=0;
+
+
     unique_lock<mutex> lock(mtx,std::defer_lock);
 
     bool checkPass;
+    uint32_t scanTime;
     char * qrCode;
     while (true) {
 
@@ -51,8 +60,44 @@ void ScannerCheck::checkCode()
         CryptoManager *crypto=CryptoManager::getInstance();
 
 
-        int len=crypto->aesDecrypt(string(qrCode),aesDec);
+        char t= frame[frameLen-1];
+        int segLen=base64_decode(string(qrCode),(char*)(frame+frameLen-1));
 
+
+        int sNum=(frame[frameLen-1]>>4);
+        int sIndex=(frame[frameLen-1]&0x0f);
+
+        frame[frameLen-1]=t;
+         std::cout<<sNum<<":"<<sIndex<<std::endl;
+
+        if(sNum>MAX_SEG_NUM){segIndex=0 ;continue;}
+
+        if(sIndex==segIndex)
+        {
+            frameLen+=(segLen-1);
+            segIndex++;
+        }
+        else if(sIndex>segIndex || (sIndex< segIndex-1) )
+        {
+            segIndex=0;
+            frameLen=1;
+            continue;
+        }
+        if(segIndex<sNum)
+        {
+            continue;
+        }
+        segIndex=0;
+
+
+
+
+
+
+
+
+        int len=crypto->aesDecrypt(frame+1, frameLen-1,aesDec);
+        frameLen=1;
         delete qrCode;
 
         if(aesDec[0]!='S' || aesDec[1]!='G') continue;
@@ -82,7 +127,7 @@ void ScannerCheck::checkCode()
 
         //
         checkPass=true;
-
+        scanTime=TimeUtil::getInstance()->getUnixTime("");
         Json::Value js;
 
         js["evidence_key"]=evidence_key;
@@ -110,6 +155,16 @@ void ScannerCheck::checkCode()
 
 
         if(checkPass==false) continue;
+
+        ChangeLog * log=new ChangeLog(scanTime,(const char *)(aesDec+4));
+
+        if(ChangeLogManager::getInstance()->addLog(log)==false)
+        {
+            delete log;
+            continue;
+        }
+        //let it go
+
 
     }
 }

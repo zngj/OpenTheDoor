@@ -57,7 +57,8 @@ SOURCES += main.cpp\
     UI/UserControl/StaticLabel.cpp \
     UI/UserControl/StepLabel.cpp \
     UI/UserControl/UserControl.cpp \
-    UI/FormMain.cpp
+    UI/FormMain.cpp \
+    UI/CheckDialog.cpp
 
 HEADERS  += \
     Drivers/Scanner/IScannerListener.h \
@@ -92,7 +93,8 @@ HEADERS  += \
     UI/UserControl/StaticLabel.h \
     UI/UserControl/StepLabel.h \
     UI/UserControl/UserControl.h \
-    UI/FormMain.h
+    UI/FormMain.h \
+    UI/CheckDialog.h
 
 FORMS    += \
     UI/BaseDialog.ui \

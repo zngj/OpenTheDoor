@@ -6,8 +6,8 @@
 
 enum CustomEvent
 {
-    WM_LOGIN_BEGIN=0x0400,
-    WM_LOGIN_END,
+    WM_CHECK_OK=0x0400,
+    WM_CHECK_FAIL,
     WM_SYNC_BEGIN,
     WM_SYNC_END,
     WM_BOX_OPEN_BEGIN,
@@ -37,8 +37,8 @@ public:
 
 
 public:
-    void notifyLogInBegin();
-    void notifyLogInEnd();
+    void notifyCheckOK();
+    void notifyCheckFail();
     void notifyOpenBoxBegin();
     void notifyOpenBoxEnd();
     void notifyChangeBoxBegin();

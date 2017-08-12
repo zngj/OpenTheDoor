@@ -23,23 +23,23 @@ UIListener *UIListener::getInstance()
     return listner;
 }
 
-void UIListener::notifyLogInBegin()
+void UIListener::notifyCheckOK()
 {
     std::unique_lock<std::mutex> lock(mtx);
     for (auto val : listMsgListener)
     {
         QWidget *widget=(QWidget*)val;
-        QApplication::postEvent(val,new QEvent((QEvent::Type)WM_LOGIN_BEGIN));
+        QApplication::postEvent(val,new QEvent((QEvent::Type)WM_CHECK_OK));
     }
 }
 
-void UIListener::notifyLogInEnd()
+void UIListener::notifyCheckFail()
 {
     std::unique_lock<std::mutex> lock(mtx);
     for (auto val : listMsgListener)
     {
         QWidget *widget=(QWidget*)val;
-        QApplication::postEvent(val,new QEvent((QEvent::Type)WM_LOGIN_END));
+        QApplication::postEvent(val,new QEvent((QEvent::Type)WM_CHECK_FAIL));
     }
 }
 

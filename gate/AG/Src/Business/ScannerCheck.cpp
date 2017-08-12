@@ -11,6 +11,7 @@
 #include <math.h>
 
 
+#include "UI/UIListener.h"
 
 ScannerCheck * ScannerCheck::checker=nullptr;
 mutex ScannerCheck::mtx;
@@ -164,6 +165,9 @@ void ScannerCheck::checkCode()
             continue;
         }
         //let it go
+
+
+        UIListener::getInstance()->notifyCheckOK();
 
 
     }

@@ -374,54 +374,6 @@ void BaseDialog::closeEvent(QCloseEvent *)
 void BaseDialog::customEvent(QEvent *event)
 {
     int type=(int)event->type();
-    if(type==WM_LOGIN_BEGIN)
-    {
-        this->popUpLoading("正在登录，请稍后...");
-    }
-    else if(type==WM_LOGIN_END)
-    {
-        this->closePopWindow();
-    }
-    else if(type==WM_SYNC_BEGIN)
-    {
-        this->popUpLoading("同步中，请勿走开...");
-    }
-    else if(type==WM_SYNC_END)
-    {
-        this->closePopWindow();
-    }
-    else if(type==WM_BOX_OPEN_BEGIN)
-    {
-        this->popUpLoading("正在为您开箱，请勿走开...");
-    }
-    else if(type==WM_BOX_OPEN_END)
-    {
-        this->closePopWindow();
-    }
-    else if(type==WM_BOX_GETINFO_BEGIN)
-    {
-        this->popUpLoading("正在获取信息...");
-    }
-    else if(type==WM_BOX_GETINFO_END)
-    {
-        this->closePopWindow();
-    }
-    else if(type==WM_BOX_CHANGE_BEGIN)
-    {
-        this->popUpLoading("正在为您，请勿走开...");
-    }
-    else if(type==WM_BOX_CHANGE_END)
-    {
-        this->closePopWindow();
-    }
-    else if(type==WM_CREATE_PARCEL_BEGIN)
-    {
-        this->popUpLoading("正在为您，请勿走开...");
-    }
-    else if(type==WM_CREATE_PARCEL_END)
-    {
-        this->closePopWindow();
-    }
 
 }
 

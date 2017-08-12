@@ -1,4 +1,6 @@
 #include "FormMain.h"
+#include "UI/UIListener.h"
+#include "CheckDialog.h"
 
 FormMain::FormMain(QWidget*parent):BaseDialog(parent)
 {
@@ -24,7 +26,7 @@ void FormMain::customDraw(QPainter &painter)
     painter.drawText(QRect(0,51+52+12-25,42+200+42,50),Qt::AlignCenter,"扫码开闸门");
 
 
-    QRect rectPic(width-500,51,500,335);
+    QRect rectPic(width-350,51,350,335);
     QPixmap pixLogo(":/Resource/Image/Pic/logo.jpg");
     painter.drawPixmap(rectPic,pixLogo);
 
@@ -53,5 +55,12 @@ void FormMain::processControlEvent(UserControl *control, ControlEvent event)
 void FormMain::customEvent(QEvent *event)
 {
     BaseDialog::customEvent(event);
+    int type=event->type();
+    if(type==WM_CHECK_OK)
+    {
+        CheckDialog * dialog=new CheckDialog(this);
+        dialog->exec();
+        delete(dialog);
+    }
 
 }

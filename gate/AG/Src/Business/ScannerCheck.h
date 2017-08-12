@@ -9,6 +9,8 @@
 #include "Drivers/Scanner/ScannerManager.h"
 #include "Drivers/Scanner/IScannerListener.h"
 
+
+
 using namespace std;
 
 class ScannerCheck:IScannerListener

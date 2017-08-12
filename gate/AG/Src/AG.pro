@@ -42,7 +42,9 @@ SOURCES += main.cpp\
     Crypto/AES128.cpp \
     Crypto/RSA1024.cpp \
     Business/ScannerCheck.cpp \
-    Business/CryptoManager.cpp
+    Business/CryptoManager.cpp \
+    Business/ChangeLogManager.cpp \
+    Business/ChangeLog.cpp
 
 HEADERS  += UI/FormMain.h \
     Drivers/Scanner/IScannerListener.h \
@@ -60,7 +62,9 @@ HEADERS  += UI/FormMain.h \
     Crypto/AES128.h \
     Crypto/RSA1024.h \
     Business/ScannerCheck.h \
-    Business/CryptoManager.h
+    Business/CryptoManager.h \
+    Business/ChangeLogManager.h \
+    Business/ChangeLog.h
 
 FORMS    += UI/FormMain.ui
 

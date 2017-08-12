@@ -25,6 +25,7 @@ void ScannerCheck::checkCode()
     uint8_t rsaDec[256];
     unique_lock<mutex> lock(mtx,std::defer_lock);
 
+    bool checkPass;
     char * qrCode;
     while (true) {
 
@@ -79,7 +80,8 @@ void ScannerCheck::checkCode()
         if(abs(timeNow-unixTime)>24*60*60) continue;
 
 
-
+        //
+        checkPass=true;
 
         Json::Value js;
 
@@ -94,7 +96,11 @@ void ScannerCheck::checkCode()
 
         if(msg!=nullptr)
         {
-            if(msg->getRetCode()==0)
+            if(msg->getRetCode()!=0)
+            {
+                checkPass=false;
+            }
+            else
             {
                 std::cout<<"OK"<<std::endl;
             }
@@ -103,7 +109,7 @@ void ScannerCheck::checkCode()
         server->deleteNetRequest(req);
 
 
-
+        if(checkPass==false) continue;
 
     }
 }

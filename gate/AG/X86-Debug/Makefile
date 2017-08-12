@@ -64,7 +64,9 @@ SOURCES       = ../Src/main.cpp \
 		../Src/Crypto/AES128.cpp \
 		../Src/Crypto/RSA1024.cpp \
 		../Src/Business/ScannerCheck.cpp \
-		../Src/Business/CryptoManager.cpp moc_FormMain.cpp
+		../Src/Business/CryptoManager.cpp \
+		../Src/Business/ChangeLogManager.cpp \
+		../Src/Business/ChangeLog.cpp moc_FormMain.cpp
 OBJECTS       = main.o \
 		FormMain.o \
 		IScannerListener.o \
@@ -82,6 +84,8 @@ OBJECTS       = main.o \
 		RSA1024.o \
 		ScannerCheck.o \
 		CryptoManager.o \
+		ChangeLogManager.o \
+		ChangeLog.o \
 		moc_FormMain.o
 DIST          = ../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../../Qt5.7.1/5.7/gcc_64/mkspecs/common/unix.conf \
@@ -249,7 +253,9 @@ DIST          = ../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../Src/Crypto/AES128.h \
 		../Src/Crypto/RSA1024.h \
 		../Src/Business/ScannerCheck.h \
-		../Src/Business/CryptoManager.h ../Src/main.cpp \
+		../Src/Business/CryptoManager.h \
+		../Src/Business/ChangeLogManager.h \
+		../Src/Business/ChangeLog.h ../Src/main.cpp \
 		../Src/UI/FormMain.cpp \
 		../Src/Drivers/Scanner/IScannerListener.cpp \
 		../Src/Drivers/Scanner/ScannerManager.cpp \
@@ -265,7 +271,9 @@ DIST          = ../../../../Qt5.7.1/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../Src/Crypto/AES128.cpp \
 		../Src/Crypto/RSA1024.cpp \
 		../Src/Business/ScannerCheck.cpp \
-		../Src/Business/CryptoManager.cpp
+		../Src/Business/CryptoManager.cpp \
+		../Src/Business/ChangeLogManager.cpp \
+		../Src/Business/ChangeLog.cpp
 QMAKE_TARGET  = AG
 DESTDIR       = 
 TARGET        = AG
@@ -600,8 +608,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../Src/UI/FormMain.h ../Src/Drivers/Scanner/IScannerListener.h ../Src/Drivers/Scanner/ScannerManager.h ../Src/Drivers/Scanner/ScannerState.h ../Src/Soundwave/SoundDecode.h ../Src/Network/NetMessage.h ../Src/Network/NetRequest.h ../Src/Network/Server.h ../Src/Network/DataServer.h ../Src/Storage/BasicConfig.h ../Src/Utils/PathUtil.h ../Src/Utils/TimeUtil.h ../Src/Lib/Base64/Base64.h ../Src/Crypto/AES128.h ../Src/Crypto/RSA1024.h ../Src/Business/ScannerCheck.h ../Src/Business/CryptoManager.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../Src/main.cpp ../Src/UI/FormMain.cpp ../Src/Drivers/Scanner/IScannerListener.cpp ../Src/Drivers/Scanner/ScannerManager.cpp ../Src/Soundwave/SoundDecode.cpp ../Src/Network/NetMessage.cpp ../Src/Network/NetRequest.cpp ../Src/Network/Server.cpp ../Src/Network/DataServer.cpp ../Src/Storage/BasicConfig.cpp ../Src/Utils/PathUtil.cpp ../Src/Utils/TimeUtil.cpp ../Src/Lib/Base64/Base64.cpp ../Src/Crypto/AES128.cpp ../Src/Crypto/RSA1024.cpp ../Src/Business/ScannerCheck.cpp ../Src/Business/CryptoManager.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Src/UI/FormMain.h ../Src/Drivers/Scanner/IScannerListener.h ../Src/Drivers/Scanner/ScannerManager.h ../Src/Drivers/Scanner/ScannerState.h ../Src/Soundwave/SoundDecode.h ../Src/Network/NetMessage.h ../Src/Network/NetRequest.h ../Src/Network/Server.h ../Src/Network/DataServer.h ../Src/Storage/BasicConfig.h ../Src/Utils/PathUtil.h ../Src/Utils/TimeUtil.h ../Src/Lib/Base64/Base64.h ../Src/Crypto/AES128.h ../Src/Crypto/RSA1024.h ../Src/Business/ScannerCheck.h ../Src/Business/CryptoManager.h ../Src/Business/ChangeLogManager.h ../Src/Business/ChangeLog.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Src/main.cpp ../Src/UI/FormMain.cpp ../Src/Drivers/Scanner/IScannerListener.cpp ../Src/Drivers/Scanner/ScannerManager.cpp ../Src/Soundwave/SoundDecode.cpp ../Src/Network/NetMessage.cpp ../Src/Network/NetRequest.cpp ../Src/Network/Server.cpp ../Src/Network/DataServer.cpp ../Src/Storage/BasicConfig.cpp ../Src/Utils/PathUtil.cpp ../Src/Utils/TimeUtil.cpp ../Src/Lib/Base64/Base64.cpp ../Src/Crypto/AES128.cpp ../Src/Crypto/RSA1024.cpp ../Src/Business/ScannerCheck.cpp ../Src/Business/CryptoManager.cpp ../Src/Business/ChangeLogManager.cpp ../Src/Business/ChangeLog.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../Src/UI/FormMain.ui $(DISTDIR)/
 
 
@@ -1034,7 +1042,10 @@ DataServer.o: ../Src/Network/DataServer.cpp ../Src/Network/DataServer.h \
 		../Src/Network/Server.h \
 		../Src/Network/NetRequest.h \
 		../Src/Network/NetMessage.h \
-		../Src/Storage/BasicConfig.h
+		../Src/Storage/BasicConfig.h \
+		../Src/Business/CryptoManager.h \
+		../Src/Crypto/AES128.h \
+		../Src/Crypto/RSA1024.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o DataServer.o ../Src/Network/DataServer.cpp
 
 BasicConfig.o: ../Src/Storage/BasicConfig.cpp ../Src/Storage/BasicConfig.h \
@@ -1063,11 +1074,27 @@ ScannerCheck.o: ../Src/Business/ScannerCheck.cpp ../Src/Business/ScannerCheck.h 
 		../Src/Drivers/Scanner/ScannerState.h \
 		../Src/Drivers/Scanner/IScannerListener.h \
 		../Src/Lib/Base64/Base64.h \
-		../Src/Crypto/AES128.h
+		../Src/Business/CryptoManager.h \
+		../Src/Crypto/AES128.h \
+		../Src/Crypto/RSA1024.h \
+		../Src/Utils/TimeUtil.h \
+		../Src/Network/DataServer.h \
+		../Src/Network/Server.h \
+		../Src/Network/NetRequest.h \
+		../Src/Network/NetMessage.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ScannerCheck.o ../Src/Business/ScannerCheck.cpp
 
-CryptoManager.o: ../Src/Business/CryptoManager.cpp ../Src/Business/CryptoManager.h
+CryptoManager.o: ../Src/Business/CryptoManager.cpp ../Src/Business/CryptoManager.h \
+		../Src/Crypto/AES128.h \
+		../Src/Crypto/RSA1024.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o CryptoManager.o ../Src/Business/CryptoManager.cpp
+
+ChangeLogManager.o: ../Src/Business/ChangeLogManager.cpp ../Src/Business/ChangeLogManager.h \
+		../Src/Utils/PathUtil.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ChangeLogManager.o ../Src/Business/ChangeLogManager.cpp
+
+ChangeLog.o: ../Src/Business/ChangeLog.cpp ../Src/Business/ChangeLog.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ChangeLog.o ../Src/Business/ChangeLog.cpp
 
 moc_FormMain.o: moc_FormMain.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_FormMain.o moc_FormMain.cpp

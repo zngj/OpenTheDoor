@@ -18,6 +18,18 @@ var request = {
     };
     wx.request(options);
   },
+  get: function (options) {
+    var token = wx.getStorageSync('token');
+    options.method = 'GET';
+    options.header = { 'Access-Token': token };
+    this.request(options);
+  },
+  put: function (options) {
+    var token = wx.getStorageSync('token');
+    options.method = 'PUT';
+    options.header = { 'Access-Token': token };
+    this.request(options);
+  },
   request: function (options) {
     this.requestRemote(options);
   },
@@ -74,7 +86,18 @@ var request = {
 
       }
     },
-    "/wallet/info": {
+    "/sg/wallet/info": {
+      default: function (options) {
+        return { success: { code: 0, msg: 'success', data: { balance: 0, autoPay: false } } }
+      },
+      hasBalance: function (options) {
+        return { success: { code: 0, msg: 'success', data: { balance: 100, autoPay: false } } }
+      },
+      autoPay: function (options) {
+        return { success: { code: 0, msg: 'success', data: { balance: 0, autoPay: true } } }
+      }
+    },
+    "/sg/wallet/info": {
       default: function (options) {
         return { success: { code: 0, msg: 'success', data: { balance: 0, autoPay: false } } }
       },
@@ -110,24 +133,6 @@ function isMobile(mobile) {
   }
   return true;
 }
-function initRequest() {
-  //request.init(arguments[0]);
-  request.init.apply(request, arguments);
-}
-function theRequest(options) {
-  request.request(options);
-}
-function showMsg(title) {
-  wx.showToast({
-    title: title,
-    fail: function () {
-      wx.showModal({
-        title: '提示',
-        content: title,
-      })
-    }
-  });
-}
 var util = {
   intToBytes: function (value) {
     var src = [];
@@ -147,20 +152,27 @@ var util = {
     return value;
   },
   mix: function (bytes) {
-    var newBytes = [this.getRandom(), this.getRandom()];
-    newBytes = newBytes.concat(bytes).concat(this.intToBytes(new Date().getTime()));
-    return newBytes;
+    return [83,71,this.getRandom(), this.getRandom()].concat(bytes).concat(this.intToBytes(Math.ceil(new Date().getTime()/1000)));
   },
   getRandom: function () {
-    return Math.ceil(Math.random() * 255);
+    return Math.ceil(Math.random() * 255) & 0xFF;
   },
+  showMsg: function(title) {
+    wx.showToast({
+      title: title,
+      fail: function () {
+        wx.showModal({
+          title: '提示',
+          content: title,
+        })
+      }
+    });
+}
 }
 module.exports = {
   redirectTo: redirectTo,
   isMobile: isMobile,
-  initRequest: initRequest,
-  request: theRequest,
-  showMsg: showMsg,
+  request: request,
   util: util
 }
 

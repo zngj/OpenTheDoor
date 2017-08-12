@@ -1,19 +1,16 @@
-//app.js
-var util = require('js/util.js');
+var util = require('js/util.js').util;
+var request = require('js/util.js').request;
 App({
   data: {
   },
   onLaunch: function (options) {
     var that = this;
-    util.initRequest(false);
+    request.init(false);
     wx.checkSession({
       success: function (sp) {
-        var token = wx.getStorageSync("token");
-        console.log(token);
-        util.request({
+        console.log(sp);
+        request.get({
           url: '/user/verifytoken',
-          header: { 'Access-Token': token },
-          method: "GET",
           success: function (p) {
             if (p.data.code == 0) {
               // token valid
@@ -34,7 +31,7 @@ App({
   login: function (entry) {
     wx.login({
       success: function (p) {
-        util.request({
+        request.request({
           url: '/user/wxapp/login',
           data: { code: p.code },
           success: function (loginResult) {

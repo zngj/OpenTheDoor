@@ -8,7 +8,7 @@
 
   <view class="weui-cells weui-flex weui-cells_after-title" style="padding:40rpx 0rpx">
     <view class="weui-flex__item" >
-      <navigator url='{{isLogin==1?"../recharge/recharge":"../login/login"}}'><image src="/images/recharge.png"></image><view>充值</view></navigator>
+      <navigator url='../recharge/recharge'><image src="/images/recharge.png"></image><view>充值</view></navigator>
     </view>
     <view class="weui-flex__item" >
       <image src="/images/guide.png" bindtap="gateIn"></image><view>进</view>

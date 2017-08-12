@@ -4,8 +4,10 @@ App({
   data: {
   },
   onLaunch: function (options) {
-    var that = this;
     request.init(false);
+  },
+  onShow: function () {
+    var that = this;
     wx.checkSession({
       success: function (sp) {
         console.log(sp);

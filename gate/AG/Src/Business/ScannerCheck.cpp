@@ -98,7 +98,6 @@ void ScannerCheck::checkCode()
             {
                 std::cout<<"OK"<<std::endl;
             }
-
         }
 
         server->deleteNetRequest(req);

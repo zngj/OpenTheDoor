@@ -13,9 +13,13 @@ var request = {
       if (originComplete) {
         originComplete(c);
       }
-      console.log(options);
-      console.log(c);
+      console.log([options, c]);
     };
+
+    var token = wx.getStorageSync('token');
+    if (token) {
+      options.header = { 'Access-Token': token };
+    }
     wx.request(options);
   },
   get: function (options) {
@@ -152,12 +156,12 @@ var util = {
     return value;
   },
   mix: function (bytes) {
-    return [83,71,this.getRandom(), this.getRandom()].concat(bytes).concat(this.intToBytes(Math.ceil(new Date().getTime()/1000)));
+    return [83, 71, this.getRandom(), this.getRandom()].concat(bytes).concat(this.intToBytes(Math.ceil(new Date().getTime() / 1000)));
   },
   getRandom: function () {
     return Math.ceil(Math.random() * 255) & 0xFF;
   },
-  showMsg: function(title) {
+  showMsg: function (title) {
     wx.showToast({
       title: title,
       fail: function () {
@@ -167,7 +171,7 @@ var util = {
         })
       }
     });
-}
+  }
 }
 module.exports = {
   redirectTo: redirectTo,

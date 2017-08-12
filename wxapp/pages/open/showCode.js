@@ -1,6 +1,5 @@
 var wxqrcode = require('../../js/wxqrcode.js'); var util = require('../../js/util.js').util;
 var request = require('../../js/util.js').request;
-var Base64 = require('../../js/base64.js');
 var Crypto = require('../../js/cryptojs').Crypto;
 
 // showCode.js
@@ -9,10 +8,21 @@ Page({
     type: 'in' //进站标识
     , evidence: ''
     , check: true
+    , qrInterval: 300
+    , currSeg: -1
+    , segCount: 2
+    , qrImg: ''
+    , qrImgs: []
+    , qrBuf: {}
+    , shouldLeave: false
+    , leaveTimeout: 15 * 1000
   },
   onLoad: function (options) {
     this.setData({
       type: options.type
+    });
+    wx.setNavigationBarTitle({
+      title: 'in' == this.data.type ? '进站二维码' : '出站二维码',
     });
   },
   onShow: function () {
@@ -28,10 +38,15 @@ Page({
   onHide: function () {
     this.data.check = false;
   },
+  onUnload: function () {
+    this.data.check = false;
+  },
   nextPeople: function () {
     var page = this;
     this.getEvidence(function (data) {
+      page.data.shouldLeave = false;
       page.data.evidence = data.evidence_key;
+      page.data.currSeg = -1;
       //data.expires_at;
     });
   },
@@ -42,7 +57,7 @@ Page({
       success: function (p) {
         if (p.data.code == 0) {
           successCB(p.data.data);
-        };
+        }
       },
       fail: function (fp) {
         if (failCB) {
@@ -51,17 +66,74 @@ Page({
       }
     });
   },
-  makeNewQrCode: function () {
-    var entryByte = this.data.type == 'in' ? 1 : (this.data.type == 'out' ? 2 : 0);
-    this.setData({
-      "qrImgs": [
-        wxqrcode.createQrCodeImg(this.encrypt(Crypto.util.bytesToBase64(util.mix(Crypto.util.base64ToBytes(this.data.evidence).concat([entryByte]), this.data.type))), { 'size': 200 })
-      ]
-    });
-    setTimeout(this.makeNewQrCode.bind(this), 500);
+  split: function (wholeBytes, segCount) {
+    var byteArr = [];
+    var newLen = wholeBytes.length / segCount;
+    for (var i = 0; i < segCount; i++) {
+      byteArr[i] = [(segCount << 4) + i].concat(wholeBytes.slice(i * newLen, (i == segCount - 1) ? wholeBytes.length : newLen * (i + 1)));
+    }
+    return byteArr;
   },
-  getDirectionDesc:function(direction){
-    return direction==0?'入闸':'出闸';
+  makeNewQrCode: function () {
+    var page = this;
+    var start = new Date().getTime();
+    if (this.data.currSeg >= 0 && this.data.currSeg < this.data.segCount - 1) {
+      this.setData({
+        "qrImg": this.data.qrImgs[++this.data.currSeg]
+      });
+    } else {
+      this.getNextQrImgs(this.data.evidence, function (qrImgs) {
+        page.setData({
+          "qrImgs": qrImgs
+          , "qrImg": qrImgs[0]
+          , "currSeg": 0
+        });
+      })
+    }
+    if (this.data.check) {
+      setTimeout(this.makeNewQrCode.bind(this), this.data.qrInterval);
+    }
+  },
+  getNextQrImgs(evidence, callback) {
+    var start=new Date().getTime();
+    if (this.data.evidence != this.data.qrBuf.evidence) {
+      this.data.qrBuf.evidence = this.data.evidence;
+      this.data.qrBuf.imgArrays = [];
+    }
+    if (this.data.qrBuf.imgArrays.length > 0) {
+    } else {
+      this.data.qrBuf.imgArrays.push(this.generateNewQrCode(this.data.evidence));
+    }
+    if (callback) {
+      callback(this.data.qrBuf.imgArrays.pop());
+    }
+    setTimeout(this.generateNewQrBuffer.bind(this), 1);
+    console.log("newCode:" + (new Date().getTime()-start))
+  },
+  generateNewQrBuffer: function () {
+    var evidence = this.data.evidence;
+    var newCode = this.generateNewQrCode(evidence);
+    if (this.data.qrBuf.evidence == evidence) {
+      this.data.qrBuf.imgArrays.push(newCode);
+    }
+  },
+  generateNewQrCode: function (evidence) {
+    var entryByte = this.data.type == 'in' ? 1 : (this.data.type == 'out' ? 2 : 0);
+    var wholeBytes = util.mix(Crypto.util.base64ToBytes(evidence).concat([entryByte]));
+    var encrytBytes = this.encrypt(Crypto.util.bytesToBase64(wholeBytes));
+    var byteArr = this.split(encrytBytes, this.data.segCount);
+    var qrImgs = [];
+    for (var i = 0; i < byteArr.length; i++) {
+      qrImgs[i] = wxqrcode.createQrCodeImg(Crypto.util.bytesToBase64(byteArr[i]), { 'size': 200 });
+    }
+    return qrImgs;
+  },
+  getStationDesc: function (data) {
+    if (data.direction == 0) {
+      return data.in_station_name + " " + '入闸';
+    } else {
+      return data.out_station_name + " " + '出闸';
+    }
   },
   checkNotification: function () {
     var page = this;
@@ -69,16 +141,18 @@ Page({
       url: '/sg/notification/router',
       success: function (p) {
         if (p.data.code == 0) {
-          util.showMsg("您在 " + p.data.data.in_station_name + " " + page.getDirectionDesc(p.data.data.direction) +"成功!");
-        // "notification_id": 9,
-        // "direction": 0, //入闸
-        // "in_gate_id": "010100101",
-        // "in_station_id": "0101001",
-        // "in_station_name": "五一广场",
-        // "in_time": 1502304832
+          util.showMsg("您在 " + page.getStationDesc(p.data.data) + "成功!");
+          // "notification_id": 9,
+          // "direction": 0, //入闸
+          // "in_gate_id": "010100101",
+          // "in_station_id": "0101001",
+          // "in_station_name": "五一广场",
+          // "in_time": 1502304832
           request.put({
-            url: '/sg/notification/consume/'+p.data.data.notification_id
-        });
+            url: '/sg/notification/consume/' + p.data.data.notification_id
+          });
+          page.data.shouldLeave = true;
+          setTimeout(page.leavePage.bind(page), page.data.leaveTimeout);
         }
       }, fail: function (fp) {
       }, complete: function () {
@@ -88,6 +162,15 @@ Page({
       }
     });
   },
+  leavePage: function () {
+    if (this.data.shouldLeave) {
+      if (wx.reLaunch) {
+        wx.reLaunch({
+          url: '/pages/index/index'
+        });
+      }
+    }
+  },
   encrypt: function (word) {
     //console.log('before:' + originWord);
     var mode = new Crypto.mode.CBC(Crypto.pad.pkcs7);
@@ -96,7 +179,8 @@ Page({
     var vb = Crypto.charenc.UTF8.stringToBytes("6916665466156476");//IV
     var ub = Crypto.AES.encrypt(eb, kb, { iv: vb, mode: mode, asBytes: true });
     //console.log('after:' + word);
-    return Crypto.util.bytesToBase64(ub);
+    //return Crypto.util.bytesToBase64(ub);
+    return ub;//return byte
   },
   decrypt: function (word) {
     var mode = new Crypto.mode.CBC(Crypto.pad.pkcs7);

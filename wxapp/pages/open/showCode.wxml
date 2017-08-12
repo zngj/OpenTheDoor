@@ -1,16 +1,7 @@
 
 
 <view style="text-align:center">
-  <swiper autoplay="true" interval="500" duration="0" style="height:750rpx">
-    <block wx:for="{{qrImgs}}">
-      <swiper-item>
-        <image src="{{item}}" class="slide-image" style ="width:750rpx;height:750rpx;"/>
-      </swiper-item>
-    </block>
-  </swiper>
-</view>
-<view style="text-align:center">
-  <text>{{rawData}}</text>
+   <image src="{{qrImg}}" class="slide-image" style ="width:750rpx;height:750rpx;"/>
 </view>
 <view style="text-align:center">
   <button bindtap="nextPeople" type="primary" >下一个人{{type}}</button>

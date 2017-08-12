@@ -84,7 +84,7 @@ func submitEvidence() {
 	dispatcher.AddHandler(submitEvidenceResult, msg.SUBMIT_EVIDENCE)
 	header := msg.NewSGHeader(gateId)
 	ue := new(msg.C2SSubmitEvidence)
-	ue.EvidenceKey = "RQ6nROMjHQ4TgWRhMZyqM5wPh2/hgaw6Et8SyTbJ2yqMgjQUAy/q1Bz8yqyXstZGa8oI2oEJs9koxzyHBf+I06jo22CqXOmJFwvX+JaFY8XlgQ+7eCa3zOn9NPXSnGJxcVUFD+20bQJRhti4T7dhsZT+y0/lT6ZNKSsnOEqjFbE="
+	ue.EvidenceKey = "vyeIgIAr8e+7IvUB00lGnVsfYcy64LHiCMg7iFVqJC0S0oSbplRQNoqcbfbWfFFf9i4xCE/54SrUHHx46jouSWE1sB8v1ioIy4CVC7Fa3eFgfOnpBVd0k5BgTyK+hIUpEiIr86gYnesvVyrZ5yqY/dd8A/MhYboC7EpIDn3SSKY="
 	ue.ScanTime = time.Now().Unix()
 	agent.Write(ue, header)
 }

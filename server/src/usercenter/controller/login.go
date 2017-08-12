@@ -8,7 +8,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"usercenter/service"
-	"usercenter/vo"
+	"common/vo"
 	"errors"
 	"common/util"
 	"common/sg"

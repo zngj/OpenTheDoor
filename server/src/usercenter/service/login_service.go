@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 	"usercenter/util"
-	"usercenter/vo"
+	"common/vo"
 	"usercenter/token"
 	"common/dbx"
 )
@@ -55,7 +55,7 @@ func saveSessionInfo(accessToken, userId string, wxsession *vo.WxappSession) (er
 		err = dao.Exec("update uc_login_log set release_time=?,status=? where id=?", now, "0", *_id)
 	}
 
-	expiresAt := now.Add(time.Duration(wxsession.ExpiresIn) * time.Second)
+	expiresAt := now.Add(time.Duration(wxsession.ExpiresIn) * time.Second).AddDate(0,0,1)
 	err = dao.Exec("insert into uc_login_log (user_id,access_token,login_time,expires_in,expires_at,status) values (?,?,?,?,?,?)",
 		userId, accessToken, now, wxsession.ExpiresIn, expiresAt, "1")
 	if err != nil {

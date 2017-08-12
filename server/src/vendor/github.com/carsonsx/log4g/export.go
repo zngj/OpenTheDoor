@@ -15,6 +15,9 @@ func Fatal(arg interface{}, args ...interface{})  {
 }
 
 func Error(arg interface{}, args ...interface{})  {
+	if arg == nil {
+		return
+	}
 	loggers.Log(LEVEL_ERROR, arg, args...)
 }
 

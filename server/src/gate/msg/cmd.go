@@ -21,7 +21,7 @@ func OnInit() {
 
 type S2CGateLogin struct {
 	GateId        string `json:"gate_id,omitempty"`
-	GateDirection int8   `json:"gate_direction,omitempty"`
+	GateDirection int8   `json:"gate_direction"`
 	StationName   string `json:"station_name,omitempty"`
 	CityName      string `json:"city_name,omitempty"`
 	ErrCode       int    `json:"errcode"`
@@ -39,8 +39,9 @@ type C2SVerifyEvidence struct {
 }
 
 type S2CVerifyEvidence struct {
-	ErrCode int    `json:"errcode"`
-	ErrMsg  string `json:"errmsg,omitempty"`
+	VerifyTime int64  `json:"verify_time"`
+	ErrCode    int    `json:"errcode"`
+	ErrMsg     string `json:"errmsg,omitempty"`
 }
 
 type C2SSubmitEvidence struct {

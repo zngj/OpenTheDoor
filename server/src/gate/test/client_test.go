@@ -11,14 +11,12 @@ var serializer = msg.NewGateSerializer()
 var agent net4g.NetAgent
 
 func onInit()  {
-
-	serializer.DeserializeId(new(msg.S2CGateLogin), msg.GATE_LOGIN)
-	serializer.DeserializeId(new(msg.S2CRsaKey), msg.RSA_KEY)
-	serializer.SerializeId(new(msg.C2SVerifyEvidence), msg.VERIFY_EVIDENCE)
-	serializer.DeserializeId(new(msg.S2CVerifyEvidence), msg.VERIFY_EVIDENCE)
-	serializer.SerializeId(new(msg.C2SSubmitEvidence), msg.SUBMIT_EVIDENCE)
-	serializer.DeserializeId(new(msg.S2CSubmitEvidence), msg.SUBMIT_EVIDENCE)
-
+	serializer.RegisterDeserializeId(new(msg.S2CGateLogin), msg.GATE_LOGIN)
+	serializer.RegisterDeserializeId(new(msg.S2CRsaKey), msg.RSA_KEY)
+	serializer.RegisterSerializeId(new(msg.C2SVerifyEvidence), msg.VERIFY_EVIDENCE)
+	serializer.RegisterDeserializeId(new(msg.S2CVerifyEvidence), msg.VERIFY_EVIDENCE)
+	serializer.RegisterSerializeId(new(msg.C2SSubmitEvidence), msg.SUBMIT_EVIDENCE)
+	serializer.RegisterDeserializeId(new(msg.S2CSubmitEvidence), msg.SUBMIT_EVIDENCE)
 }
 
 func notLoginResult(agent net4g.NetAgent) {
@@ -45,7 +43,7 @@ func connect(callback func()) {
 		callback()
 	})
 	addr := ":8083"
-	//addr = "sgu.youstars.com.cn:8083"
+	addr = "sgu.youstars.com.cn:8083"
 	net4g.NewTcpClient(net4g.NewNetAddrFn(addr)).
 		SetSerializer(serializer).
 		AddDispatchers(dispatcher).
@@ -54,8 +52,6 @@ func connect(callback func()) {
 		Connect()
 
 	net4g.TestWait()
-
-	log4g.Debug("?????????????????????????????")
 
 	agent.Close()
 

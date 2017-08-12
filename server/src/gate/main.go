@@ -4,9 +4,21 @@ import (
 	"gate/msg"
 	"github.com/carsonsx/net4g"
 	"gate/controller"
+	"github.com/carsonsx/log4g"
+	"runtime/debug"
 )
 
 func main() {
+
+	defer func() {
+		if r := recover(); r != nil {
+			log4g.Error("********************* Message Handler Panic *********************")
+			log4g.Error(r)
+			log4g.Error(string(debug.Stack()))
+			log4g.Error("********************* Message Handler Panic *********************")
+		}
+	}()
+
 
 	net4g.NetConfig.BeginBytes = []byte{0x10, 0x02}
 	net4g.NetConfig.EndBytes = []byte{0x10, 0x03}

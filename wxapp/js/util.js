@@ -6,17 +6,29 @@ var request = {
   },
   requestRemote: function (options) {
     options.url = "https://sgu.youstars.com.cn" + options.url;
-    options.method = options.method||"POST";
-    options.header = options.header||{ 'content-type': 'application/json' };
+    options.method = options.method || "POST";
+    options.header = options.header || { 'content-type': 'application/json' };
     var originComplete = options.complete;
-    options.complete = function (c) { 
-      if (originComplete){
+    options.complete = function (c) {
+      if (originComplete) {
         originComplete(c);
       }
-      console.log(options); 
-      console.log(c); 
+      console.log(options);
+      console.log(c);
     };
     wx.request(options);
+  },
+  get: function (options) {
+    var token = wx.getStorageSync('token');
+    options.method = 'GET';
+    options.header = { 'Access-Token': token };
+    this.request(options);
+  },
+  put: function (options) {
+    var token = wx.getStorageSync('token');
+    options.method = 'PUT';
+    options.header = { 'Access-Token': token };
+    this.request(options);
   },
   request: function (options) {
     this.requestRemote(options);
@@ -74,7 +86,18 @@ var request = {
 
       }
     },
-    "/wallet/info": {
+    "/sg/wallet/info": {
+      default: function (options) {
+        return { success: { code: 0, msg: 'success', data: { balance: 0, autoPay: false } } }
+      },
+      hasBalance: function (options) {
+        return { success: { code: 0, msg: 'success', data: { balance: 100, autoPay: false } } }
+      },
+      autoPay: function (options) {
+        return { success: { code: 0, msg: 'success', data: { balance: 0, autoPay: true } } }
+      }
+    },
+    "/sg/wallet/info": {
       default: function (options) {
         return { success: { code: 0, msg: 'success', data: { balance: 0, autoPay: false } } }
       },
@@ -110,29 +133,46 @@ function isMobile(mobile) {
   }
   return true;
 }
-function initRequest() {
-  //request.init(arguments[0]);
-  request.init.apply(request, arguments);
+var util = {
+  intToBytes: function (value) {
+    var src = [];
+    src[3] = ((value >> 24) & 0xFF);
+    src[2] = ((value >> 16) & 0xFF);
+    src[1] = ((value >> 8) & 0xFF);
+    src[0] = (value & 0xFF);
+    return src;
+  },
+
+  bytesToInt: function (src, offset) {
+    var value = ((src[offset] & 0xFF)
+      | ((src[offset + 1] & 0xFF) << 8)
+      | ((src[offset + 2] & 0xFF) << 16)
+      | ((src[offset + 3] & 0xFF) << 24));
+    console.log(src[offset])
+    return value;
+  },
+  mix: function (bytes) {
+    return [83,71,this.getRandom(), this.getRandom()].concat(bytes).concat(this.intToBytes(Math.ceil(new Date().getTime()/1000)));
+  },
+  getRandom: function () {
+    return Math.ceil(Math.random() * 255) & 0xFF;
+  },
+  showMsg: function(title) {
+    wx.showToast({
+      title: title,
+      fail: function () {
+        wx.showModal({
+          title: '提示',
+          content: title,
+        })
+      }
+    });
 }
-function theRequest(options) {
-  request.request(options);
-}
-function showMsg(title) {
-  wx.showToast({
-    title: title,
-    fail: function () {
-      wx.showModal({
-        title: '提示',
-        content: title,
-      })
-    }
-  });
 }
 module.exports = {
   redirectTo: redirectTo,
   isMobile: isMobile,
-  initRequest: initRequest,
-  request: theRequest,
-  showMsg: showMsg
+  request: request,
+  util: util
 }
 

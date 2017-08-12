@@ -1,4 +1,5 @@
-var util = require('../../js/util.js');
+var util = require('../../js/util.js').util;
+var request = require('../../js/util.js').request;
 
 var app = getApp()
 Page({
@@ -17,28 +18,28 @@ Page({
     });
   },
   getWallet: function (successCB, failCB) {
-    var token = wx.getStorageSync('token');console.log(token);
-
     if (wx.showLoading) {
       wx.showLoading({
         title: '处理中',
       });
     }
-    util.request({
+    request.get({
       url: '/sg/wallet/info',
-      method: 'GET',
-      header: { 'Access-Token': token },
       success: function (p) {
-        if (p.data.code == 0) {
+        if (p.statusCode == 200 && p.data.code == 0) {
           successCB(p.data.data);
-        };
+        } else {
+          util.showMsg("钱包信息获取失败");
+        }
       },
       fail: function (fp) {
+        console.log(fp)
         if (failCB) {
           failCB(fp);
         };
       },
-      complete: function () {
+      complete: function (cp) {
+        console.log(cp)
         if (wx.hideLoading) {
           wx.hideLoading();
         }
@@ -46,11 +47,8 @@ Page({
     });
   },
   getRoute: function (successCB,failCB) {
-    var token = wx.getStorageSync('token');
-    util.request({
+    request.get({
       url: '/sg/router/status',
-      method: 'GET',
-      header: { 'Access-Token': token },
       success: function (p) {
         if (p.data.code == 0) {//"status": 0, // 0-无行程; 1-已入闸; 2-隔天未出闸(异常); 4-已出闸未入闸(异常)
           successCB(p.data.data);
@@ -119,6 +117,6 @@ Page({
   onShareAppMessage: function (page) { },
   bindPickerChange: function (e) {
     var dataSet = ['', 'new', 'hasBalance', 'wxpay_quick'];
-    util.initRequest(e.detail.value != 0, dataSet[e.detail.value]);
+    request.init(e.detail.value != 0, dataSet[e.detail.value]);
   },
 })

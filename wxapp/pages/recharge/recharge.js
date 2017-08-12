@@ -1,5 +1,6 @@
 // recharge.js
-var util = require('../../js/util.js');
+var util = require('../../js/util.js').util;
+var request = require('../../js/util.js').request;
 var app = getApp()
 Page({
 
@@ -42,7 +43,7 @@ Page({
     var rechargeMoney = this.data.rechargeMoney;
     wx.login({
       success: function(res) {
-        util.request({
+        request.request({
           url: '/user/wxapp/rechargeMakeOrder',
           data: {
             idaccess_token: wx.getStorageInfoSync('token'),

@@ -46,7 +46,7 @@ void ChangeLogManager::log2Server()
         js["evidence_key"]=log->getEvidence();
         js["scan_time"]=log->getScannTime();
 
-        NetRequest * req=server->createNetRequest(104,"010100101",js);
+        NetRequest * req=server->createNetRequest(104,"",js);
 
         NetMessage *msg=req->waitFor(1000);
         if(msg!=nullptr)

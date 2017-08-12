@@ -36,7 +36,7 @@ DISTNAME      = AG1.0.0
 DISTDIR = /home/feynman/SmartGate/gate/AG/ARM-Debug/.tmp/AG1.0.0
 LINK          = /home/feynman/buildroot-2016.11/output/host/usr/bin/arm-linux-gnueabihf-g++
 LFLAGS        = --sysroot=/home/feynman/buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot
-LIBS          = $(SUBLIBS) -lfftw3 -lasound -ljsoncpp -lssl -lcrypto -lQt5Widgets -lQt5Gui -lQt5Core -lrt -ldl -lpthread 
+LIBS          = $(SUBLIBS) -lfftw3 -lasound -ljsoncpp -lssl -lcrypto -lqrencode -lQt5Widgets -lQt5Gui -lQt5Core -lrt -ldl -lpthread 
 AR            = /home/feynman/buildroot-2016.11/output/host/usr/bin/arm-linux-gnueabihf-ar cqs
 RANLIB        = 
 SED           = sed
@@ -49,7 +49,6 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../Src/main.cpp \
-		../Src/UI/FormMain.cpp \
 		../Src/Drivers/Scanner/IScannerListener.cpp \
 		../Src/Drivers/Scanner/ScannerManager.cpp \
 		../Src/Soundwave/SoundDecode.cpp \
@@ -63,9 +62,28 @@ SOURCES       = ../Src/main.cpp \
 		../Src/Lib/Base64/Base64.cpp \
 		../Src/Crypto/AES128.cpp \
 		../Src/Crypto/RSA1024.cpp \
-		../Src/Business/ScannerCheck.cpp moc_FormMain.cpp
+		../Src/Business/ScannerCheck.cpp \
+		../Src/Business/CryptoManager.cpp \
+		../Src/Business/ChangeLogManager.cpp \
+		../Src/Business/ChangeLog.cpp \
+		../Src/UI/BaseDialog.cpp \
+		../Src/UI/PopupWindow.cpp \
+		../Src/UI/UIListener.cpp \
+		../Src/UI/UserControl/FrameEdit.cpp \
+		../Src/UI/UserControl/IEventListener.cpp \
+		../Src/UI/UserControl/LineEdit.cpp \
+		../Src/UI/UserControl/ListView.cpp \
+		../Src/UI/UserControl/PushButton.cpp \
+		../Src/UI/UserControl/QRDisplay.cpp \
+		../Src/UI/UserControl/SplitterLabel.cpp \
+		../Src/UI/UserControl/StaticLabel.cpp \
+		../Src/UI/UserControl/StepLabel.cpp \
+		../Src/UI/UserControl/UserControl.cpp \
+		../Src/UI/FormMain.cpp \
+		../Src/UI/CheckDialog.cpp qrc_resource.cpp \
+		moc_BaseDialog.cpp \
+		moc_PopupWindow.cpp
 OBJECTS       = main.o \
-		FormMain.o \
 		IScannerListener.o \
 		ScannerManager.o \
 		SoundDecode.o \
@@ -80,7 +98,27 @@ OBJECTS       = main.o \
 		AES128.o \
 		RSA1024.o \
 		ScannerCheck.o \
-		moc_FormMain.o
+		CryptoManager.o \
+		ChangeLogManager.o \
+		ChangeLog.o \
+		BaseDialog.o \
+		PopupWindow.o \
+		UIListener.o \
+		FrameEdit.o \
+		IEventListener.o \
+		LineEdit.o \
+		ListView.o \
+		PushButton.o \
+		QRDisplay.o \
+		SplitterLabel.o \
+		StaticLabel.o \
+		StepLabel.o \
+		UserControl.o \
+		FormMain.o \
+		CheckDialog.o \
+		qrc_resource.o \
+		moc_BaseDialog.o \
+		moc_PopupWindow.o
 DIST          = ../../../../buildroot-2016.11/output/host/usr/mkspecs/features/spec_pre.prf \
 		../../../../buildroot-2016.11/output/host/usr/mkspecs/common/unix.conf \
 		../../../../buildroot-2016.11/output/host/usr/mkspecs/common/linux.conf \
@@ -139,8 +177,7 @@ DIST          = ../../../../buildroot-2016.11/output/host/usr/mkspecs/features/s
 		../../../../buildroot-2016.11/output/host/usr/mkspecs/features/exceptions.prf \
 		../../../../buildroot-2016.11/output/host/usr/mkspecs/features/yacc.prf \
 		../../../../buildroot-2016.11/output/host/usr/mkspecs/features/lex.prf \
-		../Src/AG.pro ../Src/UI/FormMain.h \
-		../Src/Drivers/Scanner/IScannerListener.h \
+		../Src/AG.pro ../Src/Drivers/Scanner/IScannerListener.h \
 		../Src/Drivers/Scanner/ScannerManager.h \
 		../Src/Drivers/Scanner/ScannerState.h \
 		../Src/Soundwave/SoundDecode.h \
@@ -154,8 +191,26 @@ DIST          = ../../../../buildroot-2016.11/output/host/usr/mkspecs/features/s
 		../Src/Lib/Base64/Base64.h \
 		../Src/Crypto/AES128.h \
 		../Src/Crypto/RSA1024.h \
-		../Src/Business/ScannerCheck.h ../Src/main.cpp \
-		../Src/UI/FormMain.cpp \
+		../Src/Business/ScannerCheck.h \
+		../Src/Business/CryptoManager.h \
+		../Src/Business/ChangeLogManager.h \
+		../Src/Business/ChangeLog.h \
+		../Src/UI/BaseDialog.h \
+		../Src/UI/PopupWindow.h \
+		../Src/UI/UIListener.h \
+		../Src/UI/UserControl/ControlCommon.h \
+		../Src/UI/UserControl/FrameEdit.h \
+		../Src/UI/UserControl/IEventListener.h \
+		../Src/UI/UserControl/LineEdit.h \
+		../Src/UI/UserControl/ListView.h \
+		../Src/UI/UserControl/PushButton.h \
+		../Src/UI/UserControl/QRDisplay.h \
+		../Src/UI/UserControl/SplitterLabel.h \
+		../Src/UI/UserControl/StaticLabel.h \
+		../Src/UI/UserControl/StepLabel.h \
+		../Src/UI/UserControl/UserControl.h \
+		../Src/UI/FormMain.h \
+		../Src/UI/CheckDialog.h ../Src/main.cpp \
 		../Src/Drivers/Scanner/IScannerListener.cpp \
 		../Src/Drivers/Scanner/ScannerManager.cpp \
 		../Src/Soundwave/SoundDecode.cpp \
@@ -169,7 +224,25 @@ DIST          = ../../../../buildroot-2016.11/output/host/usr/mkspecs/features/s
 		../Src/Lib/Base64/Base64.cpp \
 		../Src/Crypto/AES128.cpp \
 		../Src/Crypto/RSA1024.cpp \
-		../Src/Business/ScannerCheck.cpp
+		../Src/Business/ScannerCheck.cpp \
+		../Src/Business/CryptoManager.cpp \
+		../Src/Business/ChangeLogManager.cpp \
+		../Src/Business/ChangeLog.cpp \
+		../Src/UI/BaseDialog.cpp \
+		../Src/UI/PopupWindow.cpp \
+		../Src/UI/UIListener.cpp \
+		../Src/UI/UserControl/FrameEdit.cpp \
+		../Src/UI/UserControl/IEventListener.cpp \
+		../Src/UI/UserControl/LineEdit.cpp \
+		../Src/UI/UserControl/ListView.cpp \
+		../Src/UI/UserControl/PushButton.cpp \
+		../Src/UI/UserControl/QRDisplay.cpp \
+		../Src/UI/UserControl/SplitterLabel.cpp \
+		../Src/UI/UserControl/StaticLabel.cpp \
+		../Src/UI/UserControl/StepLabel.cpp \
+		../Src/UI/UserControl/UserControl.cpp \
+		../Src/UI/FormMain.cpp \
+		../Src/UI/CheckDialog.cpp
 QMAKE_TARGET  = AG
 DESTDIR       = 
 TARGET        = AG
@@ -178,7 +251,7 @@ TARGET        = AG
 first: all
 ####### Build rules
 
-$(TARGET): ui_FormMain.h $(OBJECTS)  
+$(TARGET): ui_BaseDialog.h ui_popupwindow.h $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: ../Src/AG.pro ../../../../buildroot-2016.11/output/host/usr/mkspecs/devices/linux-buildroot-g++/qmake.conf ../../../../buildroot-2016.11/output/host/usr/mkspecs/features/spec_pre.prf \
@@ -240,6 +313,7 @@ Makefile: ../Src/AG.pro ../../../../buildroot-2016.11/output/host/usr/mkspecs/de
 		../../../../buildroot-2016.11/output/host/usr/mkspecs/features/yacc.prf \
 		../../../../buildroot-2016.11/output/host/usr/mkspecs/features/lex.prf \
 		../Src/AG.pro \
+		../Src/resource.qrc \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/lib/libQt5Widgets.prl \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/lib/libQt5Gui.prl \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/lib/libQt5Core.prl
@@ -303,6 +377,7 @@ Makefile: ../Src/AG.pro ../../../../buildroot-2016.11/output/host/usr/mkspecs/de
 ../../../../buildroot-2016.11/output/host/usr/mkspecs/features/yacc.prf:
 ../../../../buildroot-2016.11/output/host/usr/mkspecs/features/lex.prf:
 ../Src/AG.pro:
+../Src/resource.qrc:
 ../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/lib/libQt5Widgets.prl:
 ../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/lib/libQt5Gui.prl:
 ../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/lib/libQt5Core.prl:
@@ -320,9 +395,10 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../Src/UI/FormMain.h ../Src/Drivers/Scanner/IScannerListener.h ../Src/Drivers/Scanner/ScannerManager.h ../Src/Drivers/Scanner/ScannerState.h ../Src/Soundwave/SoundDecode.h ../Src/Network/NetMessage.h ../Src/Network/NetRequest.h ../Src/Network/Server.h ../Src/Network/DataServer.h ../Src/Storage/BasicConfig.h ../Src/Utils/PathUtil.h ../Src/Utils/TimeUtil.h ../Src/Lib/Base64/Base64.h ../Src/Crypto/AES128.h ../Src/Crypto/RSA1024.h ../Src/Business/ScannerCheck.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../Src/main.cpp ../Src/UI/FormMain.cpp ../Src/Drivers/Scanner/IScannerListener.cpp ../Src/Drivers/Scanner/ScannerManager.cpp ../Src/Soundwave/SoundDecode.cpp ../Src/Network/NetMessage.cpp ../Src/Network/NetRequest.cpp ../Src/Network/Server.cpp ../Src/Network/DataServer.cpp ../Src/Storage/BasicConfig.cpp ../Src/Utils/PathUtil.cpp ../Src/Utils/TimeUtil.cpp ../Src/Lib/Base64/Base64.cpp ../Src/Crypto/AES128.cpp ../Src/Crypto/RSA1024.cpp ../Src/Business/ScannerCheck.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../Src/UI/FormMain.ui $(DISTDIR)/
+	$(COPY_FILE) --parents ../Src/resource.qrc $(DISTDIR)/
+	$(COPY_FILE) --parents ../Src/Drivers/Scanner/IScannerListener.h ../Src/Drivers/Scanner/ScannerManager.h ../Src/Drivers/Scanner/ScannerState.h ../Src/Soundwave/SoundDecode.h ../Src/Network/NetMessage.h ../Src/Network/NetRequest.h ../Src/Network/Server.h ../Src/Network/DataServer.h ../Src/Storage/BasicConfig.h ../Src/Utils/PathUtil.h ../Src/Utils/TimeUtil.h ../Src/Lib/Base64/Base64.h ../Src/Crypto/AES128.h ../Src/Crypto/RSA1024.h ../Src/Business/ScannerCheck.h ../Src/Business/CryptoManager.h ../Src/Business/ChangeLogManager.h ../Src/Business/ChangeLog.h ../Src/UI/BaseDialog.h ../Src/UI/PopupWindow.h ../Src/UI/UIListener.h ../Src/UI/UserControl/ControlCommon.h ../Src/UI/UserControl/FrameEdit.h ../Src/UI/UserControl/IEventListener.h ../Src/UI/UserControl/LineEdit.h ../Src/UI/UserControl/ListView.h ../Src/UI/UserControl/PushButton.h ../Src/UI/UserControl/QRDisplay.h ../Src/UI/UserControl/SplitterLabel.h ../Src/UI/UserControl/StaticLabel.h ../Src/UI/UserControl/StepLabel.h ../Src/UI/UserControl/UserControl.h ../Src/UI/FormMain.h ../Src/UI/CheckDialog.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Src/main.cpp ../Src/Drivers/Scanner/IScannerListener.cpp ../Src/Drivers/Scanner/ScannerManager.cpp ../Src/Soundwave/SoundDecode.cpp ../Src/Network/NetMessage.cpp ../Src/Network/NetRequest.cpp ../Src/Network/Server.cpp ../Src/Network/DataServer.cpp ../Src/Storage/BasicConfig.cpp ../Src/Utils/PathUtil.cpp ../Src/Utils/TimeUtil.cpp ../Src/Lib/Base64/Base64.cpp ../Src/Crypto/AES128.cpp ../Src/Crypto/RSA1024.cpp ../Src/Business/ScannerCheck.cpp ../Src/Business/CryptoManager.cpp ../Src/Business/ChangeLogManager.cpp ../Src/Business/ChangeLog.cpp ../Src/UI/BaseDialog.cpp ../Src/UI/PopupWindow.cpp ../Src/UI/UIListener.cpp ../Src/UI/UserControl/FrameEdit.cpp ../Src/UI/UserControl/IEventListener.cpp ../Src/UI/UserControl/LineEdit.cpp ../Src/UI/UserControl/ListView.cpp ../Src/UI/UserControl/PushButton.cpp ../Src/UI/UserControl/QRDisplay.cpp ../Src/UI/UserControl/SplitterLabel.cpp ../Src/UI/UserControl/StaticLabel.cpp ../Src/UI/UserControl/StepLabel.cpp ../Src/UI/UserControl/UserControl.cpp ../Src/UI/FormMain.cpp ../Src/UI/CheckDialog.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Src/UI/BaseDialog.ui ../Src/UI/popupwindow.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -345,12 +421,213 @@ check: first
 
 benchmark: first
 
-compiler_rcc_make_all:
+compiler_rcc_make_all: qrc_resource.cpp
 compiler_rcc_clean:
-compiler_moc_header_make_all: moc_FormMain.cpp
+	-$(DEL_FILE) qrc_resource.cpp
+qrc_resource.cpp: ../Src/resource.qrc \
+		../Src/Resource/Image/Pic/uparrow.jpg \
+		../Src/Resource/Image/Pic/logo.jpg \
+		../Src/Resource/Image/Icon/network_icon1.png \
+		../Src/Resource/Image/Icon/confirm_icon.png \
+		../Src/Resource/Image/Icon/loading2.png \
+		../Src/Resource/Image/Icon/o-5.png \
+		../Src/Resource/Image/Icon/input_L.png \
+		../Src/Resource/Image/Icon/return_s_icon.png \
+		../Src/Resource/Image/Icon/loading1.png \
+		../Src/Resource/Image/Icon/line_on.png \
+		../Src/Resource/Image/Icon/o-4.png \
+		../Src/Resource/Image/Icon/success_icon.png \
+		../Src/Resource/Image/Icon/next_icon.png \
+		../Src/Resource/Image/Icon/line_off.png \
+		../Src/Resource/Image/Icon/g-5.png \
+		../Src/Resource/Image/Icon/o-3.png \
+		../Src/Resource/Image/Icon/arrow_right_S.png \
+		../Src/Resource/Image/Icon/g-4.png \
+		../Src/Resource/Image/Icon/o-2.png \
+		../Src/Resource/Image/Icon/up_icon_4.png \
+		../Src/Resource/Image/Icon/arrow_up.png \
+		../Src/Resource/Image/Icon/input_L4.png \
+		../Src/Resource/Image/Icon/g-3.png \
+		../Src/Resource/Image/Icon/o-1.png \
+		../Src/Resource/Image/Icon/up_icon_3.png \
+		../Src/Resource/Image/Icon/network-breaks_icon.png \
+		../Src/Resource/Image/Icon/QR_line.png \
+		../Src/Resource/Image/Icon/input_L3.png \
+		../Src/Resource/Image/Icon/g-2.png \
+		../Src/Resource/Image/Icon/QR_line_4.png \
+		../Src/Resource/Image/Icon/loading6.png \
+		../Src/Resource/Image/Icon/up_icon_2.png \
+		../Src/Resource/Image/Icon/o_icon_4.png \
+		../Src/Resource/Image/Icon/warn_icon.png \
+		../Src/Resource/Image/Icon/g_icon_4.png \
+		../Src/Resource/Image/Icon/dots.png \
+		../Src/Resource/Image/Icon/wechat_logo.png \
+		../Src/Resource/Image/Icon/last_s_icon.png \
+		../Src/Resource/Image/Icon/last_icon.png \
+		../Src/Resource/Image/Icon/network_icon4.png \
+		../Src/Resource/Image/Icon/input_L2.png \
+		../Src/Resource/Image/Icon/g-1.png \
+		../Src/Resource/Image/Icon/QR_line_3.png \
+		../Src/Resource/Image/Icon/loading5.png \
+		../Src/Resource/Image/Icon/up_icon_1.png \
+		../Src/Resource/Image/Icon/o_icon_3.png \
+		../Src/Resource/Image/Icon/g_icon_3.png \
+		../Src/Resource/Image/Icon/blackmask.png \
+		../Src/Resource/Image/Icon/confirm_s_icon.png \
+		../Src/Resource/Image/Icon/no-network_icon.png \
+		../Src/Resource/Image/Icon/network_icon3.png \
+		../Src/Resource/Image/Icon/input_L1.png \
+		../Src/Resource/Image/Icon/QR_line_2.png \
+		../Src/Resource/Image/Icon/loading4.png \
+		../Src/Resource/Image/Icon/arrow_left_S.png \
+		../Src/Resource/Image/Icon/o_icon_2.png \
+		../Src/Resource/Image/Icon/fail_icon.png \
+		../Src/Resource/Image/Icon/g_icon_2.png \
+		../Src/Resource/Image/Icon/network_icon2.png \
+		../Src/Resource/Image/Icon/QR_line_1.png \
+		../Src/Resource/Image/Icon/return_icon.png \
+		../Src/Resource/Image/Icon/loading3.png \
+		../Src/Resource/Image/Icon/account_icon.png \
+		../Src/Resource/Image/Icon/o_icon_1.png \
+		../Src/Resource/Image/Icon/g_icon_1.png \
+		../Src/Resource/Image/Icon/next_s_icon.png
+	/home/feynman/buildroot-2016.11/output/host/usr/bin/rcc -name resource ../Src/resource.qrc -o qrc_resource.cpp
+
+compiler_moc_header_make_all: moc_BaseDialog.cpp moc_PopupWindow.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_FormMain.cpp
-moc_FormMain.cpp: ../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QDialog \
+	-$(DEL_FILE) moc_BaseDialog.cpp moc_PopupWindow.cpp
+moc_BaseDialog.cpp: ../Src/UI/UserControl/PushButton.h \
+		../Src/UI/UserControl/UserControl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QObject \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnamespace.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobal.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qconfig.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfeatures.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsystemdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qprocessordetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcompilerdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypeinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypetraits.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qisenum.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsysinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlogging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qflags.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbasicatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_bootstrap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qgenericatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_cxx11.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_gcc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_msvc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv7.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv6.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv5.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_ia64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_x86.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_unix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobalstatic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmutex.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnumeric.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qversiontagging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstring.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qchar.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrefcount.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qarraydata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringbuilder.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qalgorithms.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiterator.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhashfunctions.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpair.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearraylist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qregexp.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringmatcher.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcoreevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qscopedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmetatype.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvarlengtharray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontainerfwd.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPainter \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainter.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrect.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmargins.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsize.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpoint.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpaintdevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs_win.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcolor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgb.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgba64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qshareddata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhash.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qimage.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixelformat.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtransform.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qmatrix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpolygon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvector.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qregion.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdatastream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiodevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qline.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainterpath.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtextoption.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpen.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qbrush.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfont.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontmetrics.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QKeyEvent \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qkeysequence.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvariant.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdebug.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtextstream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlocale.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qset.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontiguouscache.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurlquery.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfile.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfiledevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qvector2d.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtouchdevice.h \
+		../Src/UI/UserControl/IEventListener.h \
+		../Src/UI/UserControl/ControlCommon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QRect \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QString \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QWidget \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qwidget.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpalette.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qsizepolicy.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcursor.h \
+		../Src/UI/UserControl/LineEdit.h \
+		../Src/UI/UserControl/QRDisplay.h \
+		../Src/UI/UserControl/FrameEdit.h \
+		../Src/UI/UserControl/ListView.h \
+		../Src/UI/UserControl/StepLabel.h \
+		../Src/UI/UserControl/StaticLabel.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QColor \
+		../Src/UI/UserControl/SplitterLabel.h \
+		../Src/UI/PopupWindow.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QDialog \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qdialog.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPixmap \
+		../Src/UI/BaseDialog.h
+	/home/feynman/buildroot-2016.11/output/host/usr/bin/moc $(DEFINES) -I/home/feynman/buildroot-2016.11/output/host/usr/mkspecs/devices/linux-buildroot-g++ -I/home/feynman/SmartGate/gate/AG/Src -I/home/feynman/buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5 -I/home/feynman/buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets -I/home/feynman/buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui -I/home/feynman/buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore -I. -I/home/feynman/buildroot-2016.11/output/host/opt/ext-toolchain/arm-linux-gnueabihf/include/c++/5.3.1 -I/home/feynman/buildroot-2016.11/output/host/opt/ext-toolchain/arm-linux-gnueabihf/include/c++/5.3.1/arm-linux-gnueabihf -I/home/feynman/buildroot-2016.11/output/host/opt/ext-toolchain/arm-linux-gnueabihf/include/c++/5.3.1/backward -I/home/feynman/buildroot-2016.11/output/host/opt/ext-toolchain/lib/gcc/arm-linux-gnueabihf/5.3.1/include -I/home/feynman/buildroot-2016.11/output/host/opt/ext-toolchain/lib/gcc/arm-linux-gnueabihf/5.3.1/include-fixed -I/home/feynman/buildroot-2016.11/output/host/opt/ext-toolchain/arm-linux-gnueabihf/include -I/home/feynman/buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include ../Src/UI/BaseDialog.h -o moc_BaseDialog.cpp
+
+moc_PopupWindow.cpp: ../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QDialog \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qdialog.h \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qwidget.h \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs.h \
@@ -455,16 +732,34 @@ moc_FormMain.cpp: ../../../../buildroot-2016.11/output/host/usr/arm-buildroot-li
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfiledevice.h \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qvector2d.h \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtouchdevice.h \
-		../Src/UI/FormMain.h
-	/home/feynman/buildroot-2016.11/output/host/usr/bin/moc $(DEFINES) -I/home/feynman/buildroot-2016.11/output/host/usr/mkspecs/devices/linux-buildroot-g++ -I/home/feynman/SmartGate/gate/AG/Src -I/home/feynman/buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5 -I/home/feynman/buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets -I/home/feynman/buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui -I/home/feynman/buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore -I. -I/home/feynman/buildroot-2016.11/output/host/opt/ext-toolchain/arm-linux-gnueabihf/include/c++/5.3.1 -I/home/feynman/buildroot-2016.11/output/host/opt/ext-toolchain/arm-linux-gnueabihf/include/c++/5.3.1/arm-linux-gnueabihf -I/home/feynman/buildroot-2016.11/output/host/opt/ext-toolchain/arm-linux-gnueabihf/include/c++/5.3.1/backward -I/home/feynman/buildroot-2016.11/output/host/opt/ext-toolchain/lib/gcc/arm-linux-gnueabihf/5.3.1/include -I/home/feynman/buildroot-2016.11/output/host/opt/ext-toolchain/lib/gcc/arm-linux-gnueabihf/5.3.1/include-fixed -I/home/feynman/buildroot-2016.11/output/host/opt/ext-toolchain/arm-linux-gnueabihf/include -I/home/feynman/buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include ../Src/UI/FormMain.h -o moc_FormMain.cpp
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPixmap \
+		../Src/UI/UserControl/FrameEdit.h \
+		../Src/UI/UserControl/UserControl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QObject \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPainter \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainter.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtextoption.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpen.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QKeyEvent \
+		../Src/UI/UserControl/IEventListener.h \
+		../Src/UI/UserControl/ControlCommon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QWidget \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QRect \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QString \
+		../Src/UI/UserControl/LineEdit.h \
+		../Src/UI/PopupWindow.h
+	/home/feynman/buildroot-2016.11/output/host/usr/bin/moc $(DEFINES) -I/home/feynman/buildroot-2016.11/output/host/usr/mkspecs/devices/linux-buildroot-g++ -I/home/feynman/SmartGate/gate/AG/Src -I/home/feynman/buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5 -I/home/feynman/buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets -I/home/feynman/buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui -I/home/feynman/buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore -I. -I/home/feynman/buildroot-2016.11/output/host/opt/ext-toolchain/arm-linux-gnueabihf/include/c++/5.3.1 -I/home/feynman/buildroot-2016.11/output/host/opt/ext-toolchain/arm-linux-gnueabihf/include/c++/5.3.1/arm-linux-gnueabihf -I/home/feynman/buildroot-2016.11/output/host/opt/ext-toolchain/arm-linux-gnueabihf/include/c++/5.3.1/backward -I/home/feynman/buildroot-2016.11/output/host/opt/ext-toolchain/lib/gcc/arm-linux-gnueabihf/5.3.1/include -I/home/feynman/buildroot-2016.11/output/host/opt/ext-toolchain/lib/gcc/arm-linux-gnueabihf/5.3.1/include-fixed -I/home/feynman/buildroot-2016.11/output/host/opt/ext-toolchain/arm-linux-gnueabihf/include -I/home/feynman/buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include ../Src/UI/PopupWindow.h -o moc_PopupWindow.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_FormMain.h
+compiler_uic_make_all: ui_BaseDialog.h ui_popupwindow.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_FormMain.h
-ui_FormMain.h: ../Src/UI/FormMain.ui
-	/home/feynman/buildroot-2016.11/output/host/usr/bin/uic ../Src/UI/FormMain.ui -o ui_FormMain.h
+	-$(DEL_FILE) ui_BaseDialog.h ui_popupwindow.h
+ui_BaseDialog.h: ../Src/UI/BaseDialog.ui
+	/home/feynman/buildroot-2016.11/output/host/usr/bin/uic ../Src/UI/BaseDialog.ui -o ui_BaseDialog.h
+
+ui_popupwindow.h: ../Src/UI/popupwindow.ui
+	/home/feynman/buildroot-2016.11/output/host/usr/bin/uic ../Src/UI/popupwindow.ui -o ui_popupwindow.h
 
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
@@ -472,13 +767,622 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_header_clean compiler_uic_clean 
+compiler_clean: compiler_rcc_clean compiler_moc_header_clean compiler_uic_clean 
 
 ####### Compile
 
 main.o: ../Src/main.cpp ../Src/UI/FormMain.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QWidget \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qwidget.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobal.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qconfig.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfeatures.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsystemdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qprocessordetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcompilerdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypeinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypetraits.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qisenum.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsysinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlogging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qflags.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbasicatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_bootstrap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qgenericatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_cxx11.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_gcc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_msvc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv7.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv6.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv5.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_ia64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_x86.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_unix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobalstatic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmutex.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnumeric.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qversiontagging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnamespace.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs_win.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstring.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qchar.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrefcount.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qarraydata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringbuilder.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qalgorithms.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiterator.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhashfunctions.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpair.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearraylist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qregexp.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringmatcher.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcoreevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qscopedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmetatype.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvarlengtharray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontainerfwd.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmargins.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpaintdevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrect.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsize.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpoint.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpalette.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcolor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgb.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgba64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qbrush.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvector.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qmatrix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpolygon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qregion.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdatastream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiodevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qline.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtransform.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainterpath.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qimage.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixelformat.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qshareddata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhash.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfont.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontmetrics.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qsizepolicy.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcursor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qkeysequence.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvariant.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdebug.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtextstream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlocale.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qset.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontiguouscache.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurlquery.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfile.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfiledevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qvector2d.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtouchdevice.h \
+		../Src/UI/BaseDialog.h \
+		../Src/UI/UserControl/PushButton.h \
+		../Src/UI/UserControl/UserControl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QObject \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPainter \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainter.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtextoption.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpen.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QKeyEvent \
+		../Src/UI/UserControl/IEventListener.h \
+		../Src/UI/UserControl/ControlCommon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QRect \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QString \
+		../Src/UI/UserControl/LineEdit.h \
+		../Src/UI/UserControl/QRDisplay.h \
+		../Src/UI/UserControl/FrameEdit.h \
+		../Src/UI/UserControl/ListView.h \
+		../Src/UI/UserControl/StepLabel.h \
+		../Src/UI/UserControl/StaticLabel.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QColor \
+		../Src/UI/UserControl/SplitterLabel.h \
+		../Src/UI/PopupWindow.h \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QDialog \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qdialog.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPixmap \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QApplication \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qapplication.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcoreapplication.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qeventloop.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qdesktopwidget.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qguiapplication.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qinputmethod.h \
+		../Src/Network/DataServer.h \
+		../Src/Network/Server.h \
+		../Src/Network/NetRequest.h \
+		../Src/Network/NetMessage.h \
+		../Src/Crypto/RSA1024.h \
+		../Src/Business/ScannerCheck.h \
+		../Src/Drivers/Scanner/ScannerManager.h \
+		../Src/Drivers/Scanner/ScannerState.h \
+		../Src/Drivers/Scanner/IScannerListener.h \
+		../Src/Business/ChangeLogManager.h \
+		../Src/Business/ChangeLog.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Src/main.cpp
+
+IScannerListener.o: ../Src/Drivers/Scanner/IScannerListener.cpp ../Src/Drivers/Scanner/IScannerListener.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o IScannerListener.o ../Src/Drivers/Scanner/IScannerListener.cpp
+
+ScannerManager.o: ../Src/Drivers/Scanner/ScannerManager.cpp ../Src/Drivers/Scanner/ScannerManager.h \
+		../Src/Drivers/Scanner/ScannerState.h \
+		../Src/Drivers/Scanner/IScannerListener.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ScannerManager.o ../Src/Drivers/Scanner/ScannerManager.cpp
+
+SoundDecode.o: ../Src/Soundwave/SoundDecode.cpp ../Src/Soundwave/SoundDecode.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SoundDecode.o ../Src/Soundwave/SoundDecode.cpp
+
+NetMessage.o: ../Src/Network/NetMessage.cpp ../Src/Network/NetMessage.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o NetMessage.o ../Src/Network/NetMessage.cpp
+
+NetRequest.o: ../Src/Network/NetRequest.cpp ../Src/Network/NetRequest.h \
+		../Src/Network/NetMessage.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o NetRequest.o ../Src/Network/NetRequest.cpp
+
+Server.o: ../Src/Network/Server.cpp ../Src/Network/Server.h \
+		../Src/Network/NetRequest.h \
+		../Src/Network/NetMessage.h \
+		../Src/Storage/BasicConfig.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Server.o ../Src/Network/Server.cpp
+
+DataServer.o: ../Src/Network/DataServer.cpp ../Src/Network/DataServer.h \
+		../Src/Network/Server.h \
+		../Src/Network/NetRequest.h \
+		../Src/Network/NetMessage.h \
+		../Src/Storage/BasicConfig.h \
+		../Src/Business/CryptoManager.h \
+		../Src/Crypto/AES128.h \
+		../Src/Crypto/RSA1024.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o DataServer.o ../Src/Network/DataServer.cpp
+
+BasicConfig.o: ../Src/Storage/BasicConfig.cpp ../Src/Storage/BasicConfig.h \
+		../Src/Utils/TimeUtil.h \
+		../Src/Utils/PathUtil.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BasicConfig.o ../Src/Storage/BasicConfig.cpp
+
+PathUtil.o: ../Src/Utils/PathUtil.cpp ../Src/Utils/PathUtil.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o PathUtil.o ../Src/Utils/PathUtil.cpp
+
+TimeUtil.o: ../Src/Utils/TimeUtil.cpp ../Src/Utils/TimeUtil.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o TimeUtil.o ../Src/Utils/TimeUtil.cpp
+
+Base64.o: ../Src/Lib/Base64/Base64.cpp ../Src/Lib/Base64/Base64.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Base64.o ../Src/Lib/Base64/Base64.cpp
+
+AES128.o: ../Src/Crypto/AES128.cpp ../Src/Crypto/AES128.h \
+		../Src/Lib/Base64/Base64.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o AES128.o ../Src/Crypto/AES128.cpp
+
+RSA1024.o: ../Src/Crypto/RSA1024.cpp ../Src/Crypto/RSA1024.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o RSA1024.o ../Src/Crypto/RSA1024.cpp
+
+ScannerCheck.o: ../Src/Business/ScannerCheck.cpp ../Src/Business/ScannerCheck.h \
+		../Src/Drivers/Scanner/ScannerManager.h \
+		../Src/Drivers/Scanner/ScannerState.h \
+		../Src/Drivers/Scanner/IScannerListener.h \
+		../Src/Lib/Base64/Base64.h \
+		../Src/Business/CryptoManager.h \
+		../Src/Crypto/AES128.h \
+		../Src/Crypto/RSA1024.h \
+		../Src/Utils/TimeUtil.h \
+		../Src/Network/DataServer.h \
+		../Src/Network/Server.h \
+		../Src/Network/NetRequest.h \
+		../Src/Network/NetMessage.h \
+		../Src/Business/ChangeLogManager.h \
+		../Src/Business/ChangeLog.h \
+		../Src/UI/UIListener.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QWidget \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qwidget.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobal.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qconfig.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfeatures.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsystemdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qprocessordetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcompilerdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypeinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypetraits.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qisenum.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsysinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlogging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qflags.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbasicatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_bootstrap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qgenericatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_cxx11.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_gcc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_msvc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv7.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv6.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv5.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_ia64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_x86.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_unix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobalstatic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmutex.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnumeric.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qversiontagging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnamespace.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs_win.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstring.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qchar.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrefcount.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qarraydata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringbuilder.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qalgorithms.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiterator.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhashfunctions.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpair.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearraylist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qregexp.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringmatcher.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcoreevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qscopedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmetatype.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvarlengtharray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontainerfwd.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmargins.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpaintdevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrect.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsize.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpoint.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpalette.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcolor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgb.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgba64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qbrush.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvector.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qmatrix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpolygon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qregion.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdatastream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiodevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qline.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtransform.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainterpath.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qimage.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixelformat.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qshareddata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhash.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfont.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontmetrics.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qsizepolicy.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcursor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qkeysequence.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvariant.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdebug.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtextstream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlocale.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qset.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontiguouscache.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurlquery.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfile.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfiledevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qvector2d.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtouchdevice.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ScannerCheck.o ../Src/Business/ScannerCheck.cpp
+
+CryptoManager.o: ../Src/Business/CryptoManager.cpp ../Src/Business/CryptoManager.h \
+		../Src/Crypto/AES128.h \
+		../Src/Crypto/RSA1024.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o CryptoManager.o ../Src/Business/CryptoManager.cpp
+
+ChangeLogManager.o: ../Src/Business/ChangeLogManager.cpp ../Src/Business/ChangeLogManager.h \
+		../Src/Business/ChangeLog.h \
+		../Src/Utils/PathUtil.h \
+		../Src/Network/DataServer.h \
+		../Src/Network/Server.h \
+		../Src/Network/NetRequest.h \
+		../Src/Network/NetMessage.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ChangeLogManager.o ../Src/Business/ChangeLogManager.cpp
+
+ChangeLog.o: ../Src/Business/ChangeLog.cpp ../Src/Business/ChangeLog.h \
+		../Src/Lib/Base64/Base64.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ChangeLog.o ../Src/Business/ChangeLog.cpp
+
+BaseDialog.o: ../Src/UI/BaseDialog.cpp ../Src/UI/BaseDialog.h \
+		../Src/UI/UserControl/PushButton.h \
+		../Src/UI/UserControl/UserControl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QObject \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnamespace.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobal.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qconfig.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfeatures.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsystemdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qprocessordetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcompilerdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypeinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypetraits.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qisenum.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsysinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlogging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qflags.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbasicatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_bootstrap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qgenericatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_cxx11.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_gcc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_msvc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv7.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv6.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv5.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_ia64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_x86.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_unix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobalstatic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmutex.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnumeric.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qversiontagging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstring.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qchar.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrefcount.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qarraydata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringbuilder.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qalgorithms.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiterator.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhashfunctions.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpair.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearraylist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qregexp.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringmatcher.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcoreevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qscopedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmetatype.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvarlengtharray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontainerfwd.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPainter \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainter.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrect.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmargins.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsize.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpoint.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpaintdevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs_win.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcolor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgb.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgba64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qshareddata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhash.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qimage.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixelformat.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtransform.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qmatrix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpolygon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvector.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qregion.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdatastream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiodevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qline.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainterpath.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtextoption.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpen.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qbrush.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfont.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontmetrics.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QKeyEvent \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qkeysequence.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvariant.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdebug.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtextstream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlocale.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qset.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontiguouscache.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurlquery.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfile.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfiledevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qvector2d.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtouchdevice.h \
+		../Src/UI/UserControl/IEventListener.h \
+		../Src/UI/UserControl/ControlCommon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QRect \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QString \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QWidget \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qwidget.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpalette.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qsizepolicy.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcursor.h \
+		../Src/UI/UserControl/LineEdit.h \
+		../Src/UI/UserControl/QRDisplay.h \
+		../Src/UI/UserControl/FrameEdit.h \
+		../Src/UI/UserControl/ListView.h \
+		../Src/UI/UserControl/StepLabel.h \
+		../Src/UI/UserControl/StaticLabel.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QColor \
+		../Src/UI/UserControl/SplitterLabel.h \
+		../Src/UI/PopupWindow.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QDialog \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qdialog.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPixmap \
+		ui_BaseDialog.h \
+		../Src/UI/UIListener.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BaseDialog.o ../Src/UI/BaseDialog.cpp
+
+PopupWindow.o: ../Src/UI/PopupWindow.cpp ../Src/UI/PopupWindow.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QDialog \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qdialog.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qwidget.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobal.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qconfig.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfeatures.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsystemdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qprocessordetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcompilerdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypeinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypetraits.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qisenum.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsysinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlogging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qflags.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbasicatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_bootstrap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qgenericatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_cxx11.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_gcc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_msvc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv7.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv6.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv5.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_ia64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_x86.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_unix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobalstatic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmutex.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnumeric.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qversiontagging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnamespace.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs_win.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstring.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qchar.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrefcount.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qarraydata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringbuilder.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qalgorithms.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiterator.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhashfunctions.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpair.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearraylist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qregexp.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringmatcher.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcoreevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qscopedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmetatype.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvarlengtharray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontainerfwd.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmargins.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpaintdevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrect.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsize.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpoint.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpalette.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcolor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgb.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgba64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qbrush.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvector.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qmatrix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpolygon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qregion.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdatastream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiodevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qline.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtransform.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainterpath.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qimage.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixelformat.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qshareddata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhash.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfont.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontmetrics.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qsizepolicy.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcursor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qkeysequence.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvariant.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdebug.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtextstream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlocale.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qset.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontiguouscache.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurlquery.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfile.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfiledevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qvector2d.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtouchdevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPixmap \
+		../Src/UI/UserControl/FrameEdit.h \
+		../Src/UI/UserControl/UserControl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QObject \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPainter \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainter.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtextoption.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpen.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QKeyEvent \
+		../Src/UI/UserControl/IEventListener.h \
+		../Src/UI/UserControl/ControlCommon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QWidget \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QRect \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QString \
+		../Src/UI/UserControl/LineEdit.h \
+		ui_popupwindow.h \
+		../Src/UI/BaseDialog.h \
+		../Src/UI/UserControl/PushButton.h \
+		../Src/UI/UserControl/QRDisplay.h \
+		../Src/UI/UserControl/ListView.h \
+		../Src/UI/UserControl/StepLabel.h \
+		../Src/UI/UserControl/StaticLabel.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QColor \
+		../Src/UI/UserControl/SplitterLabel.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o PopupWindow.o ../Src/UI/PopupWindow.cpp
+
+UIListener.o: ../Src/UI/UIListener.cpp ../Src/UI/UIListener.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QWidget \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qwidget.h \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs.h \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobal.h \
@@ -589,22 +1493,1070 @@ main.o: ../Src/main.cpp ../Src/UI/FormMain.h \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qdesktopwidget.h \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qguiapplication.h \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qinputmethod.h \
-		../Src/Network/DataServer.h \
-		../Src/Network/Server.h \
-		../Src/Network/NetRequest.h \
-		../Src/Network/NetMessage.h \
-		../Src/Crypto/RSA1024.h \
-		../Src/Utils/PathUtil.h \
-		../Src/Lib/Base64/Base64.h \
-		../Src/Business/ScannerCheck.h \
-		../Src/Drivers/Scanner/ScannerManager.h \
-		../Src/Drivers/Scanner/ScannerState.h \
-		../Src/Drivers/Scanner/IScannerListener.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Src/main.cpp
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QEvent
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o UIListener.o ../Src/UI/UIListener.cpp
+
+FrameEdit.o: ../Src/UI/UserControl/FrameEdit.cpp ../Src/UI/UserControl/FrameEdit.h \
+		../Src/UI/UserControl/UserControl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QObject \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnamespace.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobal.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qconfig.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfeatures.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsystemdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qprocessordetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcompilerdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypeinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypetraits.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qisenum.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsysinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlogging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qflags.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbasicatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_bootstrap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qgenericatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_cxx11.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_gcc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_msvc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv7.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv6.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv5.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_ia64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_x86.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_unix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobalstatic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmutex.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnumeric.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qversiontagging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstring.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qchar.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrefcount.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qarraydata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringbuilder.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qalgorithms.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiterator.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhashfunctions.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpair.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearraylist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qregexp.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringmatcher.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcoreevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qscopedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmetatype.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvarlengtharray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontainerfwd.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPainter \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainter.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrect.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmargins.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsize.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpoint.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpaintdevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs_win.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcolor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgb.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgba64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qshareddata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhash.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qimage.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixelformat.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtransform.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qmatrix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpolygon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvector.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qregion.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdatastream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiodevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qline.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainterpath.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtextoption.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpen.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qbrush.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfont.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontmetrics.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QKeyEvent \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qkeysequence.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvariant.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdebug.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtextstream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlocale.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qset.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontiguouscache.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurlquery.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfile.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfiledevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qvector2d.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtouchdevice.h \
+		../Src/UI/UserControl/IEventListener.h \
+		../Src/UI/UserControl/ControlCommon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QWidget \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qwidget.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpalette.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qsizepolicy.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcursor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QRect \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QString
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o FrameEdit.o ../Src/UI/UserControl/FrameEdit.cpp
+
+IEventListener.o: ../Src/UI/UserControl/IEventListener.cpp ../Src/UI/UserControl/IEventListener.h \
+		../Src/UI/UserControl/ControlCommon.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o IEventListener.o ../Src/UI/UserControl/IEventListener.cpp
+
+LineEdit.o: ../Src/UI/UserControl/LineEdit.cpp ../Src/UI/UserControl/LineEdit.h \
+		../Src/UI/UserControl/UserControl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QObject \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnamespace.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobal.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qconfig.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfeatures.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsystemdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qprocessordetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcompilerdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypeinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypetraits.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qisenum.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsysinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlogging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qflags.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbasicatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_bootstrap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qgenericatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_cxx11.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_gcc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_msvc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv7.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv6.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv5.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_ia64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_x86.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_unix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobalstatic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmutex.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnumeric.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qversiontagging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstring.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qchar.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrefcount.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qarraydata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringbuilder.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qalgorithms.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiterator.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhashfunctions.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpair.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearraylist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qregexp.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringmatcher.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcoreevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qscopedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmetatype.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvarlengtharray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontainerfwd.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPainter \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainter.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrect.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmargins.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsize.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpoint.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpaintdevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs_win.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcolor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgb.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgba64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qshareddata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhash.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qimage.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixelformat.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtransform.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qmatrix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpolygon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvector.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qregion.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdatastream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiodevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qline.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainterpath.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtextoption.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpen.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qbrush.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfont.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontmetrics.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QKeyEvent \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qkeysequence.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvariant.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdebug.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtextstream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlocale.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qset.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontiguouscache.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurlquery.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfile.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfiledevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qvector2d.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtouchdevice.h \
+		../Src/UI/UserControl/IEventListener.h \
+		../Src/UI/UserControl/ControlCommon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QWidget \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qwidget.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpalette.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qsizepolicy.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcursor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QString \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QRect \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QLabel \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qlabel.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qframe.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o LineEdit.o ../Src/UI/UserControl/LineEdit.cpp
+
+ListView.o: ../Src/UI/UserControl/ListView.cpp ../Src/UI/UserControl/ListView.h \
+		../Src/UI/UserControl/UserControl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QObject \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnamespace.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobal.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qconfig.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfeatures.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsystemdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qprocessordetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcompilerdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypeinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypetraits.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qisenum.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsysinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlogging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qflags.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbasicatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_bootstrap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qgenericatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_cxx11.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_gcc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_msvc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv7.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv6.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv5.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_ia64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_x86.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_unix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobalstatic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmutex.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnumeric.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qversiontagging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstring.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qchar.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrefcount.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qarraydata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringbuilder.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qalgorithms.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiterator.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhashfunctions.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpair.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearraylist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qregexp.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringmatcher.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcoreevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qscopedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmetatype.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvarlengtharray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontainerfwd.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPainter \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainter.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrect.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmargins.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsize.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpoint.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpaintdevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs_win.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcolor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgb.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgba64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qshareddata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhash.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qimage.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixelformat.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtransform.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qmatrix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpolygon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvector.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qregion.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdatastream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiodevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qline.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainterpath.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtextoption.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpen.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qbrush.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfont.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontmetrics.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QKeyEvent \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qkeysequence.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvariant.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdebug.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtextstream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlocale.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qset.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontiguouscache.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurlquery.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfile.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfiledevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qvector2d.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtouchdevice.h \
+		../Src/UI/UserControl/IEventListener.h \
+		../Src/UI/UserControl/ControlCommon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QWidget \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qwidget.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpalette.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qsizepolicy.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcursor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QRect
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ListView.o ../Src/UI/UserControl/ListView.cpp
+
+PushButton.o: ../Src/UI/UserControl/PushButton.cpp ../Src/UI/UserControl/PushButton.h \
+		../Src/UI/UserControl/UserControl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QObject \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnamespace.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobal.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qconfig.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfeatures.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsystemdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qprocessordetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcompilerdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypeinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypetraits.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qisenum.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsysinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlogging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qflags.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbasicatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_bootstrap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qgenericatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_cxx11.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_gcc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_msvc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv7.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv6.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv5.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_ia64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_x86.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_unix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobalstatic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmutex.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnumeric.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qversiontagging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstring.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qchar.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrefcount.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qarraydata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringbuilder.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qalgorithms.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiterator.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhashfunctions.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpair.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearraylist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qregexp.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringmatcher.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcoreevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qscopedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmetatype.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvarlengtharray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontainerfwd.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPainter \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainter.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrect.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmargins.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsize.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpoint.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpaintdevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs_win.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcolor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgb.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgba64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qshareddata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhash.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qimage.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixelformat.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtransform.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qmatrix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpolygon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvector.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qregion.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdatastream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiodevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qline.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainterpath.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtextoption.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpen.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qbrush.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfont.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontmetrics.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QKeyEvent \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qkeysequence.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvariant.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdebug.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtextstream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlocale.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qset.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontiguouscache.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurlquery.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfile.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfiledevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qvector2d.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtouchdevice.h \
+		../Src/UI/UserControl/IEventListener.h \
+		../Src/UI/UserControl/ControlCommon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QRect \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QString \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QWidget \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qwidget.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpalette.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qsizepolicy.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcursor.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o PushButton.o ../Src/UI/UserControl/PushButton.cpp
+
+QRDisplay.o: ../Src/UI/UserControl/QRDisplay.cpp ../Src/UI/UserControl/QRDisplay.h \
+		../Src/UI/UserControl/UserControl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QObject \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnamespace.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobal.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qconfig.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfeatures.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsystemdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qprocessordetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcompilerdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypeinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypetraits.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qisenum.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsysinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlogging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qflags.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbasicatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_bootstrap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qgenericatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_cxx11.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_gcc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_msvc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv7.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv6.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv5.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_ia64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_x86.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_unix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobalstatic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmutex.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnumeric.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qversiontagging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstring.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qchar.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrefcount.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qarraydata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringbuilder.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qalgorithms.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiterator.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhashfunctions.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpair.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearraylist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qregexp.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringmatcher.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcoreevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qscopedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmetatype.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvarlengtharray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontainerfwd.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPainter \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainter.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrect.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmargins.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsize.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpoint.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpaintdevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs_win.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcolor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgb.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgba64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qshareddata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhash.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qimage.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixelformat.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtransform.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qmatrix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpolygon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvector.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qregion.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdatastream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiodevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qline.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainterpath.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtextoption.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpen.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qbrush.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfont.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontmetrics.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QKeyEvent \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qkeysequence.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvariant.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdebug.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtextstream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlocale.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qset.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontiguouscache.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurlquery.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfile.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfiledevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qvector2d.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtouchdevice.h \
+		../Src/UI/UserControl/IEventListener.h \
+		../Src/UI/UserControl/ControlCommon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QWidget \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qwidget.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpalette.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qsizepolicy.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcursor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QRect \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QDebug
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o QRDisplay.o ../Src/UI/UserControl/QRDisplay.cpp
+
+SplitterLabel.o: ../Src/UI/UserControl/SplitterLabel.cpp ../Src/UI/UserControl/SplitterLabel.h \
+		../Src/UI/UserControl/UserControl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QObject \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnamespace.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobal.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qconfig.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfeatures.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsystemdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qprocessordetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcompilerdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypeinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypetraits.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qisenum.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsysinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlogging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qflags.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbasicatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_bootstrap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qgenericatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_cxx11.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_gcc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_msvc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv7.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv6.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv5.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_ia64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_x86.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_unix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobalstatic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmutex.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnumeric.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qversiontagging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstring.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qchar.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrefcount.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qarraydata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringbuilder.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qalgorithms.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiterator.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhashfunctions.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpair.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearraylist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qregexp.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringmatcher.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcoreevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qscopedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmetatype.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvarlengtharray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontainerfwd.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPainter \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainter.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrect.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmargins.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsize.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpoint.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpaintdevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs_win.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcolor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgb.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgba64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qshareddata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhash.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qimage.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixelformat.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtransform.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qmatrix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpolygon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvector.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qregion.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdatastream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiodevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qline.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainterpath.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtextoption.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpen.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qbrush.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfont.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontmetrics.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QKeyEvent \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qkeysequence.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvariant.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdebug.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtextstream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlocale.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qset.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontiguouscache.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurlquery.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfile.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfiledevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qvector2d.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtouchdevice.h \
+		../Src/UI/UserControl/IEventListener.h \
+		../Src/UI/UserControl/ControlCommon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QWidget \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qwidget.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpalette.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qsizepolicy.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcursor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QRect
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SplitterLabel.o ../Src/UI/UserControl/SplitterLabel.cpp
+
+StaticLabel.o: ../Src/UI/UserControl/StaticLabel.cpp ../Src/UI/UserControl/StaticLabel.h \
+		../Src/UI/UserControl/UserControl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QObject \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnamespace.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobal.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qconfig.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfeatures.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsystemdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qprocessordetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcompilerdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypeinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypetraits.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qisenum.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsysinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlogging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qflags.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbasicatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_bootstrap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qgenericatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_cxx11.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_gcc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_msvc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv7.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv6.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv5.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_ia64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_x86.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_unix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobalstatic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmutex.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnumeric.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qversiontagging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstring.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qchar.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrefcount.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qarraydata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringbuilder.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qalgorithms.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiterator.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhashfunctions.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpair.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearraylist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qregexp.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringmatcher.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcoreevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qscopedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmetatype.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvarlengtharray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontainerfwd.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPainter \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainter.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrect.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmargins.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsize.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpoint.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpaintdevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs_win.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcolor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgb.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgba64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qshareddata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhash.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qimage.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixelformat.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtransform.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qmatrix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpolygon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvector.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qregion.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdatastream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiodevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qline.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainterpath.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtextoption.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpen.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qbrush.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfont.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontmetrics.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QKeyEvent \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qkeysequence.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvariant.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdebug.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtextstream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlocale.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qset.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontiguouscache.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurlquery.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfile.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfiledevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qvector2d.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtouchdevice.h \
+		../Src/UI/UserControl/IEventListener.h \
+		../Src/UI/UserControl/ControlCommon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QString \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QColor \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QRect \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QWidget \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qwidget.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpalette.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qsizepolicy.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcursor.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o StaticLabel.o ../Src/UI/UserControl/StaticLabel.cpp
+
+StepLabel.o: ../Src/UI/UserControl/StepLabel.cpp ../Src/UI/UserControl/StepLabel.h \
+		../Src/UI/UserControl/UserControl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QObject \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnamespace.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobal.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qconfig.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfeatures.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsystemdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qprocessordetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcompilerdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypeinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypetraits.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qisenum.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsysinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlogging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qflags.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbasicatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_bootstrap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qgenericatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_cxx11.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_gcc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_msvc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv7.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv6.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv5.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_ia64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_x86.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_unix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobalstatic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmutex.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnumeric.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qversiontagging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstring.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qchar.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrefcount.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qarraydata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringbuilder.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qalgorithms.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiterator.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhashfunctions.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpair.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearraylist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qregexp.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringmatcher.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcoreevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qscopedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmetatype.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvarlengtharray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontainerfwd.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPainter \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainter.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrect.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmargins.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsize.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpoint.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpaintdevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs_win.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcolor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgb.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgba64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qshareddata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhash.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qimage.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixelformat.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtransform.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qmatrix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpolygon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvector.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qregion.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdatastream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiodevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qline.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainterpath.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtextoption.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpen.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qbrush.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfont.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontmetrics.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QKeyEvent \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qkeysequence.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvariant.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdebug.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtextstream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlocale.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qset.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontiguouscache.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurlquery.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfile.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfiledevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qvector2d.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtouchdevice.h \
+		../Src/UI/UserControl/IEventListener.h \
+		../Src/UI/UserControl/ControlCommon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QWidget \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qwidget.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpalette.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qsizepolicy.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcursor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QString
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o StepLabel.o ../Src/UI/UserControl/StepLabel.cpp
+
+UserControl.o: ../Src/UI/UserControl/UserControl.cpp ../Src/UI/UserControl/UserControl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QObject \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnamespace.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobal.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qconfig.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfeatures.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsystemdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qprocessordetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcompilerdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypeinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypetraits.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qisenum.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsysinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlogging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qflags.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbasicatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_bootstrap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qgenericatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_cxx11.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_gcc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_msvc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv7.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv6.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv5.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_ia64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_x86.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_unix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobalstatic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmutex.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnumeric.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qversiontagging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstring.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qchar.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrefcount.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qarraydata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringbuilder.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qalgorithms.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiterator.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhashfunctions.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpair.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearraylist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qregexp.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringmatcher.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcoreevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qscopedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmetatype.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvarlengtharray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontainerfwd.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPainter \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainter.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrect.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmargins.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsize.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpoint.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpaintdevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs_win.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcolor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgb.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgba64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qshareddata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhash.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qimage.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixelformat.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtransform.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qmatrix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpolygon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvector.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qregion.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdatastream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiodevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qline.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainterpath.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtextoption.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpen.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qbrush.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfont.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontmetrics.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QKeyEvent \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qkeysequence.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvariant.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdebug.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtextstream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlocale.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qset.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontiguouscache.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurlquery.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfile.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfiledevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qvector2d.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtouchdevice.h \
+		../Src/UI/UserControl/IEventListener.h \
+		../Src/UI/UserControl/ControlCommon.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o UserControl.o ../Src/UI/UserControl/UserControl.cpp
 
 FormMain.o: ../Src/UI/FormMain.cpp ../Src/UI/FormMain.h \
-		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QDialog \
-		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qdialog.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QWidget \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qwidget.h \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs.h \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobal.h \
@@ -708,69 +2660,175 @@ FormMain.o: ../Src/UI/FormMain.cpp ../Src/UI/FormMain.h \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfiledevice.h \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qvector2d.h \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtouchdevice.h \
-		ui_FormMain.h
+		../Src/UI/BaseDialog.h \
+		../Src/UI/UserControl/PushButton.h \
+		../Src/UI/UserControl/UserControl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QObject \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPainter \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainter.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtextoption.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpen.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QKeyEvent \
+		../Src/UI/UserControl/IEventListener.h \
+		../Src/UI/UserControl/ControlCommon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QRect \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QString \
+		../Src/UI/UserControl/LineEdit.h \
+		../Src/UI/UserControl/QRDisplay.h \
+		../Src/UI/UserControl/FrameEdit.h \
+		../Src/UI/UserControl/ListView.h \
+		../Src/UI/UserControl/StepLabel.h \
+		../Src/UI/UserControl/StaticLabel.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QColor \
+		../Src/UI/UserControl/SplitterLabel.h \
+		../Src/UI/PopupWindow.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QDialog \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qdialog.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPixmap \
+		../Src/UI/UIListener.h \
+		../Src/UI/CheckDialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o FormMain.o ../Src/UI/FormMain.cpp
 
-IScannerListener.o: ../Src/Drivers/Scanner/IScannerListener.cpp ../Src/Drivers/Scanner/IScannerListener.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o IScannerListener.o ../Src/Drivers/Scanner/IScannerListener.cpp
+CheckDialog.o: ../Src/UI/CheckDialog.cpp ../Src/UI/CheckDialog.h \
+		../Src/UI/BaseDialog.h \
+		../Src/UI/UserControl/PushButton.h \
+		../Src/UI/UserControl/UserControl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QObject \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnamespace.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobal.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qconfig.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfeatures.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsystemdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qprocessordetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcompilerdetection.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypeinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtypetraits.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qisenum.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsysinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlogging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qflags.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbasicatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_bootstrap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qgenericatomic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_cxx11.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_gcc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_msvc.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv7.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv6.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_armv5.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_ia64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_x86.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qatomic_unix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qglobalstatic.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmutex.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qnumeric.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qversiontagging.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobjectdefs_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstring.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qchar.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrefcount.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qarraydata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringbuilder.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qalgorithms.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiterator.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhashfunctions.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpair.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qbytearraylist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringlist.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qregexp.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qstringmatcher.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcoreevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qscopedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmetatype.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvarlengtharray.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontainerfwd.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qobject_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPainter \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainter.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qrect.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmargins.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsize.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qpoint.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpaintdevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qwindowdefs_win.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcolor.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgb.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qrgba64.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qshareddata.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qhash.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qsharedpointer_impl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qimage.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpixelformat.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtransform.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qmatrix.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpolygon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvector.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qregion.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdatastream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qiodevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qline.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpainterpath.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtextoption.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpen.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qbrush.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontinfo.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfont.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qfontmetrics.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QKeyEvent \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qevent.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qkeysequence.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qvariant.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qmap.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qdebug.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qtextstream.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qlocale.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qset.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcontiguouscache.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurl.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qurlquery.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfile.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qfiledevice.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qvector2d.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qtouchdevice.h \
+		../Src/UI/UserControl/IEventListener.h \
+		../Src/UI/UserControl/ControlCommon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QRect \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QString \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QWidget \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qwidget.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qpalette.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qsizepolicy.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qcursor.h \
+		../Src/UI/UserControl/LineEdit.h \
+		../Src/UI/UserControl/QRDisplay.h \
+		../Src/UI/UserControl/FrameEdit.h \
+		../Src/UI/UserControl/ListView.h \
+		../Src/UI/UserControl/StepLabel.h \
+		../Src/UI/UserControl/StaticLabel.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QColor \
+		../Src/UI/UserControl/SplitterLabel.h \
+		../Src/UI/PopupWindow.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QDialog \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qdialog.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPixmap
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o CheckDialog.o ../Src/UI/CheckDialog.cpp
 
-ScannerManager.o: ../Src/Drivers/Scanner/ScannerManager.cpp ../Src/Drivers/Scanner/ScannerManager.h \
-		../Src/Drivers/Scanner/ScannerState.h \
-		../Src/Drivers/Scanner/IScannerListener.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ScannerManager.o ../Src/Drivers/Scanner/ScannerManager.cpp
+qrc_resource.o: qrc_resource.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resource.o qrc_resource.cpp
 
-SoundDecode.o: ../Src/Soundwave/SoundDecode.cpp ../Src/Soundwave/SoundDecode.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SoundDecode.o ../Src/Soundwave/SoundDecode.cpp
+moc_BaseDialog.o: moc_BaseDialog.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_BaseDialog.o moc_BaseDialog.cpp
 
-NetMessage.o: ../Src/Network/NetMessage.cpp ../Src/Network/NetMessage.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o NetMessage.o ../Src/Network/NetMessage.cpp
-
-NetRequest.o: ../Src/Network/NetRequest.cpp ../Src/Network/NetRequest.h \
-		../Src/Network/NetMessage.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o NetRequest.o ../Src/Network/NetRequest.cpp
-
-Server.o: ../Src/Network/Server.cpp ../Src/Network/Server.h \
-		../Src/Network/NetRequest.h \
-		../Src/Network/NetMessage.h \
-		../Src/Storage/BasicConfig.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Server.o ../Src/Network/Server.cpp
-
-DataServer.o: ../Src/Network/DataServer.cpp ../Src/Network/DataServer.h \
-		../Src/Network/Server.h \
-		../Src/Network/NetRequest.h \
-		../Src/Network/NetMessage.h \
-		../Src/Storage/BasicConfig.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o DataServer.o ../Src/Network/DataServer.cpp
-
-BasicConfig.o: ../Src/Storage/BasicConfig.cpp ../Src/Storage/BasicConfig.h \
-		../Src/Utils/TimeUtil.h \
-		../Src/Utils/PathUtil.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BasicConfig.o ../Src/Storage/BasicConfig.cpp
-
-PathUtil.o: ../Src/Utils/PathUtil.cpp ../Src/Utils/PathUtil.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o PathUtil.o ../Src/Utils/PathUtil.cpp
-
-TimeUtil.o: ../Src/Utils/TimeUtil.cpp ../Src/Utils/TimeUtil.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o TimeUtil.o ../Src/Utils/TimeUtil.cpp
-
-Base64.o: ../Src/Lib/Base64/Base64.cpp ../Src/Lib/Base64/Base64.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Base64.o ../Src/Lib/Base64/Base64.cpp
-
-AES128.o: ../Src/Crypto/AES128.cpp ../Src/Crypto/AES128.h \
-		../Src/Lib/Base64/Base64.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o AES128.o ../Src/Crypto/AES128.cpp
-
-RSA1024.o: ../Src/Crypto/RSA1024.cpp ../Src/Crypto/RSA1024.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o RSA1024.o ../Src/Crypto/RSA1024.cpp
-
-ScannerCheck.o: ../Src/Business/ScannerCheck.cpp ../Src/Business/ScannerCheck.h \
-		../Src/Drivers/Scanner/ScannerManager.h \
-		../Src/Drivers/Scanner/ScannerState.h \
-		../Src/Drivers/Scanner/IScannerListener.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ScannerCheck.o ../Src/Business/ScannerCheck.cpp
-
-moc_FormMain.o: moc_FormMain.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_FormMain.o moc_FormMain.cpp
+moc_PopupWindow.o: moc_PopupWindow.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_PopupWindow.o moc_PopupWindow.cpp
 
 ####### Install
 

@@ -32,6 +32,11 @@ void ScannerCheck::checkCode()
     int segIndex=0;
 
 
+    uint8_t evidenceLast[256];
+
+    memset(evidenceLast,0,256);
+
+
     unique_lock<mutex> lock(mtx,std::defer_lock);
 
     bool checkPass;
@@ -121,6 +126,11 @@ void ScannerCheck::checkCode()
 
 
 
+        if(memcmp(evidenceLast,aesDec+4,128)==0) continue;
+
+         memcpy(evidenceLast,aesDec+4,128);
+
+
         sscanf((char*)rsaDec+32,"%d",&unixTime);
 
         if(abs(timeNow-unixTime)>24*60*60) continue;
@@ -136,7 +146,7 @@ void ScannerCheck::checkCode()
 
         DataServer *server=DataServer::getInstance();
 
-        NetRequest *req= server->createNetRequest(103,"010100101",js);
+        NetRequest *req= server->createNetRequest(103,"",js);
 
         NetMessage *msg=req->waitFor(1000);
 

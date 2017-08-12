@@ -35,7 +35,7 @@ void DataServer::login()
 
 
     //login
-    NetRequest * req=this->createNetRequest(100,"010100101",js);
+    NetRequest * req=this->createNetRequest(100,"",js);
 
 
 
@@ -50,7 +50,7 @@ void DataServer::login()
 
     //get key
 
-    req=this->createNetRequest(102,"010100101",js);
+    req=this->createNetRequest(102,"",js);
 
 
 

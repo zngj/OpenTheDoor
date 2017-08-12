@@ -140,17 +140,24 @@ void BasicConfig::updataConfig(Json::Value *json)
 void BasicConfig::loadConfig()
 {
 
-    string fullName=PathUtil::getFullPath("config.bin");
+    string fullName=PathUtil::getFullPath("config.json");
     ifstream ifs(fullName);
     if(ifs.is_open())
     {
         Json::Reader jReader;
         jReader.parse(ifs,jsonRoot);
     }
-    if(this->jsonRoot.isMember("IBM.misc.sn"))
+    if(!jsonRoot.isMember("IBM.misc.sn"))
     {
-        this->gateSN=this->jsonRoot["IBM.misc.sn"][0].asString();
+        Json::Value jArray;
+        jArray[0]="010100101";
+        jArray[1]="闸机编号";
+        jArray[2]=TimeUtil::getInstance()->getTimeFormat();
+        jArray[3]="";
+        jArray[4]="y";
+        jsonRoot["IBM.misc.sn"]=jArray;
     }
+    this->gateSN=this->jsonRoot["IBM.misc.sn"][0].asString();
     if(this->jsonRoot.isMember("IBM.misc.name"))
     {
         this->gateName=this->jsonRoot["IBM.misc.name"][0].asString();
@@ -174,7 +181,7 @@ void BasicConfig::loadConfig()
         jArray[2]=TimeUtil::getInstance()->getTimeFormat();
         jArray[3]="";
         jArray[4]="y";
-        jsonRoot["CIMC.app.init"]=jArray;
+        jsonRoot["IBM.app.init"]=jArray;
     }
     else
     {
@@ -186,6 +193,10 @@ void BasicConfig::loadConfig()
     }
 
 
+    if(ifs.is_open()==false)
+    {
+        saveConfig();
+    }
 
     ifs.close();
 
@@ -194,7 +205,7 @@ void BasicConfig::loadConfig()
 
 void BasicConfig::saveConfig()
 {
-    string fullName=PathUtil::getFullPath("config.bin");
+    string fullName=PathUtil::getFullPath("config.json");
      ofstream ofs(fullName);
      if(ofs.is_open())
      {

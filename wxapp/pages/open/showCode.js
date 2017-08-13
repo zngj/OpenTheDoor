@@ -23,7 +23,7 @@ Page({
   onLoad: function (options) {
     this.setData({
       type: options.type,
-      typeDesc: 'in' == this.data.type ? '进站' : '出站',
+      typeDesc: 'in' == options.type ? '进站' : '出站',
     });
     wx.setNavigationBarTitle({
       title: 'in' == this.data.type ? '进站二维码' : '出站二维码',

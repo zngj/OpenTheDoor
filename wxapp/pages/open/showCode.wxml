@@ -7,5 +7,5 @@
   <text>{{qrTime}}</text>
 </view>
 <view style="text-align:center">
-  <button bindtap="nextPeople" type="primary" >下一个人{{type}}</button>
+  <button bindtap="nextPeople" type="primary" >下一个人{{typeDesc}}</button>
 </view>

@@ -4,5 +4,5 @@
    <image src="{{qrImg}}" class="slide-image" style ="width:750rpx;height:750rpx;"/>
 </view>
 <view style="text-align:center">
-  <button bindtap="nextPeople" type="primary" >下一个人{{type}}</button>
+  <button bindtap="nextPeople" type="primary" >下一个人{{typeDesc}}</button>
 </view>

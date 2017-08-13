@@ -10,11 +10,47 @@ Page({
   },
 
   onLoad: function (options) {
+  },
+  onShow: function () {
     var that = this;
     this.getWallet(function (data) {
       that.setData({
         userBalance: data.balance
       });
+    });
+    request.get({
+      url:'/sg/router/status',
+      success:function(resp){
+        if(resp.data.code==0){
+          switch (resp.data.data.status) {
+            case 0: //无行程;
+            break;
+            case 1: //已入闸;
+            wx.showModal({
+              title: '行程提醒',
+              content: '您有未出站行程，是否现在出站？',
+              showCancel:true,
+              success:function(p){
+                if (p.confirm){
+                wx.navigateTo({
+                  url: '/pages/open/showCode?type=out',
+                });
+                }
+              }
+            })
+            break;
+            case 2: //隔天未出闸(异常);
+              wx.showToast({
+                title: '你有隔天未出站行程，请联系客服处理！',
+              });
+            break;
+            case 4: //已出闸未入闸(异常);
+            
+            break;
+
+          }
+        }
+      }
     });
   },
   getWallet: function (successCB, failCB) {

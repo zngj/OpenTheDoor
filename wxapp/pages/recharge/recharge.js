@@ -51,6 +51,9 @@ Page({
       },
       success: function (resp) {
         page.updateWallet();
+        wx.showToast({
+          title: '充值成功',
+        })
       }
     });
     // wx.login({

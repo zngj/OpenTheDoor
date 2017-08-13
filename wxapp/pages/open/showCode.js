@@ -13,6 +13,7 @@ Page({
     , currSeg: -1
     , segCount: 2
     , qrImg: ''
+    , qrTime:''
     , qrImgs: []
     , qrBuf: {}
     , shouldLeave: false
@@ -96,6 +97,7 @@ Page({
             "qrImgs": qrImgs
             , "qrImg": qrImgs[0]
             , "currSeg": 0
+            ,"qrTime":new Date().getTime()%100000
           });
         });
       }

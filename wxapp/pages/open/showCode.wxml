@@ -1,7 +1,10 @@
 
 
 <view style="text-align:center">
-   <image src="{{qrImg}}" class="slide-image" style ="width:750rpx;height:750rpx;"/>
+   <image src="{{qrImg}}" class="slide-image" style ="width:450rpx;height:450rpx;"/>
+</view>
+<view style="text-align:center">
+  <text>{{qrTime}}</text>
 </view>
 <view style="text-align:center">
   <button bindtap="nextPeople" type="primary" >下一个人{{type}}</button>

@@ -4,13 +4,21 @@ App({
   data: {
   },
   onLaunch: function (options) {
+    console.log("App onLaunch");
     request.init(false);
+    //this.ensureSession();
   },
   onShow: function () {
+    console.log("App on show");
+    this.ensureSession();
+    console.log("CurrentPages:");
+    console.log(getCurrentPages());
+    
+  },
+  ensureSession:function(){
     var that = this;
     wx.checkSession({
       success: function (sp) {
-        console.log(sp);
         request.get({
           url: '/user/verifytoken',
           success: function (p) {
@@ -22,6 +30,7 @@ App({
             }
           },
           fail: function (c) {
+            that.login('verifyFail');
           }
         });
       },

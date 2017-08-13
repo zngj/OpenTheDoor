@@ -4,12 +4,13 @@ var request = require('../../js/util.js').request;
 var app = getApp()
 Page({
   data: {
-    isLogin: 0,
     userBalance: '--',
     dataSetDesc: ['远程', '新用户', '有余额', '有代扣']
   },
 
   onLoad: function (options) {
+    // request.init(true, "hasBalance");//local test for has balance
+    // request.init(true, "new");//local test for new user
   },
   onShow: function () {
     var that = this;

@@ -41,7 +41,7 @@ var request = {
     var actionObj = this.actionMap[options.url];
     var result = this.getAction(actionObj, this.dataSet)(options);
 
-    var resultData = { data: result.success || result.fail`` };
+    var resultData = { statusCode: 200, data: result.success || result.fail };
     if (result.success && options.success) {
       options.success(resultData);
     }
@@ -51,8 +51,7 @@ var request = {
     if (options.complete) {
       options.complete(resultData);
     }
-    console.log(options);
-    console.log(result);
+    console.log([options, result]);
   },
   getAction: function (actionObj, dataSet) {
     if (!dataSet) {
@@ -92,24 +91,56 @@ var request = {
     },
     "/sg/wallet/info": {
       default: function (options) {
-        return { success: { code: 0, msg: 'success', data: { balance: 0, autoPay: false } } }
+        return { success: { code: 0, msg: 'success', data: { balance: 0, wxpay_quick: false } } }
       },
       hasBalance: function (options) {
-        return { success: { code: 0, msg: 'success', data: { balance: 100, autoPay: false } } }
+        return { success: { code: 0, msg: 'success', data: { balance: 100, wxpay_quick: false } } }
       },
       autoPay: function (options) {
-        return { success: { code: 0, msg: 'success', data: { balance: 0, autoPay: true } } }
+        return { success: { code: 0, msg: 'success', data: { balance: 0, wxpay_quick: true } } }
       }
     },
-    "/sg/wallet/info": {
+    "/sg/wallet/charge": {
       default: function (options) {
         return { success: { code: 0, msg: 'success', data: { balance: 0, autoPay: false } } }
+      }
+    },
+    "/sg/router/status": {
+      default: function (options) {
+        return { success: { code: 0, msg: 'success', data: { status: 0 } } }
+      }
+    },
+    "/sg/router/evidence/in": {
+      default: function (options) {
+        return { success: { code: 0, msg: 'success', data: { evidence_key:'ZMh7eyMC' } } }
+      }
+    },
+    "/sg/router/evidence/out": {
+      default: function (options) {
+        return { success: { code: 0, msg: 'success', data: { evidence_key: 'ZMh7e3sa' } } }
+      }
+    },
+    "/sg/notification/router": {
+      default: function (options) {
+        return {
+          success: {
+            code: 5, msg: 'not found'
+          }
+        }
       },
-      hasBalance: function (options) {
-        return { success: { code: 0, msg: 'success', data: { balance: 100, autoPay: false } } }
-      },
-      autoPay: function (options) {
-        return { success: { code: 0, msg: 'success', data: { balance: 0, autoPay: true } } }
+      hadEntry: function (options) {
+        return {
+          success: {
+            code: 0, msg: 'success', data: {
+              "notification_id": 9,
+              "direction": 0, //入闸
+              "in_gate_id": "010100101",
+              "in_station_id": "0101001",
+              "in_station_name": "五一广场",
+              "in_time": 1502304832
+            }
+          }
+        }
       }
     }
   },

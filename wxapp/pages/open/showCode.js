@@ -6,9 +6,10 @@ var Crypto = require('../../js/cryptojs').Crypto;
 Page({
   data: {
     type: 'in' //进站标识
+    , typeDesc: ''
     , evidence: ''
     , check: true
-    , qrInterval: 300
+    , qrInterval: 200
     , currSeg: -1
     , segCount: 2
     , qrImg: ''
@@ -16,10 +17,12 @@ Page({
     , qrBuf: {}
     , shouldLeave: false
     , leaveTimeout: 15 * 1000
+    , autoRefreshQr: false
   },
   onLoad: function (options) {
     this.setData({
-      type: options.type
+      type: options.type,
+      typeDesc: 'in' == this.data.type ? '进站' : '出站',
     });
     wx.setNavigationBarTitle({
       title: 'in' == this.data.type ? '进站二维码' : '出站二维码',
@@ -47,6 +50,7 @@ Page({
       page.data.shouldLeave = false;
       page.data.evidence = data.evidence_key;
       page.data.currSeg = -1;
+      page.data.qrImgs=[]
       //data.expires_at;
     });
   },
@@ -76,26 +80,32 @@ Page({
   },
   makeNewQrCode: function () {
     var page = this;
-    var start = new Date().getTime();
     if (this.data.currSeg >= 0 && this.data.currSeg < this.data.segCount - 1) {
       this.setData({
         "qrImg": this.data.qrImgs[++this.data.currSeg]
       });
     } else {
-      this.getNextQrImgs(this.data.evidence, function (qrImgs) {
+      if (!this.data.autoRefreshQr && this.data.qrImgs.length > 0) {
         page.setData({
-          "qrImgs": qrImgs
-          , "qrImg": qrImgs[0]
+          "qrImg": this.data.qrImgs[0]
           , "currSeg": 0
         });
-      })
+      } else {
+        this.getNextQrImgs(this.data.evidence, function (qrImgs) {
+          page.setData({
+            "qrImgs": qrImgs
+            , "qrImg": qrImgs[0]
+            , "currSeg": 0
+          });
+        });
+      }
     }
     if (this.data.check) {
       setTimeout(this.makeNewQrCode.bind(this), this.data.qrInterval);
     }
   },
   getNextQrImgs(evidence, callback) {
-    var start=new Date().getTime();
+    var start = new Date().getTime();
     if (this.data.evidence != this.data.qrBuf.evidence) {
       this.data.qrBuf.evidence = this.data.evidence;
       this.data.qrBuf.imgArrays = [];
@@ -107,8 +117,10 @@ Page({
     if (callback) {
       callback(this.data.qrBuf.imgArrays.pop());
     }
-    setTimeout(this.generateNewQrBuffer.bind(this), 1);
-    console.log("newCode:" + (new Date().getTime()-start))
+    if (this.data.autoRefreshQr) {
+      setTimeout(this.generateNewQrBuffer.bind(this), 1);
+    }
+    //console.log("newCode:" + (new Date().getTime()-start))
   },
   generateNewQrBuffer: function () {
     var evidence = this.data.evidence;
@@ -124,7 +136,10 @@ Page({
     var byteArr = this.split(encrytBytes, this.data.segCount);
     var qrImgs = [];
     for (var i = 0; i < byteArr.length; i++) {
-      qrImgs[i] = wxqrcode.createQrCodeImg(Crypto.util.bytesToBase64(byteArr[i]), { 'size': 200 });
+      var s = new Date().getTime();
+      qrImgs[i] = wxqrcode.createQrCodeImg("^" + Crypto.util.bytesToBase64(byteArr[i]) + "$", { 'size': 200 });
+      var e = new Date().getTime();
+      console.log("create" + (e - s));
     }
     return qrImgs;
   },

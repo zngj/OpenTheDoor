@@ -13,19 +13,16 @@ App({
     this.ensureSession();
     console.log("CurrentPages:");
     console.log(getCurrentPages());
-    
+
   },
-  ensureSession:function(){
+  ensureSession: function () {
     var that = this;
     wx.checkSession({
       success: function (sp) {
         request.get({
           url: '/user/verifytoken',
           success: function (p) {
-            if (p.data.code == 0) {
-              // token valid
-            } else {
-              // token invalid
+            if (p.code != 0) { // token invalid
               that.login('TokenInvalid');
             }
           },
@@ -46,19 +43,17 @@ App({
           url: '/user/wxapp/login',
           data: { code: p.code },
           success: function (loginResult) {
-            loginResult = loginResult.data;
             if (loginResult.code == 0) {
               wx.setStorageSync('token', loginResult.data.access_token);
             } else {
               util.showMsg(loginResult.msg);
             };
-            console.log(entry);
-          }, fail: function (pp) {
+          }, complete: function (pp) {
             console.log(entry);
           }
         });
       },
-      fail: function (p) {
+      complete: function (p) {
         console.log(entry);
       }
     });

@@ -21,34 +21,34 @@ Page({
       });
     });
     request.get({
-      url:'/sg/router/status',
-      success:function(resp){
-        if(resp.data.code==0){
-          switch (resp.data.data.status) {
+      url: '/sg/router/status',
+      success: function (resp) {
+        if (resp.code == 0) {
+          switch (resp.data.status) {
             case 0: //无行程;
-            break;
+              break;
             case 1: //已入闸;
-            wx.showModal({
-              title: '行程提醒',
-              content: '您有未出站行程，是否现在出站？',
-              showCancel:true,
-              success:function(p){
-                if (p.confirm){
-                wx.navigateTo({
-                  url: '/pages/open/showCode?type=out',
-                });
+              wx.showModal({
+                title: '行程提醒',
+                content: '您有未出站行程，是否现在出站？',
+                showCancel: true,
+                success: function (p) {
+                  if (p.confirm) {
+                    wx.navigateTo({
+                      url: '/pages/open/showCode?type=out',
+                    });
+                  }
                 }
-              }
-            })
-            break;
+              })
+              break;
             case 2: //隔天未出闸(异常);
               wx.showToast({
                 title: '你有隔天未出站行程，请联系客服处理！',
               });
-            break;
+              break;
             case 4: //已出闸未入闸(异常);
-            
-            break;
+
+              break;
 
           }
         }
@@ -64,8 +64,8 @@ Page({
     request.get({
       url: '/sg/wallet/info',
       success: function (p) {
-        if (p.statusCode == 200 && p.data.code == 0) {
-          successCB(p.data.data);
+        if (p.code == 0) {
+          successCB(p.data);
         } else {
           util.showMsg("钱包信息获取失败");
         }
@@ -77,19 +77,18 @@ Page({
         };
       },
       complete: function (cp) {
-        console.log(cp)
         if (wx.hideLoading) {
           wx.hideLoading();
         }
       }
     });
   },
-  getRoute: function (successCB,failCB) {
+  getRoute: function (successCB, failCB) {
     request.get({
       url: '/sg/router/status',
       success: function (p) {
-        if (p.data.code == 0) {//"status": 0, // 0-无行程; 1-已入闸; 2-隔天未出闸(异常); 4-已出闸未入闸(异常)
-          successCB(p.data.data);
+        if (p.code == 0) {//"status": 0, // 0-无行程; 1-已入闸; 2-隔天未出闸(异常); 4-已出闸未入闸(异常)
+          successCB(p.data);
         };
       },
       fail: function (fp) {
@@ -126,10 +125,10 @@ Page({
           url: '../open/showCode?type=out',
         });
       } else if (data.balance > 0) {
-          util.showMsg('有余额，可进入');
-          wx.navigateTo({
-            url: '../open/showCode?type=out',
-          });
+        util.showMsg('有余额，可进入');
+        wx.navigateTo({
+          url: '../open/showCode?type=out',
+        });
       } else {
         that.tipForRecharge('暂不出站');
       }

@@ -4,17 +4,37 @@ var request = {
     this.request = localTest ? this.requestLocal : this.requestRemote;
     this.dataSet = localTestDataSet;
   },
+  arround: function (delegate, newFunc) {
+    return function (s) {
+      newFunc(delegate, s);
+    };
+  },
   requestRemote: function (options) {
     options.url = "https://sgu.youstars.com.cn" + options.url;
     options.method = options.method || "POST";
     options.header = options.header || { 'content-type': 'application/json' };
-    var originComplete = options.complete;
-    options.complete = function (c) {
-      if (originComplete) {
-        originComplete(c);
+    var originSuccess = options.success;
+
+    options.success = this.arround(options.success, function (delegate, s) {
+      if (s.statusCode == 200) {
+        if (s.data.code == 1000) {//token expired
+        getApp().login("TokenExpired");
+          wx.reLaunch({
+            url: '/pages/index/index',
+          })
+        } else if (delegate) {
+          delegate(s.data);
+        }
+      } else {
+        options.fail(s);
       }
+    });
+    options.complete = this.arround(options.complete, function (delegate, c) {
       console.log([options, c]);
-    };
+      if (delegate) {
+        delegate(c);
+      }
+    });
 
     var token = wx.getStorageSync('token');
     if (token) {
@@ -112,7 +132,7 @@ var request = {
     },
     "/sg/router/evidence/in": {
       default: function (options) {
-        return { success: { code: 0, msg: 'success', data: { evidence_key:'ZMh7eyMC' } } }
+        return { success: { code: 0, msg: 'success', data: { evidence_key: 'ZMh7eyMC' } } }
       }
     },
     "/sg/router/evidence/out": {

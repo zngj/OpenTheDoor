@@ -63,8 +63,8 @@ Page({
     request.get({
       url: '/sg/router/evidence/' + page.data.type,
       success: function (p) {
-        if (p.data.code == 0) {
-          successCB(p.data.data);
+        if (p.code == 0) {
+          successCB(p.data);
         }
       },
       fail: function (fp) {
@@ -160,8 +160,8 @@ Page({
     request.get({
       url: '/sg/notification/router',
       success: function (p) {
-        if (p.data.code == 0) {
-          util.showMsg("您在 " + page.getStationDesc(p.data.data) + "成功!");
+        if (p.code == 0) {
+          util.showMsg("您在 " + page.getStationDesc(p.data) + "成功!");
           // "notification_id": 9,
           // "direction": 0, //入闸
           // "in_gate_id": "010100101",
@@ -169,7 +169,7 @@ Page({
           // "in_station_name": "五一广场",
           // "in_time": 1502304832
           request.put({
-            url: '/sg/notification/consume/' + p.data.data.notification_id
+            url: '/sg/notification/consume/' + p.data.notification_id
           });
           page.data.shouldLeave = true;
           setTimeout(page.leavePage.bind(page), page.data.leaveTimeout);

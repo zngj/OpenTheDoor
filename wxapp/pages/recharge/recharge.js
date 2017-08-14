@@ -30,7 +30,7 @@ Page({
       url: '/sg/wallet/info',
       success: function (resp) {
         that.setData({
-          userBalance: resp.data.data.balance
+          userBalance: resp.data.balance
         });
       }
     });
@@ -66,9 +66,9 @@ Page({
     //         jsCode: res.code
     //       },
     //       success: function(res) {
-    //         var data = res.data.data;
-    //         console.log(res.data.code);
-    //         if(res.data.code ==-1 || data==null || data.paySign==null || !data || !data.paySign){
+    //         var data = res.data;
+    //         console.log(res.code);
+    //         if(res.code ==-1 || data==null || data.paySign==null || !data || !data.paySign){
     //           wx.showToast({
     //             title: res.data.msg,
     //           });

@@ -10,6 +10,8 @@ var request = {
     };
   },
   requestRemote: function (options) {
+    var start=new Date().getTime();
+    var url =options.url;
     options.url = "https://sgu.youstars.com.cn" + options.url;
     options.method = options.method || "POST";
     options.header = options.header || { 'content-type': 'application/json' };
@@ -30,7 +32,8 @@ var request = {
       }
     });
     options.complete = this.arround(options.complete, function (delegate, c) {
-      console.log([options, c]);
+      var end = new Date().getTime();
+      console.log([(end-start),url,options, c]);
       if (delegate) {
         delegate(c);
       }

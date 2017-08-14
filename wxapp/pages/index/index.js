@@ -13,7 +13,7 @@ Page({
     // request.init(true, "new");//local test for new user
   },
   onShow: function () {
-    console.log("index onShow")
+    //console.log("index onShow")
     var that = this;
     this.getWallet(function (data) {
       that.setData({

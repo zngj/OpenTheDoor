@@ -1,4 +1,5 @@
-var wxqrcode = require('../../js/wxqrcode.js'); var util = require('../../js/util.js').util;
+var wxqrcode = require('../../js/wxqrcode.js'); 
+var util = require('../../js/util.js').util;
 var request = require('../../js/util.js').request;
 var Crypto = require('../../js/cryptojs').Crypto;
 
@@ -13,7 +14,7 @@ Page({
     , currSeg: -1
     , segCount: 2
     , qrImg: ''
-    , qrTime:''
+    , qrTime: ''
     , qrImgs: []
     , qrBuf: {}
     , shouldLeave: false
@@ -28,10 +29,15 @@ Page({
     wx.setNavigationBarTitle({
       title: 'in' == this.data.type ? '进站二维码' : '出站二维码',
     });
+    if (wx.onUserCaptureScreen) {
+      wx.onUserCaptureScreen(function (res) {
+        console.log('用户截屏了')
+      })
+    }
   },
   onShow: function () {
-    if (wx.setKeepScreenOn){
-      wx.setKeepScreenOn({ keepScreenOn:true});
+    if (wx.setKeepScreenOn) {
+      wx.setKeepScreenOn({ keepScreenOn: true });
     }
     var page = this;
     this.data.check = true;
@@ -54,7 +60,7 @@ Page({
       page.data.shouldLeave = false;
       page.data.evidence = data.evidence_key;
       page.data.currSeg = -1;
-      page.data.qrImgs=[]
+      page.data.qrImgs = []
       //data.expires_at;
     });
   },
@@ -100,7 +106,7 @@ Page({
             "qrImgs": qrImgs
             , "qrImg": qrImgs[0]
             , "currSeg": 0
-            ,"qrTime":new Date().getTime()%100000
+            , "qrTime": new Date().getTime() % 100000
           });
         });
       }

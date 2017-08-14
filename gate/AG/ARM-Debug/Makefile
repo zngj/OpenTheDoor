@@ -426,6 +426,7 @@ compiler_rcc_clean:
 	-$(DEL_FILE) qrc_resource.cpp
 qrc_resource.cpp: ../Src/resource.qrc \
 		../Src/Resource/Image/Pic/uparrow.jpg \
+		../Src/Resource/Image/Pic/error.jpg \
 		../Src/Resource/Image/Pic/logo.jpg \
 		../Src/Resource/Image/Icon/network_icon1.png \
 		../Src/Resource/Image/Icon/confirm_icon.png \
@@ -1246,6 +1247,38 @@ BaseDialog.o: ../Src/UI/BaseDialog.cpp ../Src/UI/BaseDialog.h \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qdialog.h \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPixmap \
 		ui_BaseDialog.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QVariant \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QAction \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qaction.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qicon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qactiongroup.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QApplication \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qapplication.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcoreapplication.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qeventloop.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qdesktopwidget.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qguiapplication.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qinputmethod.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QButtonGroup \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qbuttongroup.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QHeaderView \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qheaderview.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qabstractitemview.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qabstractscrollarea.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qframe.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qabstractitemmodel.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qitemselectionmodel.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qabstractitemdelegate.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qstyleoption.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qabstractspinbox.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qvalidator.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qregularexpression.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qslider.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qabstractslider.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qstyle.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qtabbar.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qtabwidget.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qrubberband.h \
 		../Src/UI/UIListener.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BaseDialog.o ../Src/UI/BaseDialog.cpp
 
@@ -1371,6 +1404,38 @@ PopupWindow.o: ../Src/UI/PopupWindow.cpp ../Src/UI/PopupWindow.h \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QString \
 		../Src/UI/UserControl/LineEdit.h \
 		ui_popupwindow.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/QVariant \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QAction \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qaction.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qicon.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qactiongroup.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QApplication \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qapplication.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qcoreapplication.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qeventloop.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qdesktopwidget.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qguiapplication.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qinputmethod.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QButtonGroup \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qbuttongroup.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QHeaderView \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qheaderview.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qabstractitemview.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qabstractscrollarea.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qframe.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qabstractitemmodel.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qitemselectionmodel.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qabstractitemdelegate.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qstyleoption.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qabstractspinbox.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/qvalidator.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtCore/qregularexpression.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qslider.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qabstractslider.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qstyle.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qtabbar.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qtabwidget.h \
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qrubberband.h \
 		../Src/UI/BaseDialog.h \
 		../Src/UI/UserControl/PushButton.h \
 		../Src/UI/UserControl/QRDisplay.h \
@@ -2818,7 +2883,11 @@ CheckDialog.o: ../Src/UI/CheckDialog.cpp ../Src/UI/CheckDialog.h \
 		../Src/UI/PopupWindow.h \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/QDialog \
 		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtWidgets/qdialog.h \
-		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPixmap
+		../../../../buildroot-2016.11/output/host/usr/arm-buildroot-linux-gnueabihf/sysroot/usr/include/qt5/QtGui/QPixmap \
+		../Src/Business/ScannerCheck.h \
+		../Src/Drivers/Scanner/ScannerManager.h \
+		../Src/Drivers/Scanner/ScannerState.h \
+		../Src/Drivers/Scanner/IScannerListener.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o CheckDialog.o ../Src/UI/CheckDialog.cpp
 
 qrc_resource.o: qrc_resource.cpp 

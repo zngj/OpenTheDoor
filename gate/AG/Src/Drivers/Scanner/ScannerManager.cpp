@@ -15,7 +15,7 @@ ScannerManager::ScannerManager()
     this->isRunning=false;
     this->state=StateSerialPortNotSet;
     this->listenter=NULL;
-    this->codeLength=0;
+    this->codeLength=-1;
 }
 
 
@@ -133,24 +133,25 @@ void * ScannerManager::ProcCodeRx(void * args)
         {
             for(int i=0;i<length;i++)
             {
-                if(buffer[i]>=32 && buffer[i]<=126)
+                if(buffer[i]=='^')
                 {
-                    code[manager->codeLength]=buffer[i];
-                    manager->codeLength++;
-                    if(manager->codeLength>=CODE_SIZE)
-                    {
-                        manager->codeLength=0;
-                    }
+                    manager->codeLength=0;
                 }
-                else
+                else if(buffer[i]=='$')
                 {
+
                     manager->ProcessCode();
+                    manager->codeLength=-1;
+                }
+                else if(manager->codeLength>=0)
+                {
+                    code[manager->codeLength++]=buffer[i];
+                }
+                if(manager->codeLength>=CODE_SIZE)
+                {
+                    manager->codeLength=-1;
                 }
             }
-        }
-        else if(length==0) //
-        {
-            manager->ProcessCode();
         }
 
     }

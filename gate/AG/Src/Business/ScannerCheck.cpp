@@ -96,12 +96,6 @@ void ScannerCheck::checkCode()
         segIndex=0;
 
 
-
-
-
-
-
-
         int len=crypto->aesDecrypt(frame+1, frameLen-1,aesDec);
         frameLen=1;
         delete qrCode;
@@ -114,7 +108,7 @@ void ScannerCheck::checkCode()
 
         int timeNow=(int)(TimeUtil::getInstance()->getUnixTime(""));
 
-        if(abs(timeNow-unixTime)>5*60) continue;
+       // if(abs(timeNow-unixTime)>5*60) continue;
 
 
         string evidence_key=base64_encode(aesDec+4,128);
@@ -133,7 +127,7 @@ void ScannerCheck::checkCode()
 
         sscanf((char*)rsaDec+32,"%d",&unixTime);
 
-        if(abs(timeNow-unixTime)>24*60*60) continue;
+        //if(abs(timeNow-unixTime)>24*60*60) continue;
 
 
         //
@@ -144,6 +138,8 @@ void ScannerCheck::checkCode()
         js["evidence_key"]=evidence_key;
 
 
+
+        this->lastCheckResult=0;
         DataServer *server=DataServer::getInstance();
 
         NetRequest *req= server->createNetRequest(103,"",js);
@@ -155,6 +151,9 @@ void ScannerCheck::checkCode()
             if(msg->getRetCode()!=0)
             {
                 checkPass=false;
+                Json::Value *js=msg->getJson();
+                this->lastCheckResult=-1;
+                this->lastErrMsg=(*js)["errmsg"].asString();
             }
             else
             {
@@ -165,7 +164,14 @@ void ScannerCheck::checkCode()
         server->deleteNetRequest(req);
 
 
-        if(checkPass==false) continue;
+        if(checkPass==false)
+        {
+            this->lastCheckResult=-1;
+
+            UIListener::getInstance()->notifyCheckOK();
+
+            continue;
+        }
 
         ChangeLog * log=new ChangeLog(scanTime,(const char *)(aesDec+4));
 
@@ -226,6 +232,16 @@ int ScannerCheck::start()
 
     thrdCheck =new thread(&ScannerCheck::checkCode,this);
 
+}
+
+int ScannerCheck::getLastCheckResult()
+{
+    return this->lastCheckResult;
+}
+
+string ScannerCheck::getLastErrMsg()
+{
+    return this->lastErrMsg;
 }
 
 

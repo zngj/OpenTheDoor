@@ -24,6 +24,9 @@ private:
     ScannerCheck();
     list<char*> lstQrCode;
     thread *thrdCheck;
+
+    int lastCheckResult;
+    string lastErrMsg;
 private:
     void checkCode();
 protected:
@@ -33,6 +36,8 @@ public:
 
     int start();
 
+    int getLastCheckResult();
+    string getLastErrMsg();
 
 
 };

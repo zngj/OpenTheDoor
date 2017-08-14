@@ -11,7 +11,9 @@ class CheckDialog:public BaseDialog
 public:
     CheckDialog(QWidget *parent);
     virtual ~CheckDialog();
-
+private:
+    QString errMsg;
+    QPixmap map;
 protected:
     void customDraw(QPainter &painter);
 };

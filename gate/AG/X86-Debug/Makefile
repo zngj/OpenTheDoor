@@ -704,6 +704,7 @@ compiler_rcc_clean:
 qrc_resource.cpp: ../Src/resource.qrc \
 		../../../../Qt5.7.1/5.7/gcc_64/bin/rcc \
 		../Src/Resource/Image/Pic/uparrow.jpg \
+		../Src/Resource/Image/Pic/error.jpg \
 		../Src/Resource/Image/Pic/logo.jpg \
 		../Src/Resource/Image/Icon/network_icon1.png \
 		../Src/Resource/Image/Icon/confirm_icon.png \
@@ -3038,7 +3039,11 @@ CheckDialog.o: ../Src/UI/CheckDialog.cpp ../Src/UI/CheckDialog.h \
 		../Src/UI/PopupWindow.h \
 		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/QDialog \
 		../../../../Qt5.7.1/5.7/gcc_64/include/QtWidgets/qdialog.h \
-		../../../../Qt5.7.1/5.7/gcc_64/include/QtGui/QPixmap
+		../../../../Qt5.7.1/5.7/gcc_64/include/QtGui/QPixmap \
+		../Src/Business/ScannerCheck.h \
+		../Src/Drivers/Scanner/ScannerManager.h \
+		../Src/Drivers/Scanner/ScannerState.h \
+		../Src/Drivers/Scanner/IScannerListener.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o CheckDialog.o ../Src/UI/CheckDialog.cpp
 
 qrc_resource.o: qrc_resource.cpp 

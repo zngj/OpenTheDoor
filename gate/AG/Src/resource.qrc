@@ -66,5 +66,6 @@
         <file>Resource/Image/Icon/wechat_logo.png</file>
         <file>Resource/Image/Pic/logo.jpg</file>
         <file>Resource/Image/Pic/uparrow.jpg</file>
+        <file>Resource/Image/Pic/error.jpg</file>
     </qresource>
 </RCC>

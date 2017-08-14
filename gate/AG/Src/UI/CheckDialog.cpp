@@ -1,9 +1,21 @@
 #include "CheckDialog.h"
+#include "Business/ScannerCheck.h"
 
 CheckDialog::CheckDialog(QWidget *parent):BaseDialog(parent)
 {
     this->setTimeout(3);
     this->setTitle("世界之窗站");
+    ScannerCheck *checker=ScannerCheck::getInstance();
+    if(checker->getLastCheckResult()==0)
+    {
+        this->errMsg="检验通过";
+        map.load(":/Resource/Image/Pic/uparrow.jpg");
+    }
+    else
+    {
+        this->errMsg=QString::fromStdString(checker->getLastErrMsg());
+        map.load(":/Resource/Image/Pic/error.jpg");
+    }
 }
 
 CheckDialog::~CheckDialog()
@@ -20,10 +32,9 @@ void CheckDialog::customDraw(QPainter &painter)
     QFont fontTip(".PingFang-SC",18);
     painter.setPen(Qt::green);
     painter.setFont(fontTip);
-    painter.drawText(QRect(0,51+52+12-25,42+200+42,50),Qt::AlignCenter,"检验通过");
+    painter.drawText(QRect(0,51+52+12-25,42+200+42,50),Qt::AlignCenter,this->errMsg);
 
 
     QRect rectPic(width-350,51,350,335);
-    QPixmap pixLogo(":/Resource/Image/Pic/uparrow.jpg");
-    painter.drawPixmap(rectPic,pixLogo);
+    painter.drawPixmap(rectPic,map);
 }

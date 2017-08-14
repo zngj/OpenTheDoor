@@ -30,6 +30,9 @@ Page({
     });
   },
   onShow: function () {
+    if (wx.setKeepScreenOn){
+      wx.setKeepScreenOn({ keepScreenOn:true});
+    }
     var page = this;
     this.data.check = true;
     this.getEvidence(function (data) {

@@ -26,7 +26,7 @@ Page({
       typeDesc: 'in' == options.type ? '进站' : '出站',
     });
     wx.setNavigationBarTitle({
-      title: 'in' == this.data.type ? '进站二维码' : '出站二维码',
+      title: "e畅行"+('in' == this.data.type ? '进站二维码' : '出站二维码'),
     });
     if (wx.onUserCaptureScreen) {
       wx.onUserCaptureScreen(function (res) {

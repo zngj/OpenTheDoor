@@ -3,7 +3,6 @@ var util = require('../../js/util.js').util;
 var request = require('../../js/util.js').request;
 var Crypto = require('../../js/cryptojs').Crypto;
 
-// showCode.js
 Page({
   data: {
     type: 'in' //进站标识

@@ -144,7 +144,7 @@ Page({
       success: function (res) {
         if (res.confirm) {
           wx.navigateTo({
-            url: '../recharge/recharge',
+            url: '../wallet/recharge',
           });
         }
         console.log(res);

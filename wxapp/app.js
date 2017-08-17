@@ -37,6 +37,11 @@ App({
     });
   },
   login: function (entry) {
+    var app=this;
+    if (app.loging){
+      return;
+    }
+    app.loging = true;
     wx.login({
       success: function (p) {
         request.request({
@@ -49,11 +54,13 @@ App({
               util.showMsg(loginResult.msg);
             };
           }, complete: function (pp) {
+             app.loging = false;
             console.log(entry);
           }
         });
       },
       complete: function (p) {
+        app.loging = false;
         console.log(entry);
       }
     });

@@ -1,7 +1,7 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/recharge/recharge",
+    "pages/wallet/recharge",
     "pages/open/showCode"
   ],
   "window": {
@@ -9,5 +9,28 @@
     "navigationBarBackgroundColor": "#000000",
     "navigationBarTitleText": "门",
     "navigationBarTextStyle": "#ffffff"
+  }
+  ,"tabBar": {
+    "list": [{
+      "pagePath": "pages/index/index",
+      "text": "首页",
+      "iconPath": "images/my.png",
+      "selectedIconPath": "images/my.png"
+    },{
+      "pagePath": "pages/wallet/recharge",
+      "text": "充值",
+      "iconPath": "images/my.png",
+      "selectedIconPath": "images/my.png"
+    },{
+      "pagePath": "pages/route/route",
+      "text": "行程",
+      "iconPath": "images/my.png",
+      "selectedIconPath": "images/my.png"
+    },{
+      "pagePath": "pages/wallet/wallet",
+      "text": "钱包",
+      "iconPath": "images/my.png",
+      "selectedIconPath": "images/my.png"
+    }]
   }
 }

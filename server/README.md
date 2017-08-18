@@ -17,7 +17,7 @@
 |:phone_number|string|是|手机号码|
 
 请求说明：
-```json
+```code
 GET https://sgu.youstars.com.cn/user/check_phone_number/13800138000
 ```
 

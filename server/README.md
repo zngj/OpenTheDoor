@@ -52,7 +52,7 @@ GET https://sgu.youstars.com.cn/user/check_phone_number/13800138000
 |password|string|是|密码|
 
 请求说明：
-```json
+```code
 {
 	"phone_number": "13800138000",
 	"password": "123456"
@@ -60,7 +60,7 @@ GET https://sgu.youstars.com.cn/user/check_phone_number/13800138000
 ```
 
 返回说明：
-```json
+```code
 //正常返回的JSON数据包
 {
     "code": 0,
@@ -90,7 +90,7 @@ GET https://sgu.youstars.com.cn/user/check_phone_number/13800138000
 |password|string|是|密码|
 
 请求说明：
-```json
+```code
 {
 	"phone_number": "13800138000",
 	"password": "123456"
@@ -98,7 +98,7 @@ GET https://sgu.youstars.com.cn/user/check_phone_number/13800138000
 ```
 
 返回说明：
-```json
+```code
 //登录成功
 {
     "code": 0,
@@ -136,14 +136,14 @@ GET https://sgu.youstars.com.cn/user/check_phone_number/13800138000
 |code|string|是|微信授权临时票据|
 
 请求说明：
-```json
+```code
 {
 	"code": "013i8LU00jGznD1WP4S00OCIU00i8LUR"
 }
 ```
 
 返回说明：
-```json
+```code
 //登录成功
 {
     "code": 0,
@@ -176,14 +176,14 @@ GET https://sgu.youstars.com.cn/user/check_phone_number/13800138000
 |code|string|是|微信授权临时票据|
 
 请求说明：
-```json
+```code
 {
 	"code": "013i8LU00jGznD1WP4S00OCIU00i8LUR"
 }
 ```
 
 返回说明：
-```json
+```code
 //登录成功
 {
     "code": 0,
@@ -216,14 +216,14 @@ GET https://sgu.youstars.com.cn/user/check_phone_number/13800138000
 |code|string|是|微信授权临时票据|
 
 请求说明：
-```json
+```code
 {
 	"code": "00351nLn1rO8uk0DzUMn1Jf9Ln151nLx"
 }
 ```
 
 返回说明：
-```json
+```code
 //登录成功
 {
     "code": 0,
@@ -256,7 +256,7 @@ GET https://sgu.youstars.com.cn/user/check_phone_number/13800138000
 |Access-Token|登录返回的access_token|用户访问授权|
 
 请求说明：
-```json
+```code
 GET /check_token HTTP/1.1
 Host: localhost:8081
 Access-Token: 9276a1988a70477eb2a6700bebbe99b7
@@ -264,7 +264,7 @@ Cache-Control: no-cache
 ```
 
 返回说明：
-```json
+```code
 //正常返回的JSON数据
 {
     "code": 0,
@@ -297,7 +297,7 @@ Cache-Control: no-cache
 
 返回说明：
 //正常返回的JSON数据
-```json:
+```code:
 {
     "code": 0,
     "msg": "成功",
@@ -336,7 +336,7 @@ Cache-Control: no-cache
 
 返回说明：
 //正常返回的JSON数据
-```json:
+```code:
 {
     "code": 0,
     "msg": "成功",
@@ -376,7 +376,7 @@ Cache-Control: no-cache
 
 返回说明：
 //正常返回的JSON数据
-```json:
+```code:
 {
     "code": 0,
     "msg": "成功",
@@ -416,7 +416,7 @@ Cache-Control: no-cache
 
 返回说明：
 //正常返回的JSON数据
-```json:
+```code:
 {
     "code": 0,
     "msg": "成功",
@@ -456,7 +456,7 @@ Cache-Control: no-cache
 
 返回说明：
 //正常返回的JSON数据
-```json:
+```code:
 {
     "code": 0,
     "msg": "成功",
@@ -502,13 +502,13 @@ Cache-Control: no-cache
 |:notification_id|string|是|通知ID|
 
 请求说明：
-```json
+```code
 PUT https://sgu.youstars.com.cn/sg/notification/consume/9
 ```
 
 返回说明：
 //正常返回的JSON数据
-```json:
+```code:
 {
     "code": 0,
     "msg": "成功"
@@ -538,7 +538,7 @@ PUT https://sgu.youstars.com.cn/sg/notification/consume/9
 
 返回说明：
 //正常返回的JSON数据
-```json:
+```code:
 {
     "code": 0,
     "msg": "成功",
@@ -585,7 +585,7 @@ PUT https://sgu.youstars.com.cn/sg/notification/consume/9
 
 返回说明：
 //正常返回的JSON数据
-```json:
+```code:
 {
     "code": 0,
     "msg": "成功",
@@ -670,7 +670,7 @@ PUT https://sgu.youstars.com.cn/sg/notification/consume/9
 |errmsg|string|-|错误内容|
 
 返回示例：
-```json
+```code
 {
     "gate_id": "010100101",
     "gate_direction": 0,
@@ -678,7 +678,7 @@ PUT https://sgu.youstars.com.cn/sg/notification/consume/9
     "city_name": "长沙"
 }
 ```
-```json
+```code
 {
     "errcode": 3100,
     "errmsg": "invalid gate id"
@@ -711,12 +711,12 @@ PUT https://sgu.youstars.com.cn/sg/notification/consume/9
 |errmsg|string|-|错误内容|
 
 返回示例：
-```json
+```code
 {
     "key": "\n-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDZsfv1qscqYdy4vY+P4e3cAtmv\nppXQcRvrF1cB4drkv0haU24Y7m5qYtT52Kr539RdbKKdLAM6s20lWy7+5C0Dgacd\nwYWd/7PeCELyEipZJL07Vro7Ate8Bfjya+wltGK9+XNUIHiumUKULW4KDx21+1NL\nAUeJ6PeW+DAkmJWF6QIDAQAB\n-----END PUBLIC KEY-----\n"
 }
 ```
-```json
+```code
 {
     "errcode": 1,
     "errmsg": "not found"
@@ -739,7 +739,7 @@ PUT https://sgu.youstars.com.cn/sg/notification/consume/9
 |evidence_key|string|-|凭证|
 
 请求示例：
-```json
+```code
 {
     "evidence_key": "MjWCCOKE9yDNMarR1l/j0nVok9wxExvKPtKleA/1OiO6Cvn0BM01Fdjb9MxSF9yTYBG48Bh85ZcQdaZ97TM3o8NJ1rOoKaqD+R1LdK/c6RGxHQ6rUPdXBU7yZP2rOBeN/xhjC7ge+iHwn6/3nwURr+33V1BUb7GzJqGerU6e59Q="
 }
@@ -753,18 +753,18 @@ PUT https://sgu.youstars.com.cn/sg/notification/consume/9
 |errmsg|string|-|错误内容|
 
 返回示例：
-```json
+```code
 {
    //成功
 }
 ```
-```json
+```code
 {
     "errcode": 3201,
     "errmsg": "invalid envidence"
 }
 ```
-```json
+```code
 {
     "errcode": 3202,
     "errmsg": "expired envidence"
@@ -787,7 +787,7 @@ PUT https://sgu.youstars.com.cn/sg/notification/consume/9
 |scan_time|int64|-|扫码unix时间戳|
 
 请求示例：
-```json
+```code
 {
     "evidence_key": "MjWCCOKE9yDNMarR1l/j0nVok9wxExvKPtKleA/1OiO6Cvn0BM01Fdjb9MxSF9yTYBG48Bh85ZcQdaZ97TM3o8NJ1rOoKaqD+R1LdK/c6RGxHQ6rUPdXBU7yZP2rOBeN/xhjC7ge+iHwn6/3nwURr+33V1BUb7GzJqGerU6e59Q=",
     "scan_time": 1502120737
@@ -802,12 +802,12 @@ PUT https://sgu.youstars.com.cn/sg/notification/consume/9
 |errmsg|string|-|错误内容|
 
 返回示例：
-```json
+```code
 {
    //成功
 }
 ```
-```json
+```code
 {
     "errcode": 3,
     "errmsg": "wrong argument"

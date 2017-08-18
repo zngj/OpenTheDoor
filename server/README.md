@@ -54,8 +54,8 @@ GET https://sgu.youstars.com.cn/user/check_phone_number/13800138000
 请求说明：
 ```code
 {
-	"phone_number": "13800138000",
-	"password": "123456"
+    "phone_number": "13800138000",
+    "password": "123456"
 }
 ```
 
@@ -92,8 +92,8 @@ GET https://sgu.youstars.com.cn/user/check_phone_number/13800138000
 请求说明：
 ```code
 {
-	"phone_number": "13800138000",
-	"password": "123456"
+    "phone_number": "13800138000",
+    "password": "123456"
 }
 ```
 
@@ -138,7 +138,7 @@ GET https://sgu.youstars.com.cn/user/check_phone_number/13800138000
 请求说明：
 ```code
 {
-	"code": "013i8LU00jGznD1WP4S00OCIU00i8LUR"
+    "code": "013i8LU00jGznD1WP4S00OCIU00i8LUR"
 }
 ```
 
@@ -178,7 +178,7 @@ GET https://sgu.youstars.com.cn/user/check_phone_number/13800138000
 请求说明：
 ```code
 {
-	"code": "013i8LU00jGznD1WP4S00OCIU00i8LUR"
+    "code": "013i8LU00jGznD1WP4S00OCIU00i8LUR"
 }
 ```
 
@@ -218,7 +218,7 @@ GET https://sgu.youstars.com.cn/user/check_phone_number/13800138000
 请求说明：
 ```code
 {
-	"code": "00351nLn1rO8uk0DzUMn1Jf9Ln151nLx"
+    "code": "00351nLn1rO8uk0DzUMn1Jf9Ln151nLx"
 }
 ```
 
@@ -278,7 +278,7 @@ Cache-Control: no-cache
 ```
 
 
-## 后台协议 - HTTPS
+## e畅行后台协议 - HTTPS
 
 ### 获取用户行程状态
 

@@ -2,7 +2,7 @@
 
 ## 用户中心协议 - HTTPS
 
-### 检查手机号码
+### 检查手机号码（仅限App）
 
 检查用户输入的手机号码是否已被注册
 
@@ -36,7 +36,7 @@ GET https://sgu.youstars.com.cn/user/check_phone_number/13800138000
 }
 ```
 
-### 用户手机注册
+### 用户手机注册（仅限App）
 
 注册用户手机号和密码
 
@@ -74,7 +74,7 @@ GET https://sgu.youstars.com.cn/user/check_phone_number/13800138000
 ```
 
 
-### 用户手机号码登录
+### 用户手机号码登录（仅限App）
 
 用户使用手机号码和密码登录
 
@@ -121,7 +121,7 @@ GET https://sgu.youstars.com.cn/user/check_phone_number/13800138000
 ```
 
 
-### 应用APP微信登录
+### 应用APP微信登录（仅限App）
 
 应用APP使用微信登录
 
@@ -161,7 +161,7 @@ GET https://sgu.youstars.com.cn/user/check_phone_number/13800138000
 ```
 
 
-### 应用APP微信登录
+### 应用APP微信登录（仅限App）
 
 应用APP使用微信登录
 
@@ -201,7 +201,7 @@ GET https://sgu.youstars.com.cn/user/check_phone_number/13800138000
 ```
 
 
-### 小程序微信登录
+### 小程序微信登录（仅限小程序）
 
 用户打开小程序，自动使用微信登录
 
@@ -296,8 +296,8 @@ Cache-Control: no-cache
 
 
 返回说明：
+```code
 //正常返回的JSON数据
-```code:
 {
     "code": 0,
     "msg": "成功",
@@ -335,8 +335,8 @@ Cache-Control: no-cache
 |wxpay_quick|是否开通小额免密|
 
 返回说明：
+```code
 //正常返回的JSON数据
-```code:
 {
     "code": 0,
     "msg": "成功",
@@ -375,8 +375,8 @@ Cache-Control: no-cache
 |expires_at|失效时间，unix时间戳|
 
 返回说明：
+```code
 //正常返回的JSON数据
-```code:
 {
     "code": 0,
     "msg": "成功",
@@ -415,8 +415,8 @@ Cache-Control: no-cache
 |expires_at|失效时间，unix时间戳|
 
 返回说明：
+```code
 //正常返回的JSON数据
-```code:
 {
     "code": 0,
     "msg": "成功",
@@ -455,8 +455,8 @@ Cache-Control: no-cache
 |notification_type|通知类型：1-用户入站；2-用户出站；|
 
 返回说明：
+```code
 //正常返回的JSON数据
-```code:
 {
     "code": 0,
     "msg": "成功",
@@ -507,8 +507,8 @@ PUT https://sgu.youstars.com.cn/sg/notification/consume/9
 ```
 
 返回说明：
+```code
 //正常返回的JSON数据
-```code:
 {
     "code": 0,
     "msg": "成功"
@@ -537,8 +537,8 @@ PUT https://sgu.youstars.com.cn/sg/notification/consume/9
 |Access-Token|登录返回的access_token|用户访问授权|
 
 返回说明：
+```code
 //正常返回的JSON数据
-```code:
 {
     "code": 0,
     "msg": "成功",
@@ -584,8 +584,8 @@ PUT https://sgu.youstars.com.cn/sg/notification/consume/9
 |Access-Token|登录返回的access_token|用户访问授权|
 
 返回说明：
+```code
 //正常返回的JSON数据
-```code:
 {
     "code": 0,
     "msg": "成功",

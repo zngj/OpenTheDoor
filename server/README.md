@@ -23,7 +23,7 @@ GET https://sgu.youstars.com.cn/user/check_phone_number/13800138000
 
 
 返回说明：
-```json
+```code
 //正常返回的JSON数据包
 {
     "code": 0,

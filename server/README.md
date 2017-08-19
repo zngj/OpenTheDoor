@@ -638,7 +638,7 @@ PUT https://sgu.youstars.com.cn/sg/notification/consume/9
 
 |参数|类型|必填|说明|
 |---|----|---|--- |
-|:last_id|string|否|一次查询的最后一条记录|
+|:last_id|string|否|上一次查询的最后一条记录|
 
 请求说明：
 ```code

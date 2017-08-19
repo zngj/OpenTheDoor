@@ -1,25 +1,25 @@
 package redisx
 
 import (
-	"github.com/go-redis/redis"
 	"common/file"
+	"github.com/go-redis/redis"
 )
 
 var Client *redis.Client
 
 var config struct {
-	Addr string `json:"addr"`
+	Addr     string `json:"addr"`
 	Password string `json:"password"`
-	DB int `json:"db"`
+	DB       int    `json:"db"`
 }
 
-func init()  {
+func init() {
 
 	file.LoadJsonConfig("redis.json", &config)
 
 	Client = redis.NewClient(&redis.Options{
-	Addr:     config.Addr,
-	Password: config.Password,
-	DB:       config.DB,
+		Addr:     config.Addr,
+		Password: config.Password,
+		DB:       config.DB,
 	})
 }

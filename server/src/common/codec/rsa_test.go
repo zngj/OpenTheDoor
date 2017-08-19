@@ -1,12 +1,12 @@
 package codec_test
 
 import (
-	"testing"
-	"github.com/carsonsx/log4g"
 	"common/codec"
+	"github.com/carsonsx/log4g"
+	"testing"
 )
 
-func TestRSA(t *testing.T)  {
+func TestRSA(t *testing.T) {
 	text := "851e58b7d54d43ab8148789b839d2fd21502356760"
 	encrypt_text, _ := codec.PrivateEncrypt(text)
 	log4g.Debug(encrypt_text)

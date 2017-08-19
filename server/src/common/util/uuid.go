@@ -1,8 +1,8 @@
 package util
 
 import (
-	"strings"
 	"github.com/google/uuid"
+	"strings"
 )
 
 func NewUuid() string {

@@ -1,19 +1,17 @@
 package msg
 
 import (
-	"github.com/carsonsx/net4g"
-	"github.com/carsonsx/log4g"
+	"bytes"
+	"container/list"
 	"encoding/binary"
-	"reflect"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/carsonsx/log4g"
+	"github.com/carsonsx/net4g"
 	"github.com/carsonsx/net4g/util"
-	"container/list"
-	"bytes"
+	"reflect"
 )
-
-
 
 func NewGateSerializer() net4g.Serializer {
 	s := new(GateSerializer)
@@ -30,15 +28,15 @@ var (
 )
 
 type SGHeader struct {
-	Flag string
-	Type int8
-	Ver uint8
+	Flag    string
+	Type    int8
+	Ver     uint8
 	GateId  string
-	No uint32
-	Zip bool
+	No      uint32
+	Zip     bool
 	Encrypt bool
-	Length uint16
-	Id uint8
+	Length  uint16
+	Id      uint8
 }
 
 func (h *SGHeader) toBytes() []byte {
@@ -120,6 +118,7 @@ func (h *SGHeader) fromBytes(header []byte) {
 type gateList struct {
 	elements *list.List
 }
+
 func (gl *gateList) init() {
 	if gl.elements == nil {
 		gl.elements = list.New()
@@ -183,7 +182,7 @@ func (s *GateSerializer) Serialize(v, h interface{}) (data []byte, err error) {
 			log4g.Error(err)
 			return
 		}
-		id,_ = _id.(int)
+		id, _ = _id.(int)
 
 		data, err = json.Marshal(v)
 		if err != nil {
@@ -215,7 +214,7 @@ func (s *GateSerializer) Serialize(v, h interface{}) (data []byte, err error) {
 	x := new(gateList)
 	//长度
 	x.addUint16(uint16(len(data) + 2)) //消息总长度加2个字节的校验
-	log4g.Debug("frame len: %d", len(data) +2)
+	log4g.Debug("frame len: %d", len(data)+2)
 	//数据
 	x.addBytes(data)
 	//校验
@@ -256,7 +255,7 @@ func (s *GateSerializer) Deserialize(raw []byte) (v, h interface{}, rp *net4g.Ra
 	//长度
 	dataLen := binary.BigEndian.Uint16(realRaw) - 2
 	//数据
-	data := realRaw[2:rawLen-2]
+	data := realRaw[2 : rawLen-2]
 	//校验
 	sum := binary.BigEndian.Uint16(realRaw[rawLen-2:])
 

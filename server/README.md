@@ -437,7 +437,7 @@ Cache-Control: no-cache
 
 获取系统发下给用户的通知，客户端根据通知类型，请求相应的接口拉取最新的信息，实现消息推送
 
-请求地址：https://sgu.youstars.com.cn/sg/notification
+请求地址：https://sgu.youstars.com.cn/sg/notification/explore
 
 请求方式：GET
 
@@ -451,8 +451,8 @@ Cache-Control: no-cache
 
 |参数|说明|
 |---|---|
-|notification_id|通知ID|
-|notification_type|通知类型：1-用户入站；2-用户出站；|
+|id|通知ID|
+|type|通知类型：1-用户入站；2-用户出站；|
 
 返回说明：
 ```code
@@ -461,8 +461,8 @@ Cache-Control: no-cache
     "code": 0,
     "msg": "成功",
     "data": {
-        "notification_id": 9,
-        "notification_type": 1
+        "id": 9,
+        "type": 1
     }
 }
 //Token失效
@@ -619,6 +619,137 @@ PUT https://sgu.youstars.com.cn/sg/notification/consume/9
 ```
 
 
+### 获取用户行程信息
+
+获取用户所有行程信息，按时间降序
+
+请求地址：https://sgu.youstars.com.cn/sg/router/list?last_id=:last_id
+
+请求方式：GET
+
+请求HEADER：
+
+|Key|Value|描述|
+|---|-----|---|
+|Access-Token|登录返回的access_token|用户访问授权|
+
+
+请求参数：
+
+|参数|类型|必填|说明|
+|---|----|---|--- |
+|:last_id|string|否|一次查询的最后一条记录|
+
+请求说明：
+```code
+PUT https://sgu.youstars.com.cn/sg/router/list?last_id=20
+```
+
+
+返回说明：
+```code
+/{
+     "code": 0,
+     "msg": "成功",
+     "data": [
+         {
+             "id": 20,
+             "at_date": 1503072000,
+             "in_station_name": "五一广场",
+             "in_time": 1503126155,
+             "status": 1,
+             "statusName": "已入站",
+             "pay": false
+         },
+         {
+             "id": 19,
+             "at_date": 1503072000,
+             "in_station_name": "五一广场",
+             "in_time": 1503126155,
+             "status": 1,
+             "statusName": "已入站",
+             "pay": false
+         },
+         {
+             "id": 18,
+             "at_date": 1503072000,
+             "in_station_name": "五一广场",
+             "in_time": 1503126155,
+             "status": 1,
+             "statusName": "已入站",
+             "pay": false
+         },
+         {
+             "id": 17,
+             "at_date": 1503072000,
+             "in_station_name": "五一广场",
+             "in_time": 1503126154,
+             "status": 1,
+             "statusName": "已入站",
+             "pay": false
+         },
+         {
+             "id": 16,
+             "at_date": 1503072000,
+             "in_station_name": "五一广场",
+             "in_time": 1503126154,
+             "status": 1,
+             "statusName": "已入站",
+             "pay": false
+         },
+         {
+             "id": 15,
+             "at_date": 1503072000,
+             "in_station_name": "五一广场",
+             "in_time": 1503126154,
+             "status": 1,
+             "statusName": "已入站",
+             "pay": false
+         },
+         {
+             "id": 14,
+             "at_date": 1503072000,
+             "in_station_name": "五一广场",
+             "in_time": 1503126154,
+             "status": 1,
+             "statusName": "已入站",
+             "pay": false
+         },
+         {
+             "id": 13,
+             "at_date": 1503072000,
+             "in_station_name": "五一广场",
+             "in_time": 1503126153,
+             "status": 1,
+             "statusName": "已入站",
+             "pay": false
+         },
+         {
+             "id": 12,
+             "at_date": 1503072000,
+             "in_station_name": "五一广场",
+             "in_time": 1503126153,
+             "status": 1,
+             "statusName": "已入站",
+             "pay": false
+         },
+         {
+             "id": 11,
+             "at_date": 1503072000,
+             "in_station_name": "五一广场",
+             "in_time": 1503126153,
+             "status": 1,
+             "statusName": "已入站",
+             "pay": false
+         }
+     ]
+ }
+//Token失效
+{
+    "code": 1000,
+    "msg": "登录失效"
+}
+```
 
 
 ## Gate协议 - TCP

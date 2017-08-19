@@ -23,7 +23,7 @@ type tcpServer struct {
 	Name          string
 	Addr          string
 	serializer    Serializer
-	dispatchers   []*dispatcher
+	dispatchers   []*Dispatcher
 	mutex         sync.Mutex
 	hub           NetHub
 	heartbeat     bool
@@ -34,16 +34,15 @@ type tcpServer struct {
 	statusMonitor bool
 }
 
-
 func (s *tcpServer) SetSerializer(serializer Serializer) *tcpServer {
 	s.serializer = serializer
 	return s
 }
 
-func (s *tcpServer) AddDispatchers(dispatchers ...*dispatcher) *tcpServer {
+func (s *tcpServer) AddDispatchers(dispatchers ...*Dispatcher) *tcpServer {
 	for _, d := range dispatchers {
 		if d.serializer != nil {
-			panic(fmt.Sprintf("dispatcher [%s] has bind with server [%s]", d.Name, s.Name))
+			panic(fmt.Sprintf("Dispatcher [%s] has bind with server [%s]", d.Name, s.Name))
 		}
 		d.serializer = s.serializer
 		d.hub = s.hub
@@ -69,7 +68,7 @@ func (s *tcpServer) Start() *tcpServer {
 	}
 
 	if len(s.dispatchers) == 0 {
-		panic("no dispatcher")
+		panic("no Dispatcher")
 	}
 
 	if s.statusMonitor {
@@ -175,7 +174,7 @@ func (s *tcpServer) Close() {
 	for _, d := range s.dispatchers {
 		d.Destroy()
 	}
-	log4g.Info("closed server[%s] dispatcher", s.Addr)
+	log4g.Info("closed server[%s] Dispatcher", s.Addr)
 
 	log4g.Info("closed server[%s]", s.Addr)
 }

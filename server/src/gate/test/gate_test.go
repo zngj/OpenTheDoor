@@ -4,9 +4,9 @@ import (
 	"gate/msg"
 	"github.com/carsonsx/log4g"
 	"github.com/carsonsx/net4g"
+	"reflect"
 	"testing"
 	"time"
-	"reflect"
 )
 
 var gateId = "010100101"
@@ -15,7 +15,7 @@ func TestLogin(t *testing.T) {
 	start(login)
 }
 
-func login()  {
+func login() {
 	dispatcher.AddHandler(loginResult, msg.GATE_LOGIN)
 	header := msg.NewSGHeader(gateId)
 	rp := new(net4g.RawPack)
@@ -36,7 +36,7 @@ func TestNotLogin(t *testing.T) {
 	start(notLogin)
 }
 
-func notLogin()  {
+func notLogin() {
 	rsaKey()
 }
 
@@ -76,7 +76,7 @@ func verifyEvidenceResult(agent net4g.NetAgent) {
 }
 
 func TestSubmitEvidence(t *testing.T) {
-	//gateId = "010100202"
+	gateId = "010100202"
 	start(login, submitEvidence)
 }
 
@@ -84,7 +84,7 @@ func submitEvidence() {
 	dispatcher.AddHandler(submitEvidenceResult, msg.SUBMIT_EVIDENCE)
 	header := msg.NewSGHeader(gateId)
 	ue := new(msg.C2SSubmitEvidence)
-	ue.EvidenceKey = "vyeIgIAr8e+7IvUB00lGnVsfYcy64LHiCMg7iFVqJC0S0oSbplRQNoqcbfbWfFFf9i4xCE/54SrUHHx46jouSWE1sB8v1ioIy4CVC7Fa3eFgfOnpBVd0k5BgTyK+hIUpEiIr86gYnesvVyrZ5yqY/dd8A/MhYboC7EpIDn3SSKY="
+	ue.EvidenceKey = "WCK1w0qcW0RrzhjQ8BKLdOUXju3fhKwVqvYUF+8PIoTQk2PSfVevjha+GDNLzJATd3ue5SonWiltyPNlom/GvbpzUPl11IsIxkL0xXHud4lu5BcdWczltvgFGTPMvkGYT33q6siyz+xt8rvVRxIPGNCrLtDXjwjJLLB4LPe892Y="
 	ue.ScanTime = time.Now().Unix()
 	agent.Write(ue, header)
 }
@@ -97,7 +97,6 @@ func submitEvidenceResult(agent net4g.NetAgent) {
 func TestType(t *testing.T) {
 
 	var s *string
-
 
 	log4g.Debug(reflect.TypeOf(s))
 }

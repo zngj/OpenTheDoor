@@ -1,9 +1,9 @@
 package ginx
 
 import (
-	"time"
-	"github.com/gin-gonic/gin"
 	"github.com/carsonsx/log4g"
+	"github.com/gin-gonic/gin"
+	"time"
 )
 
 var (
@@ -59,7 +59,7 @@ func Logger(notlogged ...string) gin.HandlerFunc {
 			}
 			comment := c.Errors.ByType(gin.ErrorTypePrivate).String()
 
-			log4g.Debug("[GIN] %v |%s %3d %s| %13v | %15s |%s  %s %-7s %s\n%s",
+			log4g.Trace("[GIN] %v |%s %3d %s| %13v | %15s |%s  %s %-7s %s\n%s",
 				start.Format("04:05.999999"),
 				statusColor, statusCode, reset,
 				latency,

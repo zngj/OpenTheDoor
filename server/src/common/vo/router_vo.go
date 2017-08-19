@@ -4,22 +4,25 @@ type RouterStatusVO struct {
 	Status int8 `json:"status"`
 }
 
-type EvidenceVO struct {
-	EvidenceId  string `json:"evidence_id"`
-	EvidenceKey string `json:"evidence_key"`
-	ExpiresAt   int64  `json:"expires_at"`
+type RouterInfoVO struct {
+	Id             int64   `json:"id"`
+	UserId         string  `json:"-"`
+	AtDate         int64   `json:"at_date"`
+	InStationId    string  `json:"-"`
+	InStationName  string  `json:"in_station_name,omitempty"`
+	InGateId       string  `json:"-"`
+	InTime         int64   `json:"in_time,omitempty"`
+	OutStationId   string  `json:"-"`
+	OutStationName string  `json:"out_station_name,omitempty"`
+	OutGateId      string  `json:"-"`
+	OutTime        int64   `json:"out_time,omitempty"`
+	Status         int8    `json:"status"`
+	StatusName     string  `json:"statusName"`
+	Money          float32 `json:"money,omitempty"`
+	Pay            bool    `json:"pay"`
 }
 
-type RouterNotificationVo struct {
-	NotificationId uint64  `json:"notification_id,omitempty"`
-	Direction      int8    `json:"direction"`
-	InGateId       string  `json:"in_gate_id,omitempty"`
-	InStationId    string  `json:"in_station_id,omitempty"`
-	InStationName  string  `json:"in_station_name,omitempty"`
-	InTime         int64   `json:"in_time,omitempty"`
-	OutGateId      string  `json:"out_gate_id,omitempty"`
-	OutStationId   string  `json:"out_station_id,omitempty"`
-	OutStationName string  `json:"out_station_name,omitempty"`
-	OutTime        int64   `json:"out_time,omitempty"`
-	Money          float32 `json:"money,omitempty"`
+type NotificationVo struct {
+	Id   uint64 `json:"id"`
+	Type int8   `json:"type"`
 }

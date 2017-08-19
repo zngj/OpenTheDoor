@@ -24,10 +24,16 @@ func (sge *SGError) Error() string {
 	return sge.msg
 }
 
-
 var (
-	SGErrMoreIn = NewError(CODE_GATE_MORE_IN)
-	SGErrLateIn = NewError(CODE_GATE_LATE_IN)
-	SGErrEarlyOut = NewError(CODE_GATE_EARLY_OUT)
-	SGErrMoreOut = NewError(CODE_GATE_MORE_OUT)
+	SGErrMobileDuplicate       = NewError(CODE_UC_MOBILE_DUPLICATE)
+	SGErrMobileNotFound        = NewError(CODE_UC_MOBILE_NOT_FOUND)
+	SGErrWrongPassword         = NewError(CODE_UC_WRONG_PASSWORD)
+	SGErrInvalidWxCode         = NewError(CODE_UC_INVALID_WXCODE)
+	SGErrNotMatchGateDirection = NewError(CODE_GATE_NOT_MATCH_EVIDENCE)
+	SGErrMoreIn                = NewError(CODE_GATE_MORE_IN)
+	SGErrExistIn               = NewError(CODE_GATE_EXIST_IN)
+	SGErrDiffIn                = NewError(CODE_GATE_DIFF_IN)
+	SGErrLateIn                = NewError(CODE_GATE_LATE_IN)
+	SGErrEarlyOut              = NewError(CODE_GATE_EARLY_OUT)
+	SGErrMoreOut               = NewError(CODE_GATE_MORE_OUT)
 )

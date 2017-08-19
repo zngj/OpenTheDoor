@@ -1,10 +1,10 @@
 package main
 
 import (
-	"gate/msg"
-	"github.com/carsonsx/net4g"
 	"gate/controller"
+	"gate/msg"
 	"github.com/carsonsx/log4g"
+	"github.com/carsonsx/net4g"
 	"runtime/debug"
 )
 
@@ -18,7 +18,6 @@ func main() {
 			log4g.Error("********************* Message Handler Panic *********************")
 		}
 	}()
-
 
 	net4g.NetConfig.BeginBytes = []byte{0x10, 0x02}
 	net4g.NetConfig.EndBytes = []byte{0x10, 0x03}

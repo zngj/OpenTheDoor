@@ -1,12 +1,12 @@
 package controller
 
 import (
-	"github.com/carsonsx/net4g"
-	"gate/msg"
 	"common/codec"
+	"gate/msg"
+	"github.com/carsonsx/net4g"
 )
 
-func rsaKeyFn(agent net4g.NetAgent)  {
+func rsaKeyFn(agent net4g.NetAgent) {
 	if !checkLogin(agent) {
 		return
 	}

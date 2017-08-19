@@ -1,16 +1,16 @@
 package test_test
 
 import (
-	"github.com/carsonsx/net4g"
 	"gate/msg"
 	"github.com/carsonsx/log4g"
+	"github.com/carsonsx/net4g"
 )
 
 var dispatcher = net4g.NewDispatcher("client")
 var serializer = msg.NewGateSerializer()
 var agent net4g.NetAgent
 
-func onInit()  {
+func onInit() {
 	serializer.RegisterDeserializeId(new(msg.S2CGateLogin), msg.GATE_LOGIN)
 	serializer.RegisterDeserializeId(new(msg.S2CRsaKey), msg.RSA_KEY)
 	serializer.RegisterSerializeId(new(msg.C2SVerifyEvidence), msg.VERIFY_EVIDENCE)
@@ -48,7 +48,7 @@ func connect(callback func()) {
 		SetSerializer(serializer).
 		AddDispatchers(dispatcher).
 		DisableAutoReconnect().
-	//EnableHeartbeat().
+		//EnableHeartbeat().
 		Connect()
 
 	net4g.TestWait()
@@ -57,7 +57,7 @@ func connect(callback func()) {
 
 }
 
-func start(calls ...func())  {
+func start(calls ...func()) {
 	connect(func() {
 		net4g.TestCall(calls...)
 	})

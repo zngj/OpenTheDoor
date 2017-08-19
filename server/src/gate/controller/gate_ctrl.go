@@ -1,15 +1,15 @@
 package controller
 
 import (
-	"github.com/carsonsx/net4g"
-	"gate/msg"
-	"smartgate/service"
-	"common/errcode"
 	"common/codec"
+	"common/errcode"
+	"gate/msg"
+	"github.com/carsonsx/net4g"
+	"etransin/service"
 	"time"
 )
 
-func verifyEvidenceFn(agent net4g.NetAgent)  {
+func verifyEvidenceFn(agent net4g.NetAgent) {
 	if !checkLogin(agent) {
 		return
 	}
@@ -21,7 +21,7 @@ func verifyEvidenceFn(agent net4g.NetAgent)  {
 		verifyResult.ErrMsg = err.Error()
 		return
 	}
-	evidenceId := evidenceKey[0:len(evidenceKey)-10]
+	evidenceId := evidenceKey[0 : len(evidenceKey)-10]
 	write(agent, verifyEvidence(evidenceId, getGateId(agent)))
 }
 
@@ -52,7 +52,7 @@ func verifyEvidence(evidenceId, gateId string) (verifyResult *msg.S2CVerifyEvide
 	return verifyResult
 }
 
-func submitEvidenceFn(agent net4g.NetAgent)  {
+func submitEvidenceFn(agent net4g.NetAgent) {
 	if !checkLogin(agent) {
 		return
 	}
@@ -65,7 +65,7 @@ func submitEvidenceFn(agent net4g.NetAgent)  {
 		verifyResult.ErrMsg = err.Error()
 		return
 	}
-	evidenceId := evidenceKey[0:len(evidenceKey)-10]
+	evidenceId := evidenceKey[0 : len(evidenceKey)-10]
 
 	result := new(msg.S2CSubmitEvidence)
 	gateId := getGateId(agent)

@@ -2,8 +2,8 @@ package sg
 
 import (
 	"common/errcode"
+	"common/sqlx"
 	"github.com/gin-gonic/gin"
-	"common/dbx"
 	"github.com/gin-gonic/gin/render"
 )
 
@@ -30,7 +30,6 @@ func NewResponseWithMsg(code int, msg string, tag ...string) *Response {
 	}
 	return res
 }
-
 
 func Context(c *gin.Context) *context {
 	w := new(context)
@@ -89,7 +88,7 @@ func (c *context) WriteSuccess() {
 func (c *context) WriteError(err error) {
 	code := errcode.CODE_COMMON_ERROR
 	msg := err.Error()
-	if err == dbx.ErrNotFound {
+	if err == sqlx.ErrNotFound {
 		code = errcode.CODE_COMMON_NOT_FOUND
 		msg = errcode.GetMsg(errcode.CODE_COMMON_NOT_FOUND)
 	} else if sgerr, ok := err.(*errcode.SGError); ok {
@@ -131,4 +130,3 @@ func (c *context) WriteWithMsg(code int, msg string, tag ...string) {
 func (c *context) WriteResponse(res *Response) {
 	render.WriteJSON(c.gc.Writer, res)
 }
-

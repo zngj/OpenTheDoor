@@ -1,8 +1,8 @@
 package vo
 
 type WalletVO struct {
-	Balance float32 `json:"balance"`
-	WxpayQuick bool `json:"wxpay_quick"`
+	Balance    float32 `json:"balance"`
+	WxpayQuick bool    `json:"wxpay_quick"`
 }
 
 type WalletChargeVO struct {

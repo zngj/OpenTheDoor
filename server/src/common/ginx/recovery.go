@@ -1,13 +1,13 @@
 package ginx
 
 import (
-	"net/http/httputil"
-	"github.com/gin-gonic/gin"
-	"github.com/carsonsx/log4g"
 	"bytes"
-	"runtime"
 	"fmt"
+	"github.com/carsonsx/log4g"
+	"github.com/gin-gonic/gin"
 	"io/ioutil"
+	"net/http/httputil"
+	"runtime"
 )
 
 var (
@@ -21,9 +21,9 @@ func Recovery() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
-					stack := stack(3)
-					httprequest, _ := httputil.DumpRequest(c.Request, false)
-					log4g.Error("[Recovery] panic recovered:\n%s\n%s\n%s%s", string(httprequest), err, stack, reset)
+				stack := stack(3)
+				httprequest, _ := httputil.DumpRequest(c.Request, false)
+				log4g.Error("[Recovery] panic recovered:\n%s\n%s\n%s%s", string(httprequest), err, stack, reset)
 
 				c.AbortWithStatus(500)
 			}
@@ -31,7 +31,6 @@ func Recovery() gin.HandlerFunc {
 		c.Next()
 	}
 }
-
 
 // stack returns a nicely formated stack frame, skipping skip frames
 func stack(skip int) []byte {
@@ -59,7 +58,6 @@ func stack(skip int) []byte {
 	}
 	return buf.Bytes()
 }
-
 
 // source returns a space-trimmed slice of the n'th line.
 func source(lines [][]byte, n int) []byte {
@@ -94,7 +92,6 @@ func function(pc uintptr) []byte {
 	name = bytes.Replace(name, centerDot, dot, -1)
 	return name
 }
-
 
 func colorForStatus(code int) string {
 	switch {

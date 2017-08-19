@@ -1,15 +1,15 @@
 package codec
 
 import (
+	"crypto"
+	"crypto/rand"
+	"crypto/rsa"
+	"crypto/sha512"
+	"crypto/x509"
+	"encoding/base64"
 	"encoding/pem"
 	"errors"
-	"crypto/x509"
-	"crypto/rsa"
-	"crypto/rand"
-	"encoding/base64"
 	"github.com/carsonsx/log4g"
-	"crypto"
-	"crypto/sha512"
 	"math/big"
 )
 
@@ -40,7 +40,6 @@ AUeJ6PeW+DAkmJWF6QIDAQAB
 -----END PUBLIC KEY-----
 `)
 
-
 // 从RSA的原理来看，公钥加密私钥解密和私钥加密公钥解密应该是等价的，
 // 在某些情况下，比如共享软件加密，我们需要用私钥加密注册码或注册文件，
 // 发给用户，用户用公钥解密注册码或注册文件进行合法性验证。
@@ -64,7 +63,7 @@ func PrivateEncrypt(text string) (string, error) {
 		log4g.Error(err)
 		return "", err
 	}
-	data, err :=  rsa.SignPKCS1v15(rand.Reader, priv, crypto.Hash(0), []byte(text))
+	data, err := rsa.SignPKCS1v15(rand.Reader, priv, crypto.Hash(0), []byte(text))
 	if err != nil {
 		log4g.Error(err)
 		return "", err
@@ -91,7 +90,7 @@ func PublicVerfiy(text, ciphertext string) (bool, error) {
 		return false, err
 	}
 	pub := pubInterface.(*rsa.PublicKey)
-	err =  rsa.VerifyPKCS1v15(pub, crypto.SHA512, hash(text), cipherbyte)
+	err = rsa.VerifyPKCS1v15(pub, crypto.SHA512, hash(text), cipherbyte)
 	if err != nil {
 		log4g.Error(err)
 		return false, err
@@ -184,7 +183,7 @@ func PublicEncrypt(text string) (string, error) {
 		return "", err
 	}
 	pub := pubInterface.(*rsa.PublicKey)
-	data, err :=  rsa.EncryptPKCS1v15(rand.Reader, pub, []byte(text))
+	data, err := rsa.EncryptPKCS1v15(rand.Reader, pub, []byte(text))
 	if err != nil {
 		log4g.Error(err)
 		return "", err

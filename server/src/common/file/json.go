@@ -1,9 +1,9 @@
 package file
 
 import (
+	"encoding/json"
 	"github.com/carsonsx/log4g"
 	"io/ioutil"
-	"encoding/json"
 )
 
 func LoadJsonConfig(filename string, v interface{}) {

@@ -28,7 +28,7 @@ type TCPClient struct {
 	AutoReconnect  bool
 	reconnectDelay int
 	serializer     Serializer
-	dispatchers    []*dispatcher
+	dispatchers    []*Dispatcher
 	hub            NetHub
 	heartbeat      bool
 	heartbeatData  []byte
@@ -42,7 +42,7 @@ func (c *TCPClient) SetSerializer(serializer Serializer) *TCPClient {
 	return c
 }
 
-func (c *TCPClient) AddDispatchers(dispatchers ...*dispatcher) *TCPClient {
+func (c *TCPClient) AddDispatchers(dispatchers ...*Dispatcher) *TCPClient {
 	for _, d := range dispatchers {
 		c.dispatchers = append(c.dispatchers, d)
 	}
@@ -101,7 +101,6 @@ func (c *TCPClient) Connect() *TCPClient {
 
 	return c
 }
-
 
 func (c *TCPClient) doConnect(addr *NetAddr) {
 
@@ -187,7 +186,7 @@ func (c *TCPClient) Close() {
 	for _, d := range c.dispatchers {
 		d.Destroy()
 	}
-	log4g.Info("closed client dispatcher")
+	log4g.Info("closed client Dispatcher")
 
 	log4g.Info("closed client")
 

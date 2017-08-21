@@ -6,7 +6,7 @@
 
 检查用户输入的手机号码是否已被注册
 
-请求地址：https://sgu.youstars.com.cn/user/check_phone_number/:phone_number
+请求地址：https://sgu.youstars.com.cn/user/check_phone_number?phone_number=:phone_number
 
 请求方式：GET
 
@@ -485,7 +485,7 @@ Cache-Control: no-cache
 客户端成功获取推送的信息后，请求后台进行通知消息消费
 
 
-请求地址：https://sgu.youstars.com.cn/sg/notification/consume/:notification_id
+请求地址：https://sgu.youstars.com.cn/sg/notification/consume?id=:notification_id
 
 请求方式：PUT
 
@@ -499,11 +499,11 @@ Cache-Control: no-cache
 
 |参数|类型|必填|说明|
 |---|----|---|--- |
-|:notification_id|string|是|通知ID|
+|id|string|是|通知ID|
 
 请求说明：
 ```code
-PUT https://sgu.youstars.com.cn/sg/notification/consume/9
+PUT https://sgu.youstars.com.cn/sg/notification/consume?id=9
 ```
 
 返回说明：

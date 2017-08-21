@@ -23,7 +23,17 @@ func TestRouterIn(c *gin.Context) {
 	if sgc.CheckError(err) {
 		return
 	}
-	sgc.WriteSuccessOrError(service.SubmitEvidenceKey(key, time.Now().Unix(), "010100101"))
+	gateId := "010100101"
+	code, err := service.VerifyEvidenceKey(key, gateId)
+	if err != nil {
+		sgc.WriteError(err)
+		return
+	}
+	if code > 0 {
+		sgc.Write(code)
+		return
+	}
+	sgc.WriteSuccessOrError(service.SubmitEvidenceKey(key, time.Now().Unix(), gateId))
 }
 
 func TestRouterOut(c *gin.Context) {
@@ -44,11 +54,10 @@ func TestRouterOut(c *gin.Context) {
 	if err != nil {
 		sgc.WriteError(err)
 		return
-	} else {
-		if code > 0 {
-			sgc.Write(code)
-			return
-		}
+	}
+	if code > 0 {
+		sgc.Write(code)
+		return
 	}
 
 	sgc.WriteSuccessOrError(service.SubmitEvidenceKey(key, time.Now().Unix(), gateId))

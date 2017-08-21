@@ -42,8 +42,8 @@ func main() {
 
 	notification := authorized.Group("notification")
 	{
-		notification.GET("/explore", controller.ExploreNotification)
-		notification.PUT("/consume/:id", controller.ConsumeRouterNotification)
+		notification.GET("/current", controller.CurrentNotification)
+		notification.PUT("/consume", controller.ConsumeRouterNotification)
 	}
 
 	test := r.Group("/test")

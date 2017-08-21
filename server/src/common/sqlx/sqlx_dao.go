@@ -244,6 +244,7 @@ func (r *result) All(v interface{}) (err error) {
 	elType := Indirect(Indirect(rv.Type()).Elem())
 	dest := make([]interface{}, len(cols))
 	rv = reflect.Indirect(rv)
+	found := false
 	for r.rows.Next() {
 		ep := reflect.New(elType)
 		el := reflect.Indirect(ep)
@@ -260,6 +261,11 @@ func (r *result) All(v interface{}) (err error) {
 		} else {
 			rv.Set(reflect.Append(rv, el))
 		}
+		found = true
+	}
+	if !found {
+		err = ErrNotFound
+		log4g.Debug(err)
 	}
 	return
 }

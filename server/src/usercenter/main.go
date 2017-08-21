@@ -21,7 +21,7 @@ func main() {
 	r.POST("/wxapp/login", controller.WeappLogin) // deprecated
 	r.GET("/verifytoken", controller.CheckToken)  // deprecated
 
-	r.GET("/check_phone_number/:phone_number", controller.CheckPhoneNumber)
+	r.GET("/check_phone_number", controller.CheckPhoneNumber)
 	r.POST("/signup", controller.SignUp)
 	r.POST("/login", controller.Login)
 	r.POST("/login_weapp", controller.WeappLogin)

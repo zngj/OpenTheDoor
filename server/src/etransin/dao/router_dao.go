@@ -7,6 +7,7 @@ import (
 	"common/util"
 	"time"
 	"bytes"
+	"github.com/carsonsx/log4g"
 )
 
 func NewRouterDao(dao ...*sqlx.Dao) *routerDao {
@@ -58,6 +59,13 @@ func (d *routerDao) InsertOut(router *model.RouterInfo) error {
 func (d *routerDao) UpdateIn(router *model.RouterInfo) error {
 	sql := "update sg_router_info set in_station_id=?,in_station_name=?,in_gate_id=?,in_evidence=?,in_time=?,money=?,paid=?,status=? where id=?"
 	return d.sqlxDao.Exec(sql, router.InStationId, router.InStationName, router.InGateId, router.InEvidence, router.InTime, router.Money, router.Paid, router.Status, router.Id)
+}
+
+func (d *routerDao) GetCurrentGroupNo(userId string) (groupNo int16, err error) {
+	sql := "select group_no from sg_router_info where user_id=? and at_date=? and status = ? order by id desc limit 1"
+	err = d.sqlxDao.Query(sql, userId, util.NowDate(),sgconst.ROUTER_STATUS_NORMAL_IN).Scan(&groupNo)
+	log4g.ErrorIf(err)
+	return
 }
 
 func (d *routerDao) FindIn(userId string, routers *[]*model.RouterInfo) error {

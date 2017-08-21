@@ -25,7 +25,7 @@ func (d *notificationDao) Insert(notification *model.Notification) error {
 	return sqlx.NewDao().Exec(sql, notification.UserId, notification.Type, time.Now())
 }
 
-func (d *notificationDao) Explore(userId string, n *model.Notification) error {
+func (d *notificationDao) Current(userId string, n *model.Notification) error {
 	sql := "select * from sg_sys_notification where received=0 and user_id=? order by id asc"
 	return d.dao.Query(sql, userId).One(n)
 }

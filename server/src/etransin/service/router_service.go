@@ -245,7 +245,7 @@ func getUserGroupNo(userId string) int16 {
 		group = g
 	}
 	now := time.Now()
-	maybeGroup := now.Hour()*100 + now.Minute()
+	maybeGroup := now.Hour()*60 + now.Minute()
 	if maybeGroup-2 > group {
 		group = maybeGroup
 		userGroups[userId] = group

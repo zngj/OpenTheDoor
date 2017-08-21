@@ -10,14 +10,14 @@ import (
 	"common/vo"
 )
 
-func ExploreNotification(c *gin.Context) {
+func CurrentNotification(c *gin.Context) {
 	sgc := sg.Context(c)
 	userId, err := tokenutil.GetUserId(c)
 	if sgc.CheckError(err) {
 		return
 	}
 	var notification model.Notification
-	if sgc.CheckError(dao.NewNotificationDao().Explore(userId, &notification)) {
+	if sgc.CheckError(dao.NewNotificationDao().Current(userId, &notification)) {
 		return
 	}
 	var notificationVo vo.NotificationVo
@@ -29,7 +29,7 @@ func ExploreNotification(c *gin.Context) {
 func ConsumeRouterNotification(c *gin.Context) {
 	sgc := sg.Context(c)
 	param := "id"
-	strId := c.Param(param)
+	strId := c.Query(param)
 	if sgc.CheckParamEmpty(strId, param) {
 		return
 	}

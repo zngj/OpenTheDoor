@@ -40,7 +40,7 @@ func SignUp(c *gin.Context) {
 func CheckPhoneNumber(c *gin.Context) {
 	sgc := sg.Context(c)
 	param := "phone_number"
-	phoneNumber := c.Param(param)
+	phoneNumber := c.Query(param)
 	if sgc.CheckParamEmpty(phoneNumber, param) {
 		return
 	}

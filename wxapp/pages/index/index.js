@@ -13,6 +13,46 @@ Page({
     // request.init(true, "new");//local test for new user
   },
   onShow: function () {
+
+    wx.connectSocket({
+      url: 'wss://sgu.youstars.com.cn/ws',
+      data: {
+        x: 'xx',
+        y: 'ddd'
+      },
+      header: {
+        'Access-Token': wx.getStorageSync('token')
+      },
+      //protocols: ['protocol1'],
+      method: "GET",
+      success: function (s) {
+        console.log(s);
+      }
+      , complete: function (c) {
+        console.log(c);
+      }
+    });
+    wx.onSocketOpen(function (res) {
+      console.log('WebSocket连接已打开！');
+      wx.sendSocketMessage({
+        data: "This is a test msg!"
+      })
+    });
+
+    wx.onSocketError(function (res) {
+      console.log('WebSocket连接打开失败，请检查！')
+    });
+
+    wx.onSocketMessage(function (res) {
+      console.log('收到服务器内容：' + res.data);
+      wx.closeSocket();
+
+    });
+    wx.onSocketClose(function (res) {
+      console.log('WebSocket 已关闭！')
+    })
+
+
     //console.log("index onShow")
     var that = this;
     this.getWallet(function (data) {

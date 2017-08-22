@@ -64,7 +64,11 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocket
         } catch (Exception e) {
             logger.error(e.getMessage());
             logger.debug("pong request message");
-            ctx.channel().writeAndFlush(new TextWebSocketFrame("pong: " + request));
+            if ("Ping".equals(request)) {
+                ctx.channel().writeAndFlush(new TextWebSocketFrame("Pong"));
+            } else {
+                ctx.channel().writeAndFlush(new TextWebSocketFrame("Pong: " + request));
+            }
         }
     }
 

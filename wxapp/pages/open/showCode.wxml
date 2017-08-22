@@ -1,7 +1,10 @@
 
 
-<view style="text-align:center">
+<view wx:if="{{rotateQr}}" style="text-align:center">
    <image src="{{qrImg}}" class="slide-image" style ="width:450rpx;height:450rpx;"/>
+</view>
+<view wx:if="{{!rotateQr}}" style="text-align:center">
+  <view class="counter"><text style="font-size:200rpx">{{pplCount}}</text></view> 
 </view>
 <view class="weui-cells__tips center">
   请将二维码对准闸机扫码器正上方

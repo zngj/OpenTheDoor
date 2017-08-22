@@ -9,15 +9,14 @@ Page({
     , typeDesc: ''
     , evidence: ''
     , check: true
-    , qrInterval: 200
+    , qrInterval: 300
     , currSeg: -1
     , segCount: 2
     , qrImg: ''
     , qrImgs: []
     , qrBuf: {}
-    , shouldLeave: false
-    , leaveTimeout: 15 * 1000
-    , autoRefreshQr: false
+    , pplCount:""
+    , rotateQr :false
   },
   onLoad: function (options) {
     this.setData({
@@ -32,44 +31,40 @@ Page({
         console.log('用户截屏了')
       })
     }
+    setTimeout(this.checkNotification.bind(this), 1500);
   },
   onShow: function () {
     if (wx.setKeepScreenOn) {
       wx.setKeepScreenOn({ keepScreenOn: true });
     }
-    var page = this;
-    this.data.check = true;
-    this.getEvidence(function (data) {
-      page.data.evidence = data.evidence_key;
-      //data.expires_at;
-      page.makeNewQrCode();
-    })
-    setTimeout(this.checkNotification.bind(this), 1500);
+    this.showNewQr();
   },
   onHide: function () {
-    this.data.check = false;
+    this.data.rotateQr = false;
   },
   onUnload: function () {
-    this.data.check = false;
+    this.data.rotateQr = false;
   },
-  nextPeople: function () {
+  showNewQr: function () {
     var page = this;
     this.getEvidence(function (data) {
-      page.data.shouldLeave = false;
-      page.data.evidence = data.evidence_key;
       page.data.currSeg = -1;
       page.data.qrImgs = []
+      page.data.evidence = data.evidence_key;
       //data.expires_at;
+      page.setData({rotateQr : true});
+      page.makeNewQrCode();
     });
+  },
+  nextPeople: function () {
+    this.showNewQr();
   },
   getEvidence: function (successCB, failCB) {
     var page = this;
     request.get({
       url: '/sg/router/evidence/' + page.data.type,
       success: function (p) {
-        if (p.code == 0) {
-          successCB(p.data);
-        }
+        successCB(p.data);
       },
       fail: function (fp) {
         if (failCB) {
@@ -87,13 +82,16 @@ Page({
     return byteArr;
   },
   makeNewQrCode: function () {
+    if(!this.data.rotateQr){
+      return;
+    }
     var page = this;
     if (this.data.currSeg >= 0 && this.data.currSeg < this.data.segCount - 1) {
       this.setData({
         "qrImg": this.data.qrImgs[++this.data.currSeg]
       });
     } else {
-      if (!this.data.autoRefreshQr && this.data.qrImgs.length > 0) {
+      if (this.data.qrImgs.length > 0) {
         page.setData({
           "qrImg": this.data.qrImgs[0]
           , "currSeg": 0
@@ -108,7 +106,7 @@ Page({
         });
       }
     }
-    if (this.data.check) {
+    if (this.data.rotateQr) {
       setTimeout(this.makeNewQrCode.bind(this), this.data.qrInterval);
     }
   },
@@ -124,9 +122,6 @@ Page({
     }
     if (callback) {
       callback(this.data.qrBuf.imgArrays.pop());
-    }
-    if (this.data.autoRefreshQr) {
-      setTimeout(this.generateNewQrBuffer.bind(this), 1);
     }
     //console.log("newCode:" + (new Date().getTime()-start))
   },
@@ -160,39 +155,26 @@ Page({
   },
   checkNotification: function () {
     var page = this;
+    if (!page.data.rotateQr){
+      setTimeout(page.checkNotification.bind(page), 1500);
+      return;
+    }
     request.get({
-      url: '/sg/notification/router',
+      url: '/sg/notification/explore',
       success: function (p) {
         if (p.code == 0) {
-          util.showMsg("您在 " + page.getStationDesc(p.data) + "成功!");
-          // "notification_id": 9,
-          // "direction": 0, //入闸
-          // "in_gate_id": "010100101",
-          // "in_station_id": "0101001",
-          // "in_station_name": "五一广场",
-          // "in_time": 1502304832
           request.put({
-            url: '/sg/notification/consume/' + p.data.notification_id
+            url: '/sg/notification/consume/' + p.data.id
           });
-          page.data.shouldLeave = true;
-          setTimeout(page.leavePage.bind(page), page.data.leaveTimeout);
+          page.setData({ rotateQr: false });
         }
       }, fail: function (fp) {
       }, complete: function () {
-        if (page.data.check) {
+        if (page.data.rotateQr) {
           setTimeout(page.checkNotification.bind(page), 1500);
         }
       }
     });
-  },
-  leavePage: function () {
-    if (this.data.shouldLeave) {
-      if (wx.reLaunch) {
-        wx.reLaunch({
-          url: '/pages/index/index'
-        });
-      }
-    }
   },
   encrypt: function (word) {
     //console.log('before:' + originWord);

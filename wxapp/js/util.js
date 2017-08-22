@@ -99,7 +99,7 @@ var request = {
         }
       }
     },
-    "/user/verifytoken": {
+    "/user/check_token": {
       default: function (options) {
         if (options.data.access_token) {
           return { success: { 'code': 0, msg: 'success', data: { token: "This is a dummy user token" } } };

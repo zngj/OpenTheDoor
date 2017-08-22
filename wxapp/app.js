@@ -20,7 +20,7 @@ App({
     wx.checkSession({
       success: function (sp) {
         request.get({
-          url: '/user/verifytoken',
+          url: '/user/check_token',
           success: function (p) {
             if (p.code != 0) { // token invalid
               that.login('TokenInvalid');

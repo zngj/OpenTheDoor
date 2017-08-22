@@ -38,7 +38,7 @@ GET https://sgu.youstars.com.cn/user/check_phone_number/13800138000
 
 ### 用户手机注册（仅限App）
 
-注册用户手机号和密码
+注册用户手机号和密码，注册成功后自动登录
 
 请求地址：https://sgu.youstars.com.cn/user/signup
 
@@ -61,10 +61,14 @@ GET https://sgu.youstars.com.cn/user/check_phone_number/13800138000
 
 返回说明：
 ```code
-//正常返回的JSON数据包
+//注册成功
 {
     "code": 0,
-    "msg": "成功"
+    "msg": "成功",
+    "data": {
+        "access_token": "e7b154f559544ae78f8da201546c1a37",
+        "expires_in": 7200
+    }
 }
 //手机号已被注册
 {
@@ -278,6 +282,46 @@ Cache-Control: no-cache
 ```
 
 
+
+### 获取用户信息
+
+获取当前登录的用户信息
+
+请求地址：https://sgu.youstars.com.cn/user/me
+
+请求方式：GET
+
+请求HEADER：
+
+|Key|Value|描述|
+|----------|----|-------|
+|Access-Token|登录返回的access_token|用户访问授权|
+
+返回说明：
+```code
+//正常返回的JSON数据
+{
+    "code": 0,
+    "msg": "成功",
+    "data": {
+        "id": "b496eb9a1e7d4c24953d983dc5d45179",
+        "nick_name": "",
+        "phone_number": "13928049889",
+        "email": "",
+        "signature": "",
+        "avatar": "",
+        "sex": 0,
+        "insert_time": "2017-08-19T14:36:41+08:00"
+    }
+}
+//登录失效
+{
+    "code": 1000,
+    "msg": "登录失效"
+}
+```
+
+
 ## e畅行后台协议 - HTTPS
 
 ### 获取用户行程状态
@@ -437,7 +481,7 @@ Cache-Control: no-cache
 
 获取系统发下给用户的通知，客户端根据通知类型，请求相应的接口拉取最新的信息，实现消息推送
 
-请求地址：https://sgu.youstars.com.cn/sg/notification/explore
+请求地址：https://sgu.youstars.com.cn/sg/notification/one
 
 请求方式：GET
 
@@ -648,108 +692,219 @@ PUT https://sgu.youstars.com.cn/sg/router/list?last_id=20
 
 返回说明：
 ```code
-/{
-     "code": 0,
-     "msg": "成功",
-     "data": [
-         {
-             "id": 20,
-             "at_date": 1503072000,
-             "in_station_name": "五一广场",
-             "in_time": 1503126155,
-             "status": 1,
-             "statusName": "已入站",
-             "pay": false
-         },
-         {
-             "id": 19,
-             "at_date": 1503072000,
-             "in_station_name": "五一广场",
-             "in_time": 1503126155,
-             "status": 1,
-             "statusName": "已入站",
-             "pay": false
-         },
-         {
-             "id": 18,
-             "at_date": 1503072000,
-             "in_station_name": "五一广场",
-             "in_time": 1503126155,
-             "status": 1,
-             "statusName": "已入站",
-             "pay": false
-         },
-         {
-             "id": 17,
-             "at_date": 1503072000,
-             "in_station_name": "五一广场",
-             "in_time": 1503126154,
-             "status": 1,
-             "statusName": "已入站",
-             "pay": false
-         },
-         {
-             "id": 16,
-             "at_date": 1503072000,
-             "in_station_name": "五一广场",
-             "in_time": 1503126154,
-             "status": 1,
-             "statusName": "已入站",
-             "pay": false
-         },
-         {
-             "id": 15,
-             "at_date": 1503072000,
-             "in_station_name": "五一广场",
-             "in_time": 1503126154,
-             "status": 1,
-             "statusName": "已入站",
-             "pay": false
-         },
-         {
-             "id": 14,
-             "at_date": 1503072000,
-             "in_station_name": "五一广场",
-             "in_time": 1503126154,
-             "status": 1,
-             "statusName": "已入站",
-             "pay": false
-         },
-         {
-             "id": 13,
-             "at_date": 1503072000,
-             "in_station_name": "五一广场",
-             "in_time": 1503126153,
-             "status": 1,
-             "statusName": "已入站",
-             "pay": false
-         },
-         {
-             "id": 12,
-             "at_date": 1503072000,
-             "in_station_name": "五一广场",
-             "in_time": 1503126153,
-             "status": 1,
-             "statusName": "已入站",
-             "pay": false
-         },
-         {
-             "id": 11,
-             "at_date": 1503072000,
-             "in_station_name": "五一广场",
-             "in_time": 1503126153,
-             "status": 1,
-             "statusName": "已入站",
-             "pay": false
-         }
-     ]
- }
+//正常返回的JSON数据
+{
+    "code": 0,
+    "msg": "成功",
+    "data": [
+        {
+            "id": 11,
+            "at_date": 1503331200,
+            "in_station_name": "五一广场",
+            "in_time": 1503367454,
+            "status": 1,
+            "statusName": "已入站",
+            "pay": false
+        },
+        {
+            "id": 10,
+            "at_date": 1503331200,
+            "in_station_name": "五一广场",
+            "in_time": 1503367454,
+            "status": 1,
+            "statusName": "已入站",
+            "pay": false
+        },
+        {
+            "id": 9,
+            "at_date": 1503331200,
+            "in_station_name": "五一广场",
+            "in_time": 1503367453,
+            "status": 1,
+            "statusName": "已入站",
+            "pay": false
+        },
+        {
+            "id": 8,
+            "at_date": 1503331200,
+            "in_station_name": "五一广场",
+            "in_time": 1503367453,
+            "status": 1,
+            "statusName": "已入站",
+            "pay": false
+        },
+        {
+            "id": 7,
+            "at_date": 1503331200,
+            "in_station_name": "五一广场",
+            "in_time": 1503367452,
+            "out_station_name": "黄兴广场",
+            "out_time": 1503367494,
+            "status": 2,
+            "statusName": "已出站",
+            "money": 2,
+            "pay": false
+        },
+        {
+            "id": 6,
+            "at_date": 1503331200,
+            "in_station_name": "五一广场",
+            "in_time": 1503367451,
+            "out_station_name": "黄兴广场",
+            "out_time": 1503367493,
+            "status": 2,
+            "statusName": "已出站",
+            "money": 2,
+            "pay": false
+        },
+        {
+            "id": 5,
+            "at_date": 1503331200,
+            "in_station_name": "五一广场",
+            "in_time": 1503367451,
+            "out_station_name": "黄兴广场",
+            "out_time": 1503367492,
+            "status": 2,
+            "statusName": "已出站",
+            "money": 2,
+            "pay": false
+        }
+    ]
+}
 //Token失效
 {
     "code": 1000,
     "msg": "登录失效"
 }
 ```
+
+
+### 入站测试数据(Token方式)
+
+请求地址：https://sgu.youstars.com.cn/sg/test/router/in
+
+请求方式：GET
+
+请求HEADER：
+
+|Key|Value|描述|
+|---|-----|---|
+|Access-Token|登录返回的access_token|用户访问授权|
+
+
+### 入站测试数据(UserId)
+
+请求地址：https://sgu.youstars.com.cn/sg/test/router/in?user_id=:user_id
+
+请求方式：GET
+
+请求参数：
+
+|参数|类型|必填|说明|
+|---|----|---|--- |
+|:user_id|string|是|用户ID|
+
+请求说明：
+```code
+GET https://sgu.youstars.com.cn/sg/test/router/in?user_id=b496eb9a1e7d4c24953d983dc5d45179
+```
+
+### 出站测试数据(Token方式)
+
+请求地址：https://sgu.youstars.com.cn/sg/test/router/out
+
+请求方式：GET
+
+请求HEADER：
+
+|Key|Value|描述|
+|---|-----|---|
+|Access-Token|登录返回的access_token|用户访问授权|
+
+
+### 出站测试数据(UserId)
+
+请求地址：https://sgu.youstars.com.cn/sg/test/router/out?user_id=:user_id
+
+请求方式：GET
+
+请求参数：
+
+|参数|类型|必填|说明|
+|---|----|---|--- |
+|:user_id|string|是|用户ID|
+
+请求说明：
+```code
+GET https://sgu.youstars.com.cn/sg/test/router/in?user_id=b496eb9a1e7d4c24953d983dc5d45179
+```
+
+
+## 用户消息推送协议 - WebSocket
+
+### 建立连接
+
+使用登录得到的access_token进行连接，access_token放入协议的header中
+
+请求地址：ws://sgu.youstars.com.cn:8084/ws
+
+请求HEADER：
+
+|Key|Value|描述|
+|---|-----|---|
+|Access-Token|登录返回的access_token|用户访问授权|
+
+请求说明：
+```code
+new WebSocket("ws://sgu.youstars.com.cn:8084/ws")
+```
+
+
+### 进出站通知
+当闸机扫描到用户的进出站二维码后，系统拖送消息通知客户端
+
+#### 推送通知
+
+描述：后台向客户端推送通知
+
+CMD: 101
+
+发送：后台 -> 客户端
+
+消息说明：
+```code
+//正常返回的JSON数据
+{
+    "cmd": 101,
+    "body":
+    {
+        "code": 0,
+        "data":
+        {
+            "id": 85, //通知ID
+            "type":1 //通知类型 1-入站；2-出站
+        }
+    }
+}
+```
+
+
+#### 确认通知
+
+描述：客户端收到消息并处理成功后，向后台发送确认接收
+
+CMD: 101
+
+发送：后台 <- 客户端
+
+消息说明：
+```code
+{
+    "cmd": 101,
+    "id": 85 //通知ID
+}
+```
+
 
 
 ## Gate协议 - TCP

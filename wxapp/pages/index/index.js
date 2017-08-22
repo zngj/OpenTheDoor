@@ -16,14 +16,7 @@ Page({
 
     wx.connectSocket({
       url: 'wss://sgu.youstars.com.cn/ws',
-      data: {
-        x: 'xx',
-        y: 'ddd'
-      },
-      header: {
-        'Access-Token': wx.getStorageSync('token')
-      },
-      //protocols: ['protocol1'],
+      protocols: [wx.getStorageSync('token')],
       method: "GET",
       success: function (s) {
         console.log(s);
@@ -35,7 +28,7 @@ Page({
     wx.onSocketOpen(function (res) {
       console.log('WebSocket连接已打开！');
       wx.sendSocketMessage({
-        data: "This is a test msg!"
+        data: "Ping"
       })
     });
 

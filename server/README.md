@@ -346,7 +346,7 @@ Cache-Control: no-cache
     "code": 0,
     "msg": "成功",
     "data": {
-        "status": 0, // 0-无行程; 1-已入闸;
+        "status": 0, // 0-无行程; 1-已进站;
     }
 }
 //Token失效
@@ -496,7 +496,7 @@ Cache-Control: no-cache
 |参数|说明|
 |---|---|
 |id|通知ID|
-|type|通知类型：1-用户入站；2-用户出站；|
+|type|通知类型：1-用户进站；2-用户出站；|
 
 返回说明：
 ```code
@@ -520,7 +520,7 @@ Cache-Control: no-cache
 
 |消息类型|回调说明|回调地址|
 |---|---|---|
-|1|获取用户当天入站信息|https://sgu.youstars.com.cn/sg/router/in/list|
+|1|获取用户当天进站信息|https://sgu.youstars.com.cn/sg/router/in/list|
 |2|获取用户当天出站信息|https://sgu.youstars.com.cn/sg/router/out/list|
 
 
@@ -529,7 +529,7 @@ Cache-Control: no-cache
 客户端成功获取推送的信息后，请求后台进行通知消息消费
 
 
-请求地址：https://sgu.youstars.com.cn/sg/notification/consume?id=:notification_id
+请求地址：https://sgu.youstars.com.cn/sg/notification/consume
 
 请求方式：PUT
 
@@ -547,7 +547,7 @@ Cache-Control: no-cache
 
 请求说明：
 ```code
-PUT https://sgu.youstars.com.cn/sg/notification/consume?id=9
+PUT key:id value:4
 ```
 
 返回说明：
@@ -565,9 +565,9 @@ PUT https://sgu.youstars.com.cn/sg/notification/consume?id=9
 ```
 
 
-### 获取用户当天入站信息
+### 获取用户当天进站信息
 
-获取用户当天入站信息列表，用户可实时查看进站的信息
+获取用户当天进站信息列表，用户可实时查看进站的信息
 
 
 请求地址：https://sgu.youstars.com.cn/sg/router/in/list
@@ -592,7 +592,7 @@ PUT https://sgu.youstars.com.cn/sg/notification/consume?id=9
             "in_station_name": "五一广场",
             "in_time": 1503044457,
             "status": 1,
-            "statusName": "已入站",
+            "statusName": "已进站",
             "pay": false
         },
         {
@@ -600,7 +600,7 @@ PUT https://sgu.youstars.com.cn/sg/notification/consume?id=9
             "in_station_name": "五一广场",
             "in_time": 1503045250,
             "status": 1,
-            "statusName": "已入站",
+            "statusName": "已进站",
             "pay": false
         }
     ]
@@ -650,7 +650,7 @@ PUT https://sgu.youstars.com.cn/sg/notification/consume?id=9
             "in_station_name": "五一广场",
             "in_time": 1503044457,
             "status": 1,
-            "statusName": "已入站",
+            "statusName": "已进站",
             "pay": false
         }
     ]
@@ -703,7 +703,7 @@ PUT https://sgu.youstars.com.cn/sg/router/list?last_id=20
             "in_station_name": "五一广场",
             "in_time": 1503367454,
             "status": 1,
-            "statusName": "已入站",
+            "statusName": "已进站",
             "pay": false
         },
         {
@@ -712,7 +712,7 @@ PUT https://sgu.youstars.com.cn/sg/router/list?last_id=20
             "in_station_name": "五一广场",
             "in_time": 1503367454,
             "status": 1,
-            "statusName": "已入站",
+            "statusName": "已进站",
             "pay": false
         },
         {
@@ -721,7 +721,7 @@ PUT https://sgu.youstars.com.cn/sg/router/list?last_id=20
             "in_station_name": "五一广场",
             "in_time": 1503367453,
             "status": 1,
-            "statusName": "已入站",
+            "statusName": "已进站",
             "pay": false
         },
         {
@@ -730,7 +730,7 @@ PUT https://sgu.youstars.com.cn/sg/router/list?last_id=20
             "in_station_name": "五一广场",
             "in_time": 1503367453,
             "status": 1,
-            "statusName": "已入站",
+            "statusName": "已进站",
             "pay": false
         },
         {
@@ -778,12 +778,33 @@ PUT https://sgu.youstars.com.cn/sg/router/list?last_id=20
 }
 ```
 
-
-### 入站测试数据(Token方式)
+### 进站测试协议(凭证)
 
 请求地址：https://sgu.youstars.com.cn/sg/test/router/in
 
-请求方式：GET
+请求方式：POST
+
+请求数据：
+
+|参数名     |类型|默认值  |说明    |
+|----------|----|-------|--------|
+|evidence_key|string|-|出进站凭证|
+|scan_time|int64|-|扫码unix时间戳|
+
+请求示例：
+```code
+{
+    "evidence_key": "MjWCCOKE9yDNMarR1l/j0nVok9wxExvKPtKleA/1OiO6Cvn0BM01Fdjb9MxSF9yTYBG48Bh85ZcQdaZ97TM3o8NJ1rOoKaqD+R1LdK/c6RGxHQ6rUPdXBU7yZP2rOBeN/xhjC7ge+iHwn6/3nwURr+33V1BUb7GzJqGerU6e59Q=",
+    "scan_time": 1502120737
+}
+```
+
+
+### 进站测试协议(Token)
+
+请求地址：https://sgu.youstars.com.cn/sg/test/router/in
+
+请求方式：POST
 
 请求HEADER：
 
@@ -792,28 +813,53 @@ PUT https://sgu.youstars.com.cn/sg/router/list?last_id=20
 |Access-Token|登录返回的access_token|用户访问授权|
 
 
-### 入站测试数据(UserId)
+### 进站测试协议(UserId)
 
-请求地址：https://sgu.youstars.com.cn/sg/test/router/in?user_id=:user_id
+请求地址：https://sgu.youstars.com.cn/sg/test/router/in
 
-请求方式：GET
+请求方式：POST
 
 请求参数：
 
 |参数|类型|必填|说明|
 |---|----|---|--- |
-|:user_id|string|是|用户ID|
+|user_id|string|是|用户ID|
 
 请求说明：
 ```code
-GET https://sgu.youstars.com.cn/sg/test/router/in?user_id=b496eb9a1e7d4c24953d983dc5d45179
+{
+    "user_id": "b496eb9a1e7d4c24953d983dc5d45179"
+}
 ```
 
-### 出站测试数据(Token方式)
+### 出站测试协议(凭证)
 
 请求地址：https://sgu.youstars.com.cn/sg/test/router/out
 
-请求方式：GET
+请求方式：POST
+
+请求数据：
+
+|参数名     |类型|默认值  |说明    |
+|----------|----|-------|--------|
+|evidence_key|string|-|出站凭证|
+|scan_time|int64|-|扫码unix时间戳|
+
+请求示例：
+```code
+{
+    "evidence_key": "MjWCCOKE9yDNMarR1l/j0nVok9wxExvKPtKleA/1OiO6Cvn0BM01Fdjb9MxSF9yTYBG48Bh85ZcQdaZ97TM3o8NJ1rOoKaqD+R1LdK/c6RGxHQ6rUPdXBU7yZP2rOBeN/xhjC7ge+iHwn6/3nwURr+33V1BUb7GzJqGerU6e59Q=",
+    "scan_time": 1502120737
+}
+```
+
+
+
+### 出站测试协议(Token)
+
+请求地址：https://sgu.youstars.com.cn/sg/test/router/out
+
+请求方式：POST
 
 请求HEADER：
 
@@ -822,25 +868,27 @@ GET https://sgu.youstars.com.cn/sg/test/router/in?user_id=b496eb9a1e7d4c24953d98
 |Access-Token|登录返回的access_token|用户访问授权|
 
 
-### 出站测试数据(UserId)
+### 出站测试协议(UserId)
 
-请求地址：https://sgu.youstars.com.cn/sg/test/router/out?user_id=:user_id
+请求地址：https://sgu.youstars.com.cn/sg/test/router/out
 
-请求方式：GET
+请求方式：POST
 
 请求参数：
 
 |参数|类型|必填|说明|
 |---|----|---|--- |
-|:user_id|string|是|用户ID|
+|user_id|string|是|用户ID|
 
 请求说明：
 ```code
-GET https://sgu.youstars.com.cn/sg/test/router/in?user_id=b496eb9a1e7d4c24953d983dc5d45179
+{
+    "user_id": "b496eb9a1e7d4c24953d983dc5d45179"
+}
 ```
 
 
-## 用户消息推送协议 - WebSocket
+## 用户消息推送 - WebSocket
 
 ### 建立连接
 
@@ -882,7 +930,7 @@ CMD: 101
         "data":
         {
             "id": 85, //通知ID
-            "type":1 //通知类型 1-入站；2-出站
+            "type":1 //通知类型 1-进站；2-出站
         }
     }
 }
@@ -909,7 +957,7 @@ CMD: 101
 
 ## Gate协议 - TCP
 
-### 出入闸凭证格式
+### 出进站凭证格式
 
 #### Demo阶段
 32位uuid+10位时间戳
@@ -949,7 +997,7 @@ CMD: 101
 |参数名     |类型|默认值  |说明    |
 |----------|----|-------|--------|
 |gate_id|string|-|闸机ID|
-|gate_direction|string|-|0-入;1-出|
+|gate_direction|string|-|0-进;1-出|
 |station_name|string|-|站点名称|
 |city_name|string|-|城市名称|
 |errcode|int|-|1至999-通用错误<br/>3100-无效的闸机ID|
@@ -979,7 +1027,7 @@ CMD: 101
 数据：无
 
 ### 3-2 获取私钥
-闸机获取私钥用于解密出入闸凭证
+闸机获取私钥用于解密出进站凭证
 
 #### MsgID: 102
 协议：获取公钥<br/>
@@ -1011,7 +1059,7 @@ CMD: 101
 
 
 ### 3-3 验证凭证
-闸机能过扫描二维码，获取用户的出入闸凭证并解密，发送到后台验证
+闸机能过扫描二维码，获取用户的出进站凭证并解密，发送到后台验证
 
 #### MsgID: 103
 协议：请求验证凭证<br/>
@@ -1057,8 +1105,8 @@ CMD: 101
 }
 ```
 
-### 3-4 提交出入凭证
-开闸后，闸机提交用户出入凭证
+### 3-4 提交出进凭证
+开闸后，闸机提交用户出进凭证
 
 #### MsgID: 104
 协议：提交凭证<br/>
@@ -1069,7 +1117,7 @@ CMD: 101
 
 |参数名     |类型|默认值  |说明    |
 |----------|----|-------|--------|
-|evidence_key|string|-|出入闸凭证|
+|evidence_key|string|-|出进站凭证|
 |scan_time|int64|-|扫码unix时间戳|
 
 请求示例：

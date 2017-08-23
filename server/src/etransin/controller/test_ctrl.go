@@ -18,8 +18,8 @@ func TestRouterIn(c *gin.Context) {
 	sgc := sg.Context(c)
 	userId, _ := tokenutil.GetUserId(c)
 	var testRouterVo vo.TestRouterVo
-	c.BindJSON(&testRouterVo)
 	if userId == "" {
+		c.BindJSON(&testRouterVo)
 		userId = testRouterVo.UserId
 	}
 	var key string
@@ -57,8 +57,8 @@ func TestRouterOut(c *gin.Context) {
 	sgc := sg.Context(c)
 	userId, _ := tokenutil.GetUserId(c)
 	var testRouterVo vo.TestRouterVo
-	c.BindJSON(&testRouterVo)
 	if userId == "" {
+		c.BindJSON(&testRouterVo)
 		userId = testRouterVo.UserId
 	}
 	var key string

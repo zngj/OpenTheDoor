@@ -547,7 +547,9 @@ Cache-Control: no-cache
 
 请求说明：
 ```code
-PUT key:id value:4
+{
+    "id": 1
+}
 ```
 
 返回说明：
@@ -915,7 +917,7 @@ new WebSocket("ws://sgu.youstars.com.cn:8084/ws")
 
 描述：后台向客户端推送通知
 
-CMD: 101
+CMD: 201
 
 发送：后台 -> 客户端
 
@@ -923,7 +925,7 @@ CMD: 101
 ```code
 //正常返回的JSON数据
 {
-    "cmd": 101,
+    "cmd": 201,
     "body":
     {
         "code": 0,
@@ -941,14 +943,14 @@ CMD: 101
 
 描述：客户端收到消息并处理成功后，向后台发送确认接收
 
-CMD: 101
+CMD: 201
 
 发送：后台 <- 客户端
 
 消息说明：
 ```code
 {
-    "cmd": 101,
+    "cmd": 201,
     "id": 85 //通知ID
 }
 ```

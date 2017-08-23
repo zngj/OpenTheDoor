@@ -4,7 +4,6 @@ import (
 	"common/sg"
 	"github.com/gin-gonic/gin"
 	"etransin/dao"
-	"strconv"
 	"common/tokenutil"
 	"common/model"
 	"common/vo"
@@ -33,14 +32,12 @@ func OneNotification(c *gin.Context) {
 
 func ConsumeRouterNotification(c *gin.Context) {
 	sgc := sg.Context(c)
-	param := "id"
-	strId := c.PostForm(param)
-	if sgc.CheckParamEmpty(strId, param) {
+	var nvo vo.NotificationVo
+	if sgc.CheckError(c.BindJSON(&nvo)) {
 		return
 	}
-	id, err := strconv.ParseUint(strId, 10, 64)
-	if sgc.CheckError(err) {
+	if sgc.CheckParamCorrect(nvo.Id > 0, "id") {
 		return
 	}
-	sgc.WriteSuccessOrError(dao.NewNotificationDao().Consume(id))
+	sgc.WriteSuccessOrError(dao.NewNotificationDao().Consume(nvo.Id))
 }

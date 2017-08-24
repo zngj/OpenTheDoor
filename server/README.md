@@ -590,20 +590,24 @@ Cache-Control: no-cache
     "msg": "成功",
     "data": [
         {
-            "id": 8,
+            "id": 48,
+            "at_date": 1503504000,
             "in_station_name": "五一广场",
-            "in_time": 1503044457,
+            "in_time": 1503588140,
+            "in_time_display": "23:22:20",
             "status": 1,
             "statusName": "已进站",
-            "pay": false
+            "paid": false
         },
         {
-            "id": 9,
+            "id": 49,
+            "at_date": 1503504000,
             "in_station_name": "五一广场",
-            "in_time": 1503045250,
+            "in_time": 1503588141,
+            "in_time_display": "23:22:21",
             "status": 1,
             "statusName": "已进站",
-            "pay": false
+            "paid": false
         }
     ]
 }
@@ -637,23 +641,28 @@ Cache-Control: no-cache
     "msg": "成功",
     "data": [
         {
-            "id": 7,
+            "id": 48,
+            "at_date": 1503504000,
             "in_station_name": "五一广场",
-            "in_time": 1503044456,
+            "in_time": 1503588140,
+            "in_time_display": "23:22:20",
             "out_station_name": "黄兴广场",
-            "out_time": 1503044463,
+            "out_time": 1503588195,
+            "out_time_display": "23:23:15",
             "status": 2,
             "statusName": "已出站",
             "money": 2,
-            "pay": false
+            "paid": true
         },
         {
-            "id": 8,
+            "id": 49,
+            "at_date": 1503504000,
             "in_station_name": "五一广场",
-            "in_time": 1503044457,
+            "in_time": 1503588141,
+            "in_time_display": "23:22:21",
             "status": 1,
             "statusName": "已进站",
-            "pay": false
+            "paid": false
         }
     ]
 }
@@ -700,76 +709,140 @@ PUT https://sgu.youstars.com.cn/sg/router/list?last_id=20
     "msg": "成功",
     "data": [
         {
-            "id": 11,
-            "at_date": 1503331200,
+            "id": 49,
+            "at_date": 1503504000,
             "in_station_name": "五一广场",
-            "in_time": 1503367454,
+            "in_time": 1503588141,
+            "in_time_display": "23:22:21",
             "status": 1,
             "statusName": "已进站",
-            "pay": false
+            "paid": false
         },
         {
-            "id": 10,
-            "at_date": 1503331200,
+            "id": 48,
+            "at_date": 1503504000,
             "in_station_name": "五一广场",
-            "in_time": 1503367454,
-            "status": 1,
-            "statusName": "已进站",
-            "pay": false
-        },
-        {
-            "id": 9,
-            "at_date": 1503331200,
-            "in_station_name": "五一广场",
-            "in_time": 1503367453,
-            "status": 1,
-            "statusName": "已进站",
-            "pay": false
-        },
-        {
-            "id": 8,
-            "at_date": 1503331200,
-            "in_station_name": "五一广场",
-            "in_time": 1503367453,
-            "status": 1,
-            "statusName": "已进站",
-            "pay": false
-        },
-        {
-            "id": 7,
-            "at_date": 1503331200,
-            "in_station_name": "五一广场",
-            "in_time": 1503367452,
+            "in_time": 1503588140,
+            "in_time_display": "23:22:20",
             "out_station_name": "黄兴广场",
-            "out_time": 1503367494,
+            "out_time": 1503588195,
+            "out_time_display": "23:23:15",
             "status": 2,
             "statusName": "已出站",
             "money": 2,
-            "pay": false
+            "paid": true
         },
         {
-            "id": 6,
-            "at_date": 1503331200,
+            "id": 47,
+            "at_date": 1503417600,
             "in_station_name": "五一广场",
-            "in_time": 1503367451,
+            "in_time": 1503493163,
+            "in_time_display": "20:59:23",
             "out_station_name": "黄兴广场",
-            "out_time": 1503367493,
+            "out_time": 1503588128,
+            "out_time_display": "23:22:08",
             "status": 2,
             "statusName": "已出站",
             "money": 2,
-            "pay": false
+            "paid": true
         },
         {
-            "id": 5,
+            "id": 46,
             "at_date": 1503331200,
             "in_station_name": "五一广场",
-            "in_time": 1503367451,
+            "in_time": 1503396808,
+            "in_time_display": "18:13:28",
             "out_station_name": "黄兴广场",
-            "out_time": 1503367492,
+            "out_time": 1503493068,
+            "out_time_display": "20:57:48",
             "status": 2,
             "statusName": "已出站",
             "money": 2,
-            "pay": false
+            "paid": true
+        },
+        {
+            "id": 45,
+            "at_date": 1503331200,
+            "in_station_name": "五一广场",
+            "in_time": 1503396802,
+            "in_time_display": "18:13:22",
+            "out_station_name": "黄兴广场",
+            "out_time": 1503413437,
+            "out_time_display": "22:50:37",
+            "status": 2,
+            "statusName": "已出站",
+            "money": 2,
+            "paid": true
+        },
+        {
+            "id": 44,
+            "at_date": 1503331200,
+            "in_station_name": "五一广场",
+            "in_time": 1503396755,
+            "in_time_display": "18:12:35",
+            "out_station_name": "黄兴广场",
+            "out_time": 1503413398,
+            "out_time_display": "22:49:58",
+            "status": 2,
+            "statusName": "已出站",
+            "money": 2,
+            "paid": true
+        },
+        {
+            "id": 43,
+            "at_date": 1503331200,
+            "in_station_name": "五一广场",
+            "in_time": 1503390968,
+            "in_time_display": "16:36:08",
+            "out_station_name": "黄兴广场",
+            "out_time": 1503396678,
+            "out_time_display": "18:11:18",
+            "status": 2,
+            "statusName": "已出站",
+            "money": 2,
+            "paid": true
+        },
+        {
+            "id": 42,
+            "at_date": 1503331200,
+            "in_station_name": "五一广场",
+            "in_time": 1503389065,
+            "in_time_display": "16:04:25",
+            "out_station_name": "黄兴广场",
+            "out_time": 1503390750,
+            "out_time_display": "16:32:30",
+            "status": 2,
+            "statusName": "已出站",
+            "money": 2,
+            "paid": true
+        },
+        {
+            "id": 41,
+            "at_date": 1503331200,
+            "in_station_name": "五一广场",
+            "in_time": 1503389049,
+            "in_time_display": "16:04:09",
+            "out_station_name": "黄兴广场",
+            "out_time": 1503389225,
+            "out_time_display": "16:07:05",
+            "status": 2,
+            "statusName": "已出站",
+            "money": 2,
+            "paid": true
+        },
+        {
+            "id": 40,
+            "at_date": 1503331200,
+            "in_station_name": "五一广场",
+            "in_time": 1503385053,
+            "in_time_display": "14:57:33",
+            "out_station_name": "黄兴广场",
+            "out_time": 1503389022,
+            "out_time_display": "16:03:42",
+            "status": 2,
+            "statusName": "已出站",
+            "money": 2,
+            "paid": true
         }
     ]
 }

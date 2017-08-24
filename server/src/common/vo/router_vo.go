@@ -12,14 +12,16 @@ type RouterInfoVO struct {
 	InStationName  string  `json:"in_station_name,omitempty"`
 	InGateId       string  `json:"-"`
 	InTime         int64   `json:"in_time,omitempty"`
+	InTimeDisplay  string  `json:"in_time_display,omitempty"`
 	OutStationId   string  `json:"-"`
 	OutStationName string  `json:"out_station_name,omitempty"`
 	OutGateId      string  `json:"-"`
 	OutTime        int64   `json:"out_time,omitempty"`
+	OutTimeDisplay string  `json:"out_time_display,omitempty"`
 	Status         int8    `json:"status"`
 	StatusName     string  `json:"statusName"`
 	Money          float32 `json:"money,omitempty"`
-	Pay            bool    `json:"pay"`
+	Paid           bool    `json:"paid"`
 }
 
 type NotificationVo struct {

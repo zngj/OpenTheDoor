@@ -15,8 +15,8 @@ import (
 const (
 	WXAPI_ACCESS_TOKEN = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code"
 	WXAPI_REFRESH_TOKEN = "https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=%s&grant_type=refresh_token&refresh_token=%s"
-	WXAPI_APPID        = "wx7b727b2cccb9c916"
-	WXAPI_SECRET       = "9166cb4364d7311b09f5086a8ad84d10"
+	WXAPI_APPID        = "wx398f6f9c1f2bad23"
+	WXAPI_SECRET       = "2452d1cd9d0dac6aff2881231201d4ef"
 )
 
 func WxapiLogin(c *gin.Context) {

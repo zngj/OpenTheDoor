@@ -25,6 +25,7 @@ func (sge *SGError) Error() string {
 }
 
 var (
+	SGErrWrongArg     = NewError(CODE_COMMON_WRONG_ARG)
 	SGErrMobileDuplicate       = NewError(CODE_UC_MOBILE_DUPLICATE)
 	SGErrMobileNotFound        = NewError(CODE_UC_MOBILE_NOT_FOUND)
 	SGErrWrongPassword         = NewError(CODE_UC_WRONG_PASSWORD)

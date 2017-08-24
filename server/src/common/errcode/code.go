@@ -17,6 +17,7 @@ const (
 	CODE_UC_MOBILE_DUPLICATE = 1001 //注册名重复
 	CODE_UC_MOBILE_NOT_FOUND = 1002 //手机号码不存在
 	CODE_UC_WRONG_PASSWORD   = 1003 //密码不正确
+	CODE_UC_USER_NOT_FOUND  = 1004
 
 	CODE_UC_INVALID_WXCODE   = 40029
 
@@ -81,6 +82,7 @@ var msg_map = map[int]string{
 	CODE_UC_MOBILE_NOT_FOUND : "手机号码不存在",
 	CODE_UC_WRONG_PASSWORD:    "密码不正确",
 	CODE_UC_INVALID_WXCODE:    "无效的微信授权临时票据(code)",
+	CODE_UC_USER_NOT_FOUND: "用户不存在",
 
 	CODE_GATE_INVALID_GATE:       "闸机编号无效",
 	CODE_GATE_INVALID_EVIDENCE:   "无效的凭证",

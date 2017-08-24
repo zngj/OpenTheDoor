@@ -4,6 +4,7 @@ import (
 	"common/ginx"
 	"github.com/gin-gonic/gin"
 	"usercenter/controller"
+	"common/tokenutil"
 )
 
 var DB = make(map[string]string)
@@ -27,6 +28,14 @@ func main() {
 	r.POST("/login_weapp", controller.WeappLogin)
 	r.POST("/login_wxapi", controller.WxapiLogin)
 	r.GET("/check_token", controller.CheckToken)
+
+
+	authorized := r.Group("/", tokenutil.VerifyToken)
+	{
+		authorized.GET("me", controller.Me)
+	}
+
+	r.GET("/test/login", controller.TestLogin)
 
 	// Listen and Server in 0.0.0.0:8081
 	r.Run(":8081")

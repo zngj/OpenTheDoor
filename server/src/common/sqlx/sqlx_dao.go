@@ -88,20 +88,36 @@ func (dao *Dao) rollback(err ...error) {
 	}
 }
 
-func (dao *Dao) Exec(query string, args ...interface{}) error {
+func (dao *Dao) Exec(sql string, args ...interface{}) error {
 	dao.BeginTx()
 	var err error
 	defer func() { dao.CommitTx(err) }()
 
-	log4g.Debug("exec  sql: %s", query)
+	log4g.Debug("exec  sql: %s", sql)
 	log4g.Debug("exec args: %v", args)
 
-	_, err = dao.Tx.Exec(query, args...)
+	_, err = dao.Tx.Exec(sql, args...)
 	if err != nil {
 		log4g.Error(err)
 		log4g.Error("\n" + string(debug.Stack()))
 	}
 	return err
+}
+
+func (dao *Dao) Insert(sql string, args ...interface{}) (id int64, err error) {
+	dao.BeginTx()
+	defer func() { dao.CommitTx(err) }()
+
+	log4g.Debug("exec  sql: %s", sql)
+	log4g.Debug("exec args: %v", args)
+
+	res, err := dao.Tx.Exec(sql, args...)
+	if err != nil {
+		log4g.Error(err)
+		log4g.Error("\n" + string(debug.Stack()))
+		return
+	}
+	return res.LastInsertId()
 }
 
 func (dao *Dao) Query(query string, args ...interface{}) *result {

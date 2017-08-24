@@ -25,19 +25,17 @@ type routerDao struct {
 }
 
 func (d *routerDao) GetOngoing(userId string, router *model.RouterInfo) error {
-	sql := "select id,user_id,status from sg_router_info where user_id=? and status <> 2 order by id asc"
+	sql := "select * from sg_router_info where user_id=? and status <> 2 order by id asc"
 	return d.sqlxDao.Query(sql, userId).One(router)
 }
 
 func (d *routerDao) GetIn(userId string, router *model.RouterInfo) error {
-	router = new(model.RouterInfo)
-	sql := "select id,status from sg_router_info where user_id=? and status = 1"
+	sql := "select * from sg_router_info where user_id=? and status = 1"
 	return d.sqlxDao.Query(sql, userId).One(router)
 }
 
 func (d *routerDao) GetException(userId string, router *model.RouterInfo) error {
-	router = new(model.RouterInfo)
-	sql := "select id,status from sg_router_info where user_id=? and status in (4,5)"
+	sql := "select * from sg_router_info where user_id=? and status in (4,5)"
 	return d.sqlxDao.Query(sql, userId).One(router)
 }
 

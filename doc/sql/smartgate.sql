@@ -11,7 +11,7 @@
  Target Server Version : 50719
  File Encoding         : 65001
 
- Date: 10/08/2017 04:29:03
+ Date: 18/08/2017 17:25:16
 */
 
 SET NAMES utf8mb4;
@@ -63,8 +63,8 @@ CREATE TABLE `sg_router_evidence` (
   `direction` smallint(1) NOT NULL DEFAULT '0' COMMENT '0-入阐;1-出阐;3-通用',
   `create_time` datetime NOT NULL,
   `expires_at` datetime NOT NULL,
-  `status` tinyint(1) NOT NULL COMMENT '1-已下发;2-已使用;3-已过期',
-  `used_time` datetime DEFAULT NULL COMMENT '使用时间',
+  `status` tinyint(1) NOT NULL COMMENT '1-有效;2-已使用;3-已过期;4-已废弃',
+  `update_time` datetime DEFAULT NULL COMMENT '使用时间',
   PRIMARY KEY (`evidence_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -75,6 +75,8 @@ DROP TABLE IF EXISTS `sg_router_info`;
 CREATE TABLE `sg_router_info` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` varchar(128) COLLATE utf8mb4_bin NOT NULL,
+  `at_date` date NOT NULL,
+  `group_no` smallint(1) NOT NULL,
   `in_station_id` varchar(10) COLLATE utf8mb4_bin DEFAULT NULL,
   `in_station_name` varchar(20) COLLATE utf8mb4_bin DEFAULT NULL,
   `in_gate_id` varchar(10) COLLATE utf8mb4_bin DEFAULT NULL,
@@ -87,6 +89,7 @@ CREATE TABLE `sg_router_info` (
   `out_time` datetime DEFAULT NULL,
   `money` decimal(4,2) DEFAULT NULL,
   `status` tinyint(1) NOT NULL COMMENT '1-入闸;2-出闸;3-出闸(无入闸);4-未出闸(异常);5-未入闸(异常)',
+  `paid` tinyint(1) NOT NULL DEFAULT '0',
   `exception_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
@@ -127,5 +130,22 @@ CREATE TABLE `sg_wallet_info` (
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`user_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- ----------------------------
+-- Procedure structure for ClearData
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `ClearData`;
+delimiter ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ClearData`()
+BEGIN
+  #Routine body goes here...
+	TRUNCATE sg_router_evidence;
+	TRUNCATE sg_router_info;
+	TRUNCATE sg_sys_notification;
+	TRUNCATE sg_wallet_info;
+
+END;
+;;
+delimiter ;
 
 SET FOREIGN_KEY_CHECKS = 1;

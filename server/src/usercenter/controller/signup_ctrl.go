@@ -9,6 +9,12 @@ import (
 	"github.com/carsonsx/log4g"
 	"crypto/md5"
 	"fmt"
+	"common/util"
+	"usercenter/service"
+	"github.com/google/uuid"
+	"strings"
+	"common/tokenutil"
+	"common/model"
 )
 
 func SignUp(c *gin.Context) {
@@ -17,7 +23,7 @@ func SignUp(c *gin.Context) {
 	if sgc.CheckError(c.BindJSON(signUpVo)) {
 		return
 	}
-	if sgc.CheckParamEmpty(signUpVo.PhoneNumber, "mobile") || sgc.CheckParamEmpty(signUpVo.Password, "password") {
+	if sgc.CheckParamEmpty(signUpVo.PhoneNumber, "phone_number") || sgc.CheckParamEmpty(signUpVo.Password, "password") {
 		return
 	}
 
@@ -34,7 +40,15 @@ func SignUp(c *gin.Context) {
 		return
 	}
 	signUpVo.Password = fmt.Sprintf("%x", md5.Sum([]byte(signUpVo.Password)))
-	sgc.WriteSuccessOrError(dao.NewUserDao().Insert(signUpVo.PhoneNumber, signUpVo.Password))
+	userId := strings.Replace(uuid.New().String(), "-", "", -1)
+	if sgc.CheckError(dao.NewUserDao().Insert(userId, signUpVo.PhoneNumber, signUpVo.Password)) {
+		return
+	}
+
+	result := new(vo.LoginToken)
+	result.AccessToken = util.NewUuid()
+	result.ExpiresIn = 7200
+	sgc.WriteDataOrError(result, service.SaveLoginSession(result.AccessToken, userId, result.ExpiresIn))
 }
 
 func CheckPhoneNumber(c *gin.Context) {
@@ -56,4 +70,27 @@ func CheckPhoneNumber(c *gin.Context) {
 		return
 	}
 	sgc.WriteSuccess()
+}
+
+func Me(c *gin.Context) {
+	sgc := sg.Context(c)
+	userId, err := tokenutil.GetUserId(c)
+	if sgc.CheckError(err) {
+		return
+	}
+	var user model.User
+	if sgc.CheckError(dao.NewUserDao().GetById(userId, &user)) {
+		return
+	}
+	var userVo vo.UserVo
+	userVo.Id = user.Id
+	userVo.PhoneNumber = user.PhoneNumber.String()
+	userVo.NickName = user.NickName.String()
+	userVo.Email = user.Email.String()
+	userVo.Signature = user.Signature.String()
+	userVo.Avatar = user.Avatar.String()
+	userVo.Sex = user.Sex.Int8()
+	userVo.InsertTime = user.InsertTime
+	userVo.UpdateTime = user.UpdateTime
+	sgc.WriteData(&userVo)
 }

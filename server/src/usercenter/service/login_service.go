@@ -1,14 +1,11 @@
 package service
 
 import (
-	"common/redisx"
 	"common/sqlx"
 	"common/vo"
-	"github.com/carsonsx/log4g"
 	"github.com/google/uuid"
 	"strings"
 	"time"
-	"common/tokenutil"
 )
 
 
@@ -59,12 +56,12 @@ func AddLoginLog(accessToken, userId string, now time.Time, expiresIn int) (err 
 	defer func() { dao.CommitTx(err) }()
 
 	if err == nil { // 上次登录存在
-		err = redisx.Client.Del(tokenutil.GetAccessTokenKey(*_token)).Err()
-		if err != nil {
-			log4g.Error(err)
-			return
-		}
-		err = dao.Exec("update uc_login_log set release_time=?,status=? where id=?", now, "0", *_id)
+		//err = redisx.Client.Del(tokenutil.GetAccessTokenKey(*_token)).Err()
+		//if err != nil {
+		//	log4g.Error(err)
+		//	return
+		//}
+		//err = dao.Exec("update uc_login_log set release_time=?,status=? where id=?", now, "0", *_id)
 	}
 
 	expiresAt := now.Add(time.Duration(expiresIn)*time.Second)

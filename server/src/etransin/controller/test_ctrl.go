@@ -5,6 +5,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"etransin/service"
 	"time"
+	"common/tokenutil"
+	"common/vo"
 )
 
 type TestRouterInVo struct {
@@ -14,16 +16,31 @@ type TestRouterInVo struct {
 
 func TestRouterIn(c *gin.Context) {
 	sgc := sg.Context(c)
-	param := "userid"
-	userId := c.Param(param)
-	if sgc.CheckParamEmpty(userId, param) {
-		return
+	userId, _ := tokenutil.GetUserId(c)
+	var testRouterVo vo.TestRouterVo
+	if userId == "" {
+		c.BindJSON(&testRouterVo)
+		userId = testRouterVo.UserId
 	}
-	_, key, err := service.CreateEvidenceWithEncrypt(userId, service.GATE_DIRECTION_IN)
-	if sgc.CheckError(err) {
+	var key string
+	var err error
+	if userId != "" {
+		_, key, err = service.CreateEvidenceWithEncrypt(userId, service.GATE_DIRECTION_IN)
+		if sgc.CheckError(err) {
+			return
+		}
+	} else {
+		key = testRouterVo.EvidenceKey
+	}
+	if sgc.CheckParamCorrect(key != "") {
 		return
 	}
 	gateId := "010100101"
+	t := testRouterVo.ScanTime
+	if t == 0 {
+		t = time.Now().Unix()
+	}
+
 	code, err := service.VerifyEvidenceKey(key, gateId)
 	if err != nil {
 		sgc.WriteError(err)
@@ -33,22 +50,35 @@ func TestRouterIn(c *gin.Context) {
 		sgc.Write(code)
 		return
 	}
-	sgc.WriteSuccessOrError(service.SubmitEvidenceKey(key, time.Now().Unix(), gateId))
+	sgc.WriteSuccessOrError(service.SubmitEvidenceKey(key, t, gateId))
 }
 
 func TestRouterOut(c *gin.Context) {
 	sgc := sg.Context(c)
-	param := "userid"
-	userId := c.Param(param)
-	if sgc.CheckParamEmpty(userId, param) {
+	userId, _ := tokenutil.GetUserId(c)
+	var testRouterVo vo.TestRouterVo
+	if userId == "" {
+		c.BindJSON(&testRouterVo)
+		userId = testRouterVo.UserId
+	}
+	var key string
+	var err error
+	if userId != "" {
+		_, key, err = service.CreateEvidenceWithEncrypt(userId, service.GATE_DIRECTION_OUT)
+		if sgc.CheckError(err) {
+			return
+		}
+	} else {
+		key = testRouterVo.EvidenceKey
+	}
+	if sgc.CheckParamCorrect(key != "") {
 		return
 	}
-	_, key, err := service.CreateEvidenceWithEncrypt(userId, service.GATE_DIRECTION_OUT)
-	if sgc.CheckError(err) {
-		return
-	}
-
 	gateId := "010100202"
+	t := testRouterVo.ScanTime
+	if t == 0 {
+		t = time.Now().Unix()
+	}
 
 	code, err := service.VerifyEvidenceKey(key, gateId)
 	if err != nil {

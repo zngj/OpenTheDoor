@@ -81,6 +81,17 @@ func (c *context) CheckError(err error) bool {
 	return true
 }
 
+func (c *context) CheckErrorIgnore(err error, errIgnore error) bool {
+	if err == nil {
+		return false
+	}
+	if err == errIgnore {
+		return false
+	}
+	c.WriteError(err)
+	return true
+}
+
 func (c *context) WriteSuccess() {
 	c.Write(errcode.CODE_COMMON_SUCCESS)
 }

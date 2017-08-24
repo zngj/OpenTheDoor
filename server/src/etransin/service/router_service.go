@@ -83,29 +83,35 @@ func VerifyEvidence(evidenceId, gateId string) (code int, err error) {
 	if evidence.Direction != 3 && gate.Direction != evidence.Direction {
 		err = errcode.SGErrNotMatchGateDirection
 		log4g.Error(err)
+		log4g.Info("expect %d, actual %d", gate.Direction, evidence.Direction	)
 		return
 	}
 
 	//check user router
 	var inRouter model.RouterInfo
 	err = dao.NewRouterDao().GetIn(evidence.UserId, &inRouter)
+	if err != nil && err != sqlx.ErrNotFound {
+		log4g.Error(err)
+		return
+	}
 	if gate.Direction == GATE_DIRECTION_IN {
-		if inRouter.InStationId.String() != gate.StationId {
-			err = errcode.SGErrDiffIn
-			log4g.Error(err)
-			return
-		}
-		//check group
-		if getUserGroupNo(inRouter.UserId) != inRouter.GroupNo {
-			err = errcode.SGErrExistIn
-			log4g.Error(err)
-			return
+		if err != sqlx.ErrNotFound {
+			if inRouter.InStationId.String() != gate.StationId {
+				err = errcode.SGErrDiffIn
+				log4g.Error(err)
+				log4g.Info("expect %s, actual %s", inRouter.InStationId.String(), gate.StationId)
+				return
+			}
+			//check group
+			if groupNo := getUserGroupNo(inRouter.UserId); groupNo != inRouter.GroupNo {
+				err = errcode.SGErrExistIn
+				log4g.Error(err)
+				log4g.Info("expect %d, actual %d", inRouter.GroupNo, groupNo)
+				return
+			}
 		}
 	} else if gate.Direction == GATE_DIRECTION_OUT {
-		if err != nil && err != sqlx.ErrNotFound {
-			log4g.Error(err)
-			return
-		} else if err == sqlx.ErrNotFound {
+		if err == sqlx.ErrNotFound {
 			log4g.Error(err)
 			code = errcode.CODE_GATE_ROUTER_NO_IN
 			err = nil
@@ -178,14 +184,14 @@ func _submitEvidence(evidenceId string, scanUnixTime int64, gateInfo *model.Gate
 	if evidence.Direction == GATE_DIRECTION_IN {
 		if err == sqlx.ErrNotFound { // 没有未完成的行程，正常入站
 			err = in(evidence.UserId, evidenceId, &scanTime, gateInfo)
-			log4g.Error(err)
+			log4g.ErrorIf(err)
 			return err
 		} else { //有未完成的行程
 			if status.Int8() == sgconst.ROUTER_STATUS_NORMAL_IN {
 				err = in(evidence.UserId, evidenceId, &scanTime, gateInfo)
+				log4g.ErrorIf(err)
 				if err == nil {
-					err = errcode.SGErrMoreIn
-					log4g.Error(err)
+					errcode.NewError2(0, errcode.GetMsg(errcode.CODE_GATE_MORE_IN))
 				}
 				return err
 			} else if status.Int8() == sgconst.ROUTER_STATUS_EARLY_OUT {
@@ -205,7 +211,7 @@ func _submitEvidence(evidenceId string, scanUnixTime int64, gateInfo *model.Gate
 		if err == nil { //存在行程
 			if status.Int8() == sgconst.ROUTER_STATUS_NORMAL_IN { //行程为正常入站，正常出站
 				err = out(ongoingRouter, evidenceId, &scanTime, gateInfo)
-				log4g.Error(err)
+				log4g.ErrorIf(err)
 				return err
 			} else if status.Int8() == sgconst.ROUTER_STATUS_EARLY_OUT { //已经存在提前出站的行程
 				err = earlyOut(evidence.UserId, evidenceId, &scanTime, gateInfo)
@@ -250,6 +256,7 @@ func getUserGroupNo(userId string) int16 {
 		group = maybeGroup
 		userGroups[userId] = group
 	}
+	log4g.Debug("group no: %d", group)
 	return int16(group)
 }
 
@@ -317,7 +324,7 @@ func out(router *model.RouterInfo, evidenceId string, outTime *time.Time, gateIn
 		return err
 	}
 
-	err = CreateNotification(router.UserId, sgconst.NOTIFICATION_TYPE_INBOUND)
+	err = CreateNotification(router.UserId, sgconst.NOTIFICATION_TYPE_OUTBOUND)
 	if err != nil {
 		return err
 	}

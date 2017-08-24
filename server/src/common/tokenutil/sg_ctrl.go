@@ -17,6 +17,9 @@ func GetAccessTokenKey(token string) string {
 }
 
 func VerifyToken(c *gin.Context) {
+
+	log4g.Debug("request uri: %s", c.Request.RequestURI)
+
 	sgc := sg.Context(c)
 	res := new (sg.Response)
 	accessToken := c.Request.Header.Get(HEADER_ACCESS_TOKEN)

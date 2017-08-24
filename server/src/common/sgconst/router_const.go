@@ -13,11 +13,11 @@ const (
 func GetRouterStatusString(status int8) string {
 	switch status {
 	case ROUTER_STATUS_NORMAL_IN:
-		return "已入站"
+		return "已进站"
 	case ROUTER_STATUS_NORMAL_OUT:
 		return "已出站"
 	case ROUTER_STATUS_LATE_IN:
-		return "推后入站"
+		return "延迟进站"
 	case ROUTER_STATUS_EARLY_OUT:
 		return "提前出站"
 	}

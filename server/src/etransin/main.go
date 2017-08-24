@@ -42,14 +42,14 @@ func main() {
 
 	notification := authorized.Group("notification")
 	{
-		notification.GET("/current", controller.CurrentNotification)
+		notification.GET("/one", controller.OneNotification)
 		notification.PUT("/consume", controller.ConsumeRouterNotification)
 	}
 
 	test := r.Group("/test")
 	{
-		test.GET("/router/in/:userid", controller.TestRouterIn)
-		test.GET("/router/out/:userid", controller.TestRouterOut)
+		test.POST("/router/in", controller.TestRouterIn)
+		test.POST("/router/out", controller.TestRouterOut)
 	}
 
 	// Listen and Server in 0.0.0.0:8082

@@ -1,0 +1,105 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>WebSocket Chat</title>
+</head>
+<body>
+   
+     <form onsubmit="return false;">
+         <h3>WebSocket 聊天室：</h3>
+         <textarea id="responseText" style="width: 500px; height: 300px;"></textarea>
+         <br> 
+         <input type="text" name="message"  style="width: 300px" value="Welcome to localhost">
+         <input type="button" value="发送消息" onclick="send(this.form.message.value)">
+         <input type="button" onclick="javascript:document.getElementById('responseText').value=''" value="清空聊天记录">
+     </form>
+     <br>
+         Netty SEO 优化 
+         Netty 是什么
+         Netty 怎么样
+         Netty4 Netty5 区别
+         Netty 效率
+         Netty 版本区别
+         Netty 和 Mina
+         Netty 网络编程
+         Netty Java 网络编程
+         Netty Java Socket NIO
+         NIO 编程
+         Netty NIO 开发
+         Netty3 Netty4 Netty5
+        Netty 好处
+         Netty 一般注意什么
+         Netty 例子程序
+         Netty Hello World
+         Netty 聊天程序
+         Netty Web HTML HTTP FTP SSL 
+
+       Netty UDP TCP WebSocket 练习
+        Netty 连接数
+        Netty 源码
+    <br>
+</body>
+</html>
+
+ <script type="text/javascript">
+         var socket;
+         if (!window.WebSocket) {
+             window.WebSocket = window.MozWebSocket;
+         }
+       
+//alert(1)
+
+         if (window.WebSocket) {
+
+//alert(2)
+
+             //socket = new WebSocket("ws://localhost:8084/ws", "312a126e252e4cc2bc1c080ba4103a2b");
+             socket = new WebSocket("wss://9db4b1bdb3c94255a10f21fe1bedbf8a@sgu.youstars.com.cn/ws");
+             socket.onmessage = function(event) {
+                 //alert("onmessage");
+                 console.log(event)
+                 var ta = document.getElementById('responseText');
+                 ta.value = ta.value + '\n' + event.data;
+
+                console.log(event.data);
+
+                var data = eval('(' + event.data + ')');
+
+                 if (data.cmd == 201) {
+
+                    console.log('send confirm msg');
+
+                    var consume = {};
+                    consume.cmd = data.cmd;
+                    consume.id = data.body.data.id;
+                    send(JSON.stringify(consume));
+
+                 }
+
+
+             };
+             socket.onopen = function(event) {
+                //alert("onopen");
+                 var ta = document.getElementById('responseText');
+                 ta.value = "连接开启!";
+             };
+             socket.onclose = function(event) {
+                //alert("onclose");
+                 var ta = document.getElementById('responseText');
+                 ta.value = ta.value + '\n'+ "连接被关闭";
+             };
+         } else {
+             alert("你的浏览器不支持 WebSocket！");
+         }
+         function send(message) {
+             if (!window.WebSocket) {
+                 return;
+             }
+             if (socket.readyState == WebSocket.OPEN) {
+                 socket.send(message);
+             } else {
+                 alert("连接没有开启.");
+             }
+         }
+     </script>

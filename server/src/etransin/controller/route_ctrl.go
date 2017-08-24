@@ -11,6 +11,7 @@ import (
 	"common/tokenutil"
 	"strconv"
 	"github.com/carsonsx/log4g"
+	"common/sqlx"
 )
 
 func RouterStatus(c *gin.Context) {
@@ -24,6 +25,7 @@ func RouterStatus(c *gin.Context) {
 	sgc.WriteDataOrError(&rs, err)
 }
 
+
 func RouterInList(c *gin.Context)  {
 	sgc := sg.Context(c)
 	userId, err := tokenutil.GetUserId(c)
@@ -31,7 +33,7 @@ func RouterInList(c *gin.Context)  {
 		return
 	}
 	var routers []*model.RouterInfo
-	if sgc.CheckError(dao.NewRouterDao().FindIn(userId, &routers)) {
+	if sgc.CheckErrorIgnore(dao.NewRouterDao().FindIn(userId, &routers), sqlx.ErrNotFound) {
 		return
 	}
 	sgc.WriteData(convertRouters(routers))
@@ -44,7 +46,7 @@ func RouterOutList(c *gin.Context)  {
 		return
 	}
 	var routers []*model.RouterInfo
-	if sgc.CheckError(dao.NewRouterDao().FindOut(userId, &routers)) {
+	if sgc.CheckErrorIgnore(dao.NewRouterDao().FindOut(userId, &routers), sqlx.ErrNotFound) {
 		return
 	}
 	sgc.WriteData(convertRouters(routers))
@@ -64,7 +66,7 @@ func MyRouters(c *gin.Context)  {
 		lastId, err = strconv.ParseInt(strLastId, 10, 64)
 	}
 	var routers []*model.RouterInfo
-	if sgc.CheckError(dao.NewRouterDao().FindByUser(userId, lastId, 10, &routers)) {
+	if sgc.CheckErrorIgnore(dao.NewRouterDao().FindByUser(userId, lastId, 10, &routers), sqlx.ErrNotFound) {
 		return
 	}
 	sgc.WriteData(convertRouters(routers))

@@ -24,7 +24,7 @@ func Login(c *gin.Context) {
 	if sgc.CheckParamEmpty(loginVo.PhoneNumber, "phone_number") || sgc.CheckParamEmpty(loginVo.Password, "password") {
 		return
 	}
-	log4g.Info("sign in with mobile: %s", loginVo.PhoneNumber)
+	log4g.Info("login with phone number: %s", loginVo.PhoneNumber)
 	var user model.User
 	if err := dao.NewUserDao().GetByPhoneNumber(loginVo.PhoneNumber, &user); err != nil {
 		if err == sqlx.ErrNotFound {
@@ -44,8 +44,30 @@ func Login(c *gin.Context) {
 	result := new(vo.LoginToken)
 	result.AccessToken = util.NewUuid()
 	result.ExpiresIn = 7200
-	if sgc.CheckError(service.SaveLoginSession(result.AccessToken, user.Id, result.ExpiresIn)) {
+	sgc.WriteDataOrError(result, service.SaveLoginSession(result.AccessToken, user.Id, result.ExpiresIn))
+}
+
+
+func TestLogin(c *gin.Context) {
+
+	sgc := sg.Context(c)
+	param := "phone_number"
+	phoneNumber := c.Query(param)
+	if sgc.CheckParamEmpty(phoneNumber, param) {
 		return
 	}
-	sgc.WriteData(result)
+	log4g.Info("test login with phone number: %s", phoneNumber)
+	var user model.User
+	if err := dao.NewUserDao().GetByPhoneNumber(phoneNumber, &user); err != nil {
+		if err == sqlx.ErrNotFound {
+			err = errcode.SGErrMobileNotFound
+			log4g.Debug(err)
+		}
+		sgc.WriteError(err)
+		return
+	}
+	result := new(vo.LoginToken)
+	result.AccessToken = util.NewUuid()
+	result.ExpiresIn = 7200
+	sgc.WriteDataOrError(result, service.SaveLoginSession(result.AccessToken, user.Id, result.ExpiresIn))
 }

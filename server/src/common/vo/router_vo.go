@@ -26,3 +26,9 @@ type NotificationVo struct {
 	Id   uint64 `json:"id"`
 	Type int8   `json:"type"`
 }
+
+type TestRouterVo struct {
+	UserId      string `json:"user_id"`
+	EvidenceKey string `json:"evidence_key"`
+	ScanTime    int64  `json:"scan_time"`
+}

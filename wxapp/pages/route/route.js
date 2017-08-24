@@ -63,16 +63,24 @@ Page({
   onShareAppMessage: function () {
   
   },
-  updateRouteList: function () {
+  updateRouteList: function (lastId) {
     var page = this;
     request.get({
-      url: "/sg/router/list",
+      url: "/sg/router/list" + (lastId ? "?last_id=" + lastId:""),
       data: {},
       success: function (s) {
-        page.setData({ "currentRoutes": s.data });
+        if (lastId){
+          page.setData({ "currentRoutes": page.data.currentRoutes.concat(s.data) });
+        } else {
+          page.setData({ "currentRoutes": s.data });
+        
+        }
       },
       fail: function () { }
     });
 
+  },
+  onReachBottom:function(){
+    this.updateRouteList(this.data.currentRoutes[this.data.currentRoutes.length - 1].id);
   }
 })

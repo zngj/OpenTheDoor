@@ -90,16 +90,19 @@ func convertRouterInfo(m *model.RouterInfo) *vo.RouterInfoVO {
 	v.InGateId = m.InGateId.String()
 	if m.InTime != nil {
 		v.InTime = m.InTime.Unix()
+		v.InTimeDisplay = m.InTime.Format("15:04:05")
 	}
 	v.OutStationId = m.OutStationId.String()
 	v.OutStationName = m.OutStationName.String()
 	v.OutGateId = m.OutGateId.String()
 	if m.OutTime != nil {
 		v.OutTime = m.OutTime.Unix()
+		v.OutTimeDisplay = m.OutTime.Format("15:04:05")
 	}
 	v.Status = m.Status.Int8()
 	v.StatusName = sgconst.GetRouterStatusString(m.Status.Int8())
 	v.Money = m.Money.Float32()
+	v.Paid = m.Paid
 	return v
 }
 

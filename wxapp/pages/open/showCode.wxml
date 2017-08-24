@@ -1,14 +1,45 @@
-
-
 <view wx:if="{{rotateQr}}" style="text-align:center">
-   <image src="{{qrImg}}" class="slide-image" style ="width:450rpx;height:450rpx;"/>
+  <image src="{{qrImg}}" class="slide-image" style="width:450rpx;height:450rpx;" />
 </view>
 <view wx:if="{{!rotateQr}}" style="text-align:center">
-  <view class="counter"><text style="font-size:200rpx">{{pplCount}}</text></view> 
+  <view class="counter"><text style="font-size:200rpx">{{pplCount}}</text></view>
 </view>
 <view class="weui-cells__tips center">
   请将二维码对准闸机扫码器正上方
 </view>
 <view style="text-align:center">
   <button bindtap="nextPeople" type="primary" style="width:200rpx">下一人</button>
+
+  <button bindtap="entry" style="width:250rpx">扫码通行</button>
 </view>
+
+
+<view class="weui-loadmore weui-loadmore_line">
+  <view class="weui-loadmore__tips weui-loadmore__tips_in-line">行程列表</view>
+</view>
+<view wx:if="{{currentRoutes.length>0}}" class="weui-loadmore weui-loadmore_line" style="width:90%">
+  <view wx:for="{{currentRoutes}}">
+    <view class="weui-loadmore weui-loadmore_line" style="width:90%;">
+      <view class="weui-loadmore__tips weui-loadmore__tips_in-line" style="float:left;"><text>{{item.in_station_name}}</text></view>
+         <view class="weui-loadmore__tips weui-loadmore__tips_in-line">{{item.money&&item.money!=0?('¥'+item.money):''}}{{item.pay?'已付':'待付'}}</view>
+      <view class="weui-loadmore__tips weui-loadmore__tips_in-line" style="float:right;"><text>{{item.out_station_name}}</text></view>
+   
+    </view>
+    <view class="weui-loadmore weui-loadmore_line" style="width:90%;border:1px solid #fff;margin-top:-1.6em">
+      <view class="weui-loadmore__tips weui-loadmore__tips_in-line" style="float:left;"><text>{{item.in_time}}</text></view>
+      <view class="weui-loadmore__tips weui-loadmore__tips_in-line" style="float:right;"><text>{{item.out_time}}</text></view>
+    </view>
+  </view>
+</view>
+
+<!-- 
+<view class="icon_sp_area">
+  <icon type="success" size="23"></icon>
+  <icon type="success_no_circle" size="23"></icon>
+  <icon type="circle" size="23"></icon>
+  <icon type="warn" size="23" color="#F43530"></icon>
+  <icon type="download" size="23"></icon>
+  <icon type="info_circle" size="23"></icon>
+  <icon type="cancel" size="23"></icon>
+  <icon type="search" size="20"></icon>
+</view> -->

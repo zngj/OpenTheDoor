@@ -1,0 +1,15 @@
+<!--pages/route/route.wxml-->
+<view wx:if="{{currentRoutes.length>0}}" class="weui-loadmore weui-loadmore_line" style="width:90%">
+  <view wx:for="{{currentRoutes}}">
+    <view class="weui-loadmore weui-loadmore_line" style="width:90%;">
+      <view class="weui-loadmore__tips weui-loadmore__tips_in-line" style="float:left;"><text>{{item.in_station_name}}</text></view>
+         <view class="weui-loadmore__tips weui-loadmore__tips_in-line">{{item.money&&item.money!=0?('¥'+item.money):''}}{{item.pay?'已付':'待付'}}</view>
+      <view class="weui-loadmore__tips weui-loadmore__tips_in-line" style="float:right;"><text>{{item.out_station_name}}</text></view>
+   
+    </view>
+    <view class="weui-loadmore weui-loadmore_line" style="width:90%;border:1px solid #fff;margin-top:-1.6em">
+      <view class="weui-loadmore__tips weui-loadmore__tips_in-line" style="float:left;"><text>{{item.in_time}}</text></view>
+      <view class="weui-loadmore__tips weui-loadmore__tips_in-line" style="float:right;"><text>{{item.out_time}}</text></view>
+    </view>
+  </view>
+</view>

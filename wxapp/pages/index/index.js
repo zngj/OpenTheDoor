@@ -13,39 +13,6 @@ Page({
     // request.init(true, "new");//local test for new user
   },
   onShow: function () {
-
-    wx.connectSocket({
-      url: 'wss://sgu.youstars.com.cn/ws',
-      protocols: [wx.getStorageSync('token')],
-      method: "GET",
-      success: function (s) {
-        console.log(s);
-      }
-      , complete: function (c) {
-        console.log(c);
-      }
-    });
-    wx.onSocketOpen(function (res) {
-      console.log('WebSocket连接已打开！');
-      wx.sendSocketMessage({
-        data: "Ping"
-      })
-    });
-
-    wx.onSocketError(function (res) {
-      console.log('WebSocket连接打开失败，请检查！')
-    });
-
-    wx.onSocketMessage(function (res) {
-      console.log('收到服务器内容：' + res.data);
-      wx.closeSocket();
-
-    });
-    wx.onSocketClose(function (res) {
-      console.log('WebSocket 已关闭！')
-    })
-
-
     //console.log("index onShow")
     var that = this;
     this.getWallet(function (data) {
@@ -61,18 +28,19 @@ Page({
             case 0: //无行程;
               break;
             case 1: //已入闸;
-              wx.showModal({
-                title: '行程提醒',
-                content: '您有未出站行程，是否现在出站？',
-                showCancel: true,
-                success: function (p) {
-                  if (p.confirm) {
-                    wx.navigateTo({
-                      url: '/pages/open/showCode?type=out',
-                    });
-                  }
-                }
-              })
+            //TODO enable later
+              // wx.showModal({
+              //   title: '行程提醒',
+              //   content: '您有未出站行程，是否现在出站？',
+              //   showCancel: true,
+              //   success: function (p) {
+              //     if (p.confirm) {
+              //       wx.navigateTo({
+              //         url: '/pages/open/showCode?type=out',
+              //       });
+              //     }
+              //   }
+              // })
               break;
             case 2: //隔天未出闸(异常);
               wx.showToast({

@@ -13,7 +13,7 @@ App({
     this.ensureSession();
     //console.log("CurrentPages:");
     //console.log(getCurrentPages());
-
+    this.initSocket();
   },
   ensureSession: function () {
     var that = this;
@@ -37,8 +37,8 @@ App({
     });
   },
   login: function (entry) {
-    var app=this;
-    if (app.loging){
+    var app = this;
+    if (app.loging) {
       return;
     }
     app.loging = true;
@@ -54,7 +54,7 @@ App({
               util.showMsg(loginResult.msg);
             };
           }, complete: function (pp) {
-             app.loging = false;
+            app.loging = false;
             console.log(entry);
           }
         });
@@ -64,5 +64,64 @@ App({
         console.log(entry);
       }
     });
+  },
+  connect: function () {
+    wx.connectSocket({
+      url: 'wss://sgu.youstars.com.cn/ws',
+      protocols: [wx.getStorageSync('token')],
+      method: "GET",
+      complete: function (c) {
+        console.log(c);
+      }
+    });
+  },
+  initSocket: function () {
+    var app = this;
+    app.connect();
+    wx.onSocketOpen(function (res) {
+      console.log('WebSocketOpen！');
+      app.heartBeat();
+    });
+    wx.onSocketError(function (res) {
+      console.log('WebSocket连接打开失败，请检查！')
+    });
+    wx.onSocketMessage(function (res) {
+      console.log('收到服务器内容：' + res.data);
+      try {
+        if (res.data !== "Pong") {
+          var json = JSON.parse(res.data);
+            wx.sendSocketMessage({
+              data: JSON.stringify({ cmd: json.cmd, id: json.body.data.id })
+            });
+            app.handleMessage(json);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    });
+    wx.onSocketClose(function (res) {
+      console.log('WebSocket 已关闭！')
+      app.connect();
+    })
+  },
+  heartBeat:function(){
+    wx.sendSocketMessage({
+      data: "Ping"
+    });
+    setTimeout(this.heartBeat,45000);
+  },
+  handleMessage:function(msg){
+    if(msg.cmd===101&& msg.body.code===1000){//登录失效
+      this.ensureSession();
+    }
+
+    var pages = getCurrentPages();
+    if (pages.length > 0 ) {
+      var currPage = pages[pages.length - 1];
+      if (currPage && currPage.handleMessage){
+        currPage.handleMessage(msg);
+      }
+    }
   }
+
 });

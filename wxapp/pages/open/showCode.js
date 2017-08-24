@@ -1,4 +1,4 @@
-var wxqrcode = require('../../js/wxqrcode.js'); 
+var wxqrcode = require('../../js/wxqrcode.js');
 var util = require('../../js/util.js').util;
 var request = require('../../js/util.js').request;
 var Crypto = require('../../js/cryptojs').Crypto;
@@ -15,8 +15,25 @@ Page({
     , qrImg: ''
     , qrImgs: []
     , qrBuf: {}
-    , pplCount:""
-    , rotateQr :false
+    , pplCount: ""
+    , rotateQr: false
+    , currentRoutes: [
+      {
+        in_station_name: 'wuyi',
+        in_time: '2222',
+        out_station_name:'dd',
+        out_time:'231',
+        money: 2
+      },
+      {
+        in_station_name: 'wuyi',
+        in_time: '2222',
+        out_station_name: 'dd',
+        out_time: '231',
+        money: 2
+      }
+
+    ]
   },
   onLoad: function (options) {
     this.setData({
@@ -24,20 +41,20 @@ Page({
       typeDesc: 'in' == options.type ? '进站' : '出站',
     });
     wx.setNavigationBarTitle({
-      title: "e畅行"+('in' == this.data.type ? '进站' : '出站'),
+      title: "e畅行" + ('in' == this.data.type ? '进站' : '出站'),
     });
     if (wx.onUserCaptureScreen) {
       wx.onUserCaptureScreen(function (res) {
         console.log('用户截屏了')
       })
     }
-    setTimeout(this.checkNotification.bind(this), 1500);
   },
   onShow: function () {
     if (wx.setKeepScreenOn) {
       wx.setKeepScreenOn({ keepScreenOn: true });
     }
     this.showNewQr();
+    this.updateRouteList();
   },
   onHide: function () {
     this.data.rotateQr = false;
@@ -52,7 +69,7 @@ Page({
       page.data.qrImgs = []
       page.data.evidence = data.evidence_key;
       //data.expires_at;
-      page.setData({rotateQr : true});
+      page.setData({ rotateQr: true });
       page.makeNewQrCode();
     });
   },
@@ -82,7 +99,7 @@ Page({
     return byteArr;
   },
   makeNewQrCode: function () {
-    if(!this.data.rotateQr){
+    if (!this.data.rotateQr) {
       return;
     }
     var page = this;
@@ -153,29 +170,6 @@ Page({
       return data.out_station_name + " " + '出闸';
     }
   },
-  checkNotification: function () {
-    var page = this;
-    if (!page.data.rotateQr){
-      setTimeout(page.checkNotification.bind(page), 1500);
-      return;
-    }
-    request.get({
-      url: '/sg/notification/explore',
-      success: function (p) {
-        if (p.code == 0) {
-          request.put({
-            url: '/sg/notification/consume/' + p.data.id
-          });
-          page.setData({ rotateQr: false });
-        }
-      }, fail: function (fp) {
-      }, complete: function () {
-        if (page.data.rotateQr) {
-          setTimeout(page.checkNotification.bind(page), 1500);
-        }
-      }
-    });
-  },
   encrypt: function (word) {
     //console.log('before:' + originWord);
     var mode = new Crypto.mode.CBC(Crypto.pad.pkcs7);
@@ -194,5 +188,30 @@ Page({
     var vb = Crypto.charenc.UTF8.stringToBytes("6916665466156476");//IV
     var ub = Crypto.AES.decrypt(eb, kb, { asBytes: true, mode: mode, iv: vb });
     return Crypto.util.bytesToBase64(ub);
+  },
+  entry: function () {
+    request.request({
+      url: '/sg/test/router/' + this.data.type,
+      data: {},
+      fail: function () { }
+    });
+  },
+  handleMessage: function (msg) {
+    if (msg.cmd == 201) {
+      var entryType = msg.body.data.type === 1 ? 'in' : 'out';
+      this.updateRouteList();
+    }
+  },
+  updateRouteList: function () {
+    var page=this;
+    request.get({
+      url: "/sg/router/" + this.data.type + "/list",
+      data: {},
+      success: function (s) {
+        page.setData({"currentRoutes":s.data});
+      },
+      fail: function () { }
+    });
+
   }
 })

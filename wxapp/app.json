@@ -1,8 +1,10 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/wallet/recharge",
-    "pages/open/showCode"
+    "pages/route/route",
+    "pages/my/my",
+    "pages/open/showCode",
+    "pages/wallet/recharge"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -17,18 +19,13 @@
       "iconPath": "images/my.png",
       "selectedIconPath": "images/my.png"
     },{
-      "pagePath": "pages/wallet/recharge",
-      "text": "充值",
-      "iconPath": "images/my.png",
-      "selectedIconPath": "images/my.png"
-    },{
       "pagePath": "pages/route/route",
       "text": "行程",
       "iconPath": "images/my.png",
       "selectedIconPath": "images/my.png"
     },{
-      "pagePath": "pages/wallet/wallet",
-      "text": "钱包",
+      "pagePath": "pages/my/my",
+      "text": "我的",
       "iconPath": "images/my.png",
       "selectedIconPath": "images/my.png"
     }]

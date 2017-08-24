@@ -2,8 +2,11 @@
 <view class="container">
   
   <view style="height:140;background-color:#35405c;text-align:center">
-    <view style="padding-top:31px;"><text style="font-size:30px;color:#fafafa">{{userBalance}}</text></view>
-    <view style="padding-bottom:30px;font-size:15px;color:#fafafa"><text>我的余额(元)</text></view>
+    <view style="padding-top:31px;">
+      <text style="font-size:30px;color:#fafafa">¥{{userBalance}} </text>
+    <button class="weui-btn mini-btn" type="default" size="mini" bindtap="recharge">充值</button>
+    </view>
+    
   </view>
   <view class="weui-cells weui-flex weui-cells_after-title" style="padding:40rpx 0rpx">
     

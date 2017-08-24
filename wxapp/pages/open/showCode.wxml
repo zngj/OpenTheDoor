@@ -8,9 +8,9 @@
   请将二维码对准闸机扫码器正上方
 </view>
 <view style="text-align:center">
-  <button bindtap="nextPeople" type="primary" style="width:200rpx">下一人</button>
+  <button bindtap="nextPeople" type="primary" class="weui-btn mini-btn" size="mini">下一人</button>
 
-  <button bindtap="entry" style="width:250rpx">扫码通行</button>
+  <button bindtap="entry" type="default" class="weui-btn mini-btn" size="mini">扫码通行(测试用)</button>
 </view>
 
 

@@ -135,6 +135,11 @@ Page({
       }
     });
   },
+  recharge:function(){
+wx.navigateTo({
+  url: '../wallet/recharge',
+})
+  },
   tipForRecharge: function (cancelTip) {
     wx.showModal({
       title: '提醒',

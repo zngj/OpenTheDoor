@@ -222,7 +222,7 @@ Page({
   getOutCount:function(routes){
     var cnt= 0 ;
     for(var i=0;i<routes.length;i++){
-      if (routes[i].status==2){
+      if (routes[i].status==1){
         cnt++;
       }
     }

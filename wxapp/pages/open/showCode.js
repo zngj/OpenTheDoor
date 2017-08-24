@@ -18,20 +18,20 @@ Page({
     , pplCount: ""
     , rotateQr: false
     , currentRoutes: [
-      {
-        in_station_name: 'wuyi',
-        in_time: '2222',
-        out_station_name:'dd',
-        out_time:'231',
-        money: 2
-      },
-      {
-        in_station_name: 'wuyi',
-        in_time: '2222',
-        out_station_name: 'dd',
-        out_time: '231',
-        money: 2
-      }
+      // {
+      //   in_station_name: 'wuyi',
+      //   in_time: '2222',
+      //   out_station_name:'dd',
+      //   out_time:'231',
+      //   money: 2
+      // },
+      // {
+      //   in_station_name: 'wuyi',
+      //   in_time: '2222',
+      //   out_station_name: 'dd',
+      //   out_time: '231',
+      //   money: 2
+      // }
 
     ]
   },
@@ -200,6 +200,7 @@ Page({
     if (msg.cmd == 201) {
       var entryType = msg.body.data.type === 1 ? 'in' : 'out';
       this.updateRouteList();
+      this.setData({ rotateQr: false });
     }
   },
   updateRouteList: function () {
@@ -208,10 +209,23 @@ Page({
       url: "/sg/router/" + this.data.type + "/list",
       data: {},
       success: function (s) {
-        page.setData({"currentRoutes":s.data});
+        page.setData(
+          {
+            "currentRoutes":s.data,
+            "pplCount": page.data.type == 'in' ? s.data.length : page.getOutCount(s.data)
+          }
+        );
       },
       fail: function () { }
     });
-
+  },
+  getOutCount:function(routes){
+    var cnt= 0 ;
+    for(var i=0;i<routes.length;i++){
+      if (routes[i].status==2){
+        cnt++;
+      }
+    }
+    return cnt;
   }
 })

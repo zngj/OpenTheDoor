@@ -3,3 +3,6 @@
   width:366rpx;height:366rpx;border:2rpx solid black;margin:40rpx;
   display:inline-block;
 }
+.weui-loadmore_line{
+  width:90%;
+}

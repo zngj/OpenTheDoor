@@ -1,33 +1,37 @@
-<view wx:if="{{rotateQr}}" style="text-align:center">
-  <image src="{{qrImg}}" class="slide-image" style="width:450rpx;height:450rpx;" />
-</view>
-<view wx:if="{{!rotateQr}}" style="text-align:center">
-  <view class="counter"><text style="font-size:200rpx">{{pplCount}}</text></view>
-</view>
-<view class="weui-cells__tips center">
-  请将二维码对准闸机扫码器正上方
-</view>
-<view style="text-align:center">
-  <button bindtap="nextPeople" type="primary" class="weui-btn mini-btn" size="mini">下一人</button>
-
-  <button bindtap="entry" type="default" class="weui-btn mini-btn" size="mini">扫码通行(测试用)</button>
-</view>
+<block wx:if="{{rotateQr}}">
+  <view style="text-align:center">
+    <image src="{{qrImg}}" class="slide-image" style="width:450rpx;height:450rpx;" />
+  </view>
+  <view class="weui-cells__tips center">请将二维码对准闸机扫码器正上方</view>
+  <view style="text-align:center">
+    <button bindtap="entry" type="default" class="weui-btn mini-btn" size="mini">扫码通行(测试用)</button>
+  </view>
+</block>
+<block wx:if="{{!rotateQr}}">
+  <view style="text-align:center">
+    <view class="counter"><text style="font-size:200rpx;color:#ff0000">{{pplCount}}</text></view>
+  </view>
+  <view class="weui-cells__tips center">{{type=='in'?'已进站人数':'未出站人数'}}</view>
+  <view style="text-align:center">
+    <button bindtap="nextPeople" type="primary" class="weui-btn mini-btn" size="mini">下一人</button>
+  </view>
+</block>
 
 
 <view class="weui-loadmore weui-loadmore_line">
   <view class="weui-loadmore__tips weui-loadmore__tips_in-line">行程列表</view>
 </view>
-<view wx:if="{{currentRoutes.length>0}}" class="weui-loadmore weui-loadmore_line" style="width:90%">
+<view wx:if="{{currentRoutes.length>0}}" class="weui-loadmore" style="width:90%">
   <view wx:for="{{currentRoutes}}">
-    <view class="weui-loadmore weui-loadmore_line" style="width:90%;">
+    <view class="weui-loadmore weui-loadmore_line">
       <view class="weui-loadmore__tips weui-loadmore__tips_in-line" style="float:left;"><text>{{item.in_station_name}}</text></view>
-         <view class="weui-loadmore__tips weui-loadmore__tips_in-line">{{item.money&&item.money!=0?('¥'+item.money):''}}{{item.paid?'已付':'待付'}}</view>
-      <view class="weui-loadmore__tips weui-loadmore__tips_in-line" style="float:right;"><text>{{item.out_station_name}}</text></view>
-   
+      <view class="weui-loadmore__tips weui-loadmore__tips_in-line"><block wx:if="{{item.money&&item.money!=0}}">¥{{item.money}} {{item.paid?'已付':'待付'}}</block><block wx:if="{{!item.money||item.money==0}}">?</block></view>
+      <view class="weui-loadmore__tips weui-loadmore__tips_in-line" style="float:right;"><text>{{item.out_station_name?item.out_station_name:'?'}}</text></view>
+
     </view>
-    <view class="weui-loadmore weui-loadmore_line" style="width:90%;border:1px solid #fff;margin-top:-1.6em">
+    <view class="weui-loadmore weui-loadmore_line" style="border:1px solid #fff;margin-top:-1.6em">
       <view class="weui-loadmore__tips weui-loadmore__tips_in-line" style="float:left;"><text>{{item.in_time_display}}</text></view>
-      <view class="weui-loadmore__tips weui-loadmore__tips_in-line" style="float:right;"><text>{{item.out_time_display}}</text></view>
+      <view class="weui-loadmore__tips weui-loadmore__tips_in-line" style="float:right;"><text>{{item.out_time_display?item.out_time_display:'?'}}</text></view>
     </view>
   </view>
 </view>

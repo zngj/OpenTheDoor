@@ -2,9 +2,9 @@
 <view class="container">
   
   <view style="height:140;background-color:#35405c;text-align:center">
-    <view style="padding-top:31px;">
+    <view style="padding:60rpx 0 60rpx 0;">
       <text style="font-size:30px;color:#fafafa">¥{{userBalance}} </text>
-    <button class="weui-btn mini-btn" type="default" size="mini" bindtap="recharge">充值</button>
+      <navigator wx:if="{{userBalance<20}}" url="../wallet/recharge" style="color:#fafafa;display:inline">充值</navigator>
     </view>
     
   </view>
@@ -13,10 +13,10 @@
     <view class="weui-flex__item" >
     </view>
     <view class="weui-flex__item" >
-  <button class="weui-btn mini-btn" type="primary" size="mini" bindtap="gateIn">进站</button>
+  <button class="weui-btn mini-btn" type="{{hasRoute?'default':'primary'}}" size="mini" bindtap="gateIn">进站</button>
     </view>
     <view class="weui-flex__item" >
-  <button class="weui-btn mini-btn" type="default" size="mini" bindtap="gateOut">出站</button>
+  <button class="weui-btn mini-btn" type="{{hasRoute?'primary':'default'}}" size="mini" bindtap="gateOut">出站</button>
     </view>
     <view class='weui-flex__item'>
     </view>

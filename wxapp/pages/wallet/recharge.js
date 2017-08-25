@@ -14,7 +14,8 @@ Page({
     confirmRecharge: 0,
     userBalance: '--',
     rechargeSolution: [
-      { "sol1": 10, "sol2": 50, "sol3": 100 },
+      { "sol1": 10, "sol2": 20, "sol3": 50 },
+      { "sol1": 100, "sol2": 150, "sol3": 200 }
     ]
   },
 

@@ -8,7 +8,6 @@ Page({
     type: 'in' //进站标识
     , typeDesc: ''
     , evidence: ''
-    , check: true
     , qrInterval: 300
     , currSeg: -1
     , segCount: 2
@@ -17,23 +16,7 @@ Page({
     , qrBuf: {}
     , pplCount: ""
     , rotateQr: false
-    , currentRoutes: [
-      // {
-      //   in_station_name: 'wuyi',
-      //   in_time: '2222',
-      //   out_station_name:'dd',
-      //   out_time:'231',
-      //   money: 2
-      // },
-      // {
-      //   in_station_name: 'wuyi',
-      //   in_time: '2222',
-      //   out_station_name: 'dd',
-      //   out_time: '231',
-      //   money: 2
-      // }
-
-    ]
+    , currentRoutes: []
   },
   onLoad: function (options) {
     this.setData({
@@ -41,7 +24,7 @@ Page({
       typeDesc: 'in' == options.type ? '进站' : '出站',
     });
     wx.setNavigationBarTitle({
-      title: "e畅行" + ('in' == this.data.type ? '进站' : '出站'),
+      title:  ('in' == this.data.type ? '进站' : '出站'),
     });
     if (wx.onUserCaptureScreen) {
       wx.onUserCaptureScreen(function (res) {

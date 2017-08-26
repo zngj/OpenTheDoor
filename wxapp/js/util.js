@@ -16,19 +16,26 @@ var request = {
     options.method = options.method || "POST";
     options.header = options.header || { 'content-type': 'application/json' };
     var originSuccess = options.success;
-
+    options.timeout=3000;
     options.success = this.arround(options.success, function (delegate, s) {
       if (s.statusCode == 200) {
         if (s.data.code == 1000) {//token expired
-        getApp().login("TokenExpired");
-          wx.reLaunch({
-            url: '/pages/index/index',
-          })
+          getApp().login("TokenExpired");
         } else if (delegate) {
           delegate(s.data);
         }
       } else {
         options.fail(s);
+      }
+    });
+    options.fail = this.arround(options.fail, function (delegate, f) {
+      if(wx.showToast){
+        wx.showToast({
+          title: '网络超时，请稍后再试'
+        })
+      }
+      if (delegate) {
+        delegate(f);
       }
     });
     options.complete = this.arround(options.complete, function (delegate, c) {

@@ -6,7 +6,7 @@ App({
   onLaunch: function (options) {
     //console.log("App onLaunch");
     request.init(false);
-    //this.ensureSession();
+    this.ensureSession();
   },
   onShow: function () {
     //console.log("App on show");
@@ -42,6 +42,7 @@ App({
       return;
     }
     app.loging = true;
+    console.log("start login");
     wx.login({
       success: function (p) {
         request.request({
@@ -50,6 +51,9 @@ App({
           success: function (loginResult) {
             if (loginResult.code == 0) {
               wx.setStorageSync('token', loginResult.data.access_token);
+              wx.reLaunch({
+                url: '/pages/index/index',
+              });
             } else {
               util.showMsg(loginResult.msg);
             };
@@ -60,7 +64,6 @@ App({
         });
       },
       complete: function (p) {
-        app.loging = false;
         console.log(entry);
       }
     });
@@ -78,9 +81,9 @@ App({
   initSocket: function () {
     var app = this;
     app.connect();
+    app.heartBeat();
     wx.onSocketOpen(function (res) {
       console.log('WebSocketOpen！');
-      app.heartBeat();
     });
     wx.onSocketError(function (res) {
       console.log('WebSocket连接打开失败，请检查！')
@@ -90,9 +93,6 @@ App({
       try {
         if (res.data !== "Pong") {
           var json = JSON.parse(res.data);
-            wx.sendSocketMessage({
-              data: JSON.stringify({ cmd: json.cmd, id: json.body.data.id })
-            });
             app.handleMessage(json);
         }
       } catch (e) {
@@ -100,11 +100,13 @@ App({
       }
     });
     wx.onSocketClose(function (res) {
-      console.log('WebSocket 已关闭！')
-      app.connect();
+      console.log('WebSocket Close！' )
+      console.log(res)
+      setTimeout(app.connect,1000);
     })
   },
   heartBeat:function(){
+    console.log("Ping")
     wx.sendSocketMessage({
       data: "Ping"
     });
@@ -113,6 +115,10 @@ App({
   handleMessage:function(msg){
     if(msg.cmd===101&& msg.body.code===1000){//登录失效
       this.ensureSession();
+    } else{
+      wx.sendSocketMessage({
+        data: JSON.stringify({ cmd: json.cmd, id: json.body.data.id })
+      });
     }
 
     var pages = getCurrentPages();

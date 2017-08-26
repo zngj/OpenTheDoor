@@ -1,6 +1,6 @@
 var util = require('../../js/util.js').util;
 var request = require('../../js/util.js').request;
-
+var bmap = require('../../js/bmap-wx.min.js');
 var app = getApp()
 Page({
   data: {

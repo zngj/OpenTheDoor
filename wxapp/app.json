@@ -29,5 +29,10 @@
       "iconPath": "images/my.png",
       "selectedIconPath": "images/my.png"
     }]
+  },"networkTimeout": {
+    "request": 5000,
+    "connectSocket": 5000,
+    "uploadFile": 20000,
+    "downloadFile": 20000
   }
 }

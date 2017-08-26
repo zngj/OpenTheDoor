@@ -12,7 +12,7 @@
     <view class="counter"><text style="font-size:200rpx;color:#ff0000">{{pplCount}}</text></view>
   </view>
   <view class="weui-cells__tips center">{{type=='in'?'已进站人数':'未出站人数'}}</view>
-  <view style="text-align:center">
+  <view style="text-align:center" wx:if="{{type=='in'||pplCount!=0}}">
     <button bindtap="nextPeople" type="primary" class="weui-btn mini-btn" size="mini">下一人</button>
   </view>
 </block>
@@ -21,7 +21,7 @@
 <view class="weui-loadmore weui-loadmore_line">
   <view class="weui-loadmore__tips weui-loadmore__tips_in-line">行程列表</view>
 </view>
-<view wx:if="{{currentRoutes.length>0}}" class="weui-loadmore" style="width:90%">
+<view wx:if="{{type=='out' && currentRoutes.length>0}}" class="weui-loadmore" style="width:90%">
   <view wx:for="{{currentRoutes}}">
     <view class="weui-loadmore weui-loadmore_line">
       <view class="weui-loadmore__tips weui-loadmore__tips_in-line" style="float:left;"><text>{{item.in_station_name}}</text></view>
@@ -32,6 +32,14 @@
     <view class="weui-loadmore weui-loadmore_line" style="border:1px solid #fff;margin-top:-1.6em">
       <view class="weui-loadmore__tips weui-loadmore__tips_in-line" style="float:left;"><text>{{item.in_time_display}}</text></view>
       <view class="weui-loadmore__tips weui-loadmore__tips_in-line" style="float:right;"><text>{{item.out_time_display?item.out_time_display:'?'}}</text></view>
+    </view>
+  </view>
+</view>
+<view wx:if="{{type=='in' && currentRoutes.length>0}}" class="weui-loadmore" style="width:90%">
+  <view wx:for="{{currentRoutes}}">
+    <view class="weui-loadmore weui-loadmore_line">
+      <view class="weui-loadmore__tips weui-loadmore__tips_in-line"><text>{{item.in_station_name}} {{item.in_time_display}}</text></view>
+
     </view>
   </view>
 </view>

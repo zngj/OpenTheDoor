@@ -2,18 +2,26 @@ var util = require('js/util.js').util;
 var request = require('js/util.js').request;
 App({
   data: {
+    isShow:false
   },
   onLaunch: function (options) {
     //console.log("App onLaunch");
     request.init(false);
     this.ensureSession();
+    this.initSocket();
   },
   onShow: function () {
     //console.log("App on show");
+    this.data.isShow=true;
     this.ensureSession();
+    this.connect();
     //console.log("CurrentPages:");
     //console.log(getCurrentPages());
-    this.initSocket();
+  },
+  onHide: function () {
+    this.data.isShow = false;
+    wx.closeSocket({
+    });
   },
   ensureSession: function () {
     var that = this;
@@ -69,24 +77,27 @@ App({
     });
   },
   connect: function () {
-    wx.connectSocket({
-      url: 'wss://sgu.youstars.com.cn/ws',
-      protocols: [wx.getStorageSync('token')],
-      method: "GET",
-      complete: function (c) {
-        console.log(c);
-      }
-    });
+    if(!this.data.socketOpened && this.data.isShow){
+      wx.connectSocket({
+        url: 'wss://sgu.youstars.com.cn/ws',
+        protocols: [wx.getStorageSync('token')],
+        method: "GET",
+        complete: function (c) {
+          console.log(c);
+        }
+      });
+    }
   },
   initSocket: function () {
     var app = this;
     app.connect();
     app.heartBeat();
     wx.onSocketOpen(function (res) {
-      console.log('WebSocketOpen！');
+      app.data.socketOpened = true;
+      console.log('WebSocketOpen!');
     });
     wx.onSocketError(function (res) {
-      console.log('WebSocket连接打开失败，请检查！')
+      console.log('WebSocketError!')
     });
     wx.onSocketMessage(function (res) {
       console.log('收到服务器内容：' + res.data);
@@ -100,7 +111,8 @@ App({
       }
     });
     wx.onSocketClose(function (res) {
-      console.log('WebSocket Close！' )
+      app.data.socketOpened = false;
+      console.log('WebSocketClose!' )
       console.log(res)
       setTimeout(app.connect,1000);
     })
@@ -115,9 +127,9 @@ App({
   handleMessage:function(msg){
     if(msg.cmd===101&& msg.body.code===1000){//登录失效
       this.ensureSession();
-    } else{
+    } else {
       wx.sendSocketMessage({
-        data: JSON.stringify({ cmd: json.cmd, id: json.body.data.id })
+        data: JSON.stringify({ cmd: msg.cmd, id: msg.body.data.id })
       });
     }
 

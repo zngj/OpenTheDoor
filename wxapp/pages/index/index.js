@@ -6,7 +6,7 @@ Page({
   data: {
     userBalance: '--',
     dataSetDesc: ['远程', '新用户', '有余额', '有代扣'],
-    hasRoute : false
+    hasRoute: false
   },
 
   onLoad: function (options) {
@@ -29,7 +29,7 @@ Page({
               that.setData({ hasRoute: false });
               break;
             case 1: //已入闸;
-             that.setData({hasRoute:true});
+              that.setData({ hasRoute: true });
               break;
             case 2: //隔天未出闸(异常);
               that.setData({ hasRoute: true });
@@ -39,7 +39,9 @@ Page({
               break;
 
           }
-        }
+        } else {
+          that.setData({ hasRoute: false });
+          }
       }
     });
   },
@@ -122,10 +124,10 @@ Page({
       }
     });
   },
-  recharge:function(){
-wx.navigateTo({
-  url: '../wallet/recharge',
-})
+  recharge: function () {
+    wx.navigateTo({
+      url: '../wallet/recharge',
+    })
   },
   tipForRecharge: function (cancelTip) {
     wx.showModal({
@@ -149,4 +151,7 @@ wx.navigateTo({
     var dataSet = ['', 'new', 'hasBalance', 'wxpay_quick'];
     request.init(e.detail.value != 0, dataSet[e.detail.value]);
   },
+  clearToken:function(){
+    wx.setStorageSync("token", "data")
+  }
 })

@@ -22,7 +22,7 @@
   <view class="weui-loadmore__tips weui-loadmore__tips_in-line">行程列表</view>
 </view>
 <view wx:if="{{type=='out' && currentRoutes.length>0}}" class="weui-loadmore" style="width:90%">
-  <view wx:for="{{currentRoutes}}">
+  <view wx:for="{{currentRoutes}}" wx:key="id">
     <view class="weui-loadmore weui-loadmore_line">
       <view class="weui-loadmore__tips weui-loadmore__tips_in-line" style="float:left;"><text>{{item.in_station_name}}</text></view>
       <view class="weui-loadmore__tips weui-loadmore__tips_in-line"><block wx:if="{{item.money&&item.money!=0}}">¥{{item.money}} {{item.paid?'已付':'待付'}}</block><block wx:if="{{!item.money||item.money==0}}">?</block></view>
@@ -36,10 +36,9 @@
   </view>
 </view>
 <view wx:if="{{type=='in' && currentRoutes.length>0}}" class="weui-loadmore" style="width:90%">
-  <view wx:for="{{currentRoutes}}">
+  <view wx:for="{{currentRoutes}}" wx:key="id">
     <view class="weui-loadmore weui-loadmore_line">
       <view class="weui-loadmore__tips weui-loadmore__tips_in-line"><text>{{item.in_station_name}} {{item.in_time_display}}</text></view>
-
     </view>
   </view>
 </view>

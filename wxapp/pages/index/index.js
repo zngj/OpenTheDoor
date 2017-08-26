@@ -41,7 +41,7 @@ Page({
           }
         } else {
           that.setData({ hasRoute: false });
-          }
+        }
       }
     });
   },

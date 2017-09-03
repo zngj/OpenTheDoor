@@ -1,31 +1,42 @@
 <!--index.wxml-->
 <view class="container">
-  
+
   <view style="height:140;background-color:#35405c;text-align:center">
     <view style="padding:60rpx 0 60rpx 0;">
       <text style="font-size:30px;color:#fafafa">¥{{userBalance}} </text>
-      <navigator wx:if="{{userBalance<20}}" url="../wallet/recharge" style="color:#fafafa;display:inline">充值</navigator>
+      <navigator url="../wallet/recharge" style="color:#fafafa;display:inline">充值</navigator>
     </view>
-    
-  </view>
-  <view class="weui-cells weui-flex weui-cells_after-title" style="padding:40rpx 0rpx">
-    
-    <view class="weui-flex__item" >
-    </view>
-    <view class="weui-flex__item" >
-  <button class="weui-btn mini-btn" type="{{hasRoute?'default':'primary'}}" size="mini" bindtap="gateIn">进站</button>
-    </view>
-    <view class="weui-flex__item" >
-  <button class="weui-btn mini-btn" type="{{hasRoute?'primary':'default'}}" size="mini" bindtap="gateOut">出站</button>
-    </view>
-    <view class='weui-flex__item'>
-    </view>
-  </view>
 
-
- <button type="default" bindtap="clearToken" size="mini" class="weui-btn mini-btn">清理会话(测试)</button>
-  <picker bindchange="bindPickerChange" value="0" range="{{dataSetDesc}}" style="display:none;" >
-      <button type="default">切换测试数据集</button>
+  </view>
+  <view class="weui-cells  weui-cells_after-title" style="padding:40rpx 0rpx">
+    <view class="weui-flex">
+      <view class="weui-flex__item">
+      </view>
+      <view class="weui-flex__item">
+        <button class="weui-btn mini-btn" type="{{hasRoute?'default':'primary'}}" size="mini" bindtap="gateIn">进站</button>
+      </view>
+      <view class="weui-flex__item">
+        <button class="weui-btn mini-btn" type="{{hasRoute?'primary':'default'}}" size="mini" bindtap="gateOut">出站</button>
+      </view>
+      <view class='weui-flex__item'>
+      </view>
+    </view>
+    <view class="weui-flex">
+      <view class="weui-flex__item">
+      </view>
+      <view class="weui-flex__item">
+      <navigator url="../route/find"><button class="weui-btn mini-btn" type="default" size="mini" >查路线</button></navigator>
+        
+      </view>
+      <view class='weui-flex__item'>
+      </view>
+    </view>
+  </view>
+</view>
+<view id="test">
+  <button type="default" bindtap="clearToken" size="mini" class="weui-btn mini-btn">清理会话(测试)</button>
+  <picker bindchange="bindPickerChange" value="0" range="{{dataSetDesc}}" style="display:none;">
+    <button type="default">切换测试数据集</button>
   </picker>
 </view>
 

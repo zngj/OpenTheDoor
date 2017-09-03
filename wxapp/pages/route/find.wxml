@@ -1,0 +1,11 @@
+<map longitude="{{longitude}}" latitude="{{latitude}}" scale="{{scale}}"
+polyline="{{polyline}}" include-points="{{includePoints}}"
+controls="{{controls}}" bindcontroltap="controltap" 
+markers="{{markers}}" bindmarkertap="markertap"
+include-points="{{include-points}}"
+style="width:750rpx;height:750rpx"
+></map>
+<button bindtap="scaleUp" size="mini">+</button>
+
+<button bindtap="scaleDown" size="mini">-</button>
+<button bindtap="locate" size="mini">查</button>

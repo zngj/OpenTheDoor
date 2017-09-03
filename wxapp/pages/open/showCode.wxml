@@ -42,15 +42,3 @@
     </view>
   </view>
 </view>
-
-<!-- 
-<view class="icon_sp_area">
-  <icon type="success" size="23"></icon>
-  <icon type="success_no_circle" size="23"></icon>
-  <icon type="circle" size="23"></icon>
-  <icon type="warn" size="23" color="#F43530"></icon>
-  <icon type="download" size="23"></icon>
-  <icon type="info_circle" size="23"></icon>
-  <icon type="cancel" size="23"></icon>
-  <icon type="search" size="20"></icon>
-</view> -->

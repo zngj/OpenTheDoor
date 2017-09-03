@@ -151,7 +151,7 @@ Page({
     var dataSet = ['', 'new', 'hasBalance', 'wxpay_quick'];
     request.init(e.detail.value != 0, dataSet[e.detail.value]);
   },
-  clearToken:function(){
+  clearToken: function () {
     wx.setStorageSync("token", "data")
   }
 })

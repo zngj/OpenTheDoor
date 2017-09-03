@@ -4,32 +4,38 @@
     "pages/route/route",
     "pages/my/my",
     "pages/open/showCode",
-    "pages/wallet/recharge"
+    "pages/wallet/recharge",
+    "pages/route/find"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#000000",
     "navigationBarTitleText": "门",
     "navigationBarTextStyle": "#ffffff"
-  }
-  ,"tabBar": {
-    "list": [{
-      "pagePath": "pages/index/index",
-      "text": "首页",
-      "iconPath": "images/my.png",
-      "selectedIconPath": "images/my.png"
-    },{
-      "pagePath": "pages/route/route",
-      "text": "行程",
-      "iconPath": "images/my.png",
-      "selectedIconPath": "images/my.png"
-    },{
-      "pagePath": "pages/my/my",
-      "text": "我的",
-      "iconPath": "images/my.png",
-      "selectedIconPath": "images/my.png"
-    }]
-  },"networkTimeout": {
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/my.png",
+        "selectedIconPath": "images/my.png"
+      },
+      {
+        "pagePath": "pages/route/route",
+        "text": "行程",
+        "iconPath": "images/my.png",
+        "selectedIconPath": "images/my.png"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "我的",
+        "iconPath": "images/my.png",
+        "selectedIconPath": "images/my.png"
+      }
+    ]
+  },
+  "networkTimeout": {
     "request": 5000,
     "connectSocket": 5000,
     "uploadFile": 20000,
